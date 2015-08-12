@@ -1,11 +1,10 @@
-package com.yahoo.mobile.intern.nest.Activity;
+package com.yahoo.mobile.intern.nest.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.parse.ParseObject;
 import com.yahoo.mobile.intern.nest.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -15,9 +14,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
+
 
     }
 

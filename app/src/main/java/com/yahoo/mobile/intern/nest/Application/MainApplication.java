@@ -1,4 +1,4 @@
-package com.yahoo.mobile.intern.nest.Application;
+package com.yahoo.mobile.intern.nest.application;
 
 import android.app.Application;
 
@@ -23,4 +23,5 @@ public class MainApplication extends Application {
 
         ParsePush.subscribeInBackground("");
     }
+
 }
