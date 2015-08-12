@@ -11,16 +11,48 @@ import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
+import com.parse.ParseObject;
 import com.yahoo.mobile.intern.nest.R;
+import com.yahoo.mobile.intern.nest.adapter.QuestionCardAdapter;
+import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import de.greenrobot.event.EventBus;
+import event.QuestionEvent;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayList<String> al;
-    private ArrayAdapter<String> arrayAdapter;
+    private QuestionCardAdapter mAdapter;
     private SwipeFlingAdapterView flingContainer;
     private int i;
+
+    private List<ParseObject> mList;
+
+    @Override
+    public void onStart() {
+        EventBus.getDefault().register(this);
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    public void onEvent(QuestionEvent event) {
+        Log.d("eventbus", "" + event.questionList.size());
+        refreshList(event.questionList);
+    }
+
+    private void refreshList(List<ParseObject> list) {
+        mList.clear();
+        mList.addAll(list);
+        mAdapter.notifyDataSetChanged();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,26 +61,18 @@ public class MainActivity extends AppCompatActivity {
 
         flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
 
-        al = new ArrayList<>();
-        al.add("php");
-        al.add("c");
-        al.add("python");
-        al.add("java");
-        al.add("html");
-        al.add("c++");
-        al.add("css");
-        al.add("javascript");
+        mList = new ArrayList<>();
+        mAdapter = new QuestionCardAdapter(this, mList);
 
-        arrayAdapter = new ArrayAdapter<>(this, R.layout.item, R.id.helloText, al );
-        flingContainer.setAdapter(arrayAdapter);
+        flingContainer.setAdapter(mAdapter);
 
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
             @Override
             public void removeFirstObjectInAdapter() {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
                 Log.d("LIST", "removed object!");
-                al.remove(0);
-                arrayAdapter.notifyDataSetChanged();
+                Collections.swap(mList, 0, mList.size() - 1);
+                mAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -66,18 +90,12 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onAdapterAboutToEmpty(int itemsInAdapter) {
-                // Ask for more data here
-                al.add("XML ".concat(String.valueOf(i)));
-                arrayAdapter.notifyDataSetChanged();
-                Log.d("LIST", "notified");
-                i++;
+
             }
 
             @Override
             public void onScroll(float scrollProgressPercent) {
-                View view = flingContainer.getSelectedView();
-                view.findViewById(R.id.item_swipe_right_indicator).setAlpha(scrollProgressPercent < 0 ? -scrollProgressPercent : 0);
-                view.findViewById(R.id.item_swipe_left_indicator).setAlpha(scrollProgressPercent > 0 ? scrollProgressPercent : 0);
+
             }
         });
 
@@ -90,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ParseUtils.getAllQuestions();
     }
 
     static void makeToast(Context ctx, String s){

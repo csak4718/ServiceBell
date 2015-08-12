@@ -13,14 +13,22 @@ import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.facebook.AccessToken;
 import com.parse.LogInCallback;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
+import com.yahoo.mobile.intern.nest.utils.Common;
+import com.yahoo.mobile.intern.nest.utils.FbUtils;
+import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 import com.yahoo.mobile.intern.nest.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
+import event.FbPictureEvent;
+import event.UserProfileEvent;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -28,6 +36,8 @@ public class LoginActivity extends AppCompatActivity {
     private Button mBtnLoginFacebook;
     private ImageView mImgSplashLogo;
     private Handler mHandler = new Handler();
+    private String mNickName;
+    private String mFbId;
 
     private void setupLoginButton() {
 
@@ -46,10 +56,10 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             if (user.isNew()) {
                                 Log.d("MyApp", "User signed up and logged in through Facebook!");
-                                Utils.gotoMainActivity(LoginActivity.this);
+                                FbUtils.getUserProfile(AccessToken.getCurrentAccessToken());
                             } else {
                                 Log.d("MyApp", "User logged in through Facebook!");
-                                Utils.gotoMainActivity(LoginActivity.this);
+
                             }
 
                         }
@@ -84,7 +94,30 @@ public class LoginActivity extends AppCompatActivity {
 
         animation.startNow();
     }
+    public void onEvent(UserProfileEvent event) {
+        Log.d("eventbus", "Get userprofile event");
+        mNickName = event.mNickName;
+        mFbId = event.mFbId;
+        FbUtils.getFbProfilePicture(mFbId);
+    }
+    public void onEvent(final FbPictureEvent event) {
+        ParseUser.getCurrentUser().put(Common.OBJECT_USER_FB_NAME, mNickName);
+        ParseUtils.updateUserProfile(mNickName, mFbId, event.mPic);
+        Utils.gotoMainActivity(this);
+        finish();
+    }
 
+    @Override
+    protected void onStart() {
+        EventBus.getDefault().register(this);
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
