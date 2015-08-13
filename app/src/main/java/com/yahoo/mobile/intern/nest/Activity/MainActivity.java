@@ -1,8 +1,12 @@
 package com.yahoo.mobile.intern.nest.activity;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +19,7 @@ import com.parse.ParseObject;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.adapter.QuestionCardAdapter;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
+import com.yahoo.mobile.intern.nest.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,9 +30,12 @@ import event.QuestionEvent;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ActionBar mActionBar;
+    /*
+      Card
+     */
     private QuestionCardAdapter mAdapter;
     private SwipeFlingAdapterView flingContainer;
-    private int i;
 
     private List<ParseObject> mList;
 
@@ -54,10 +62,18 @@ public class MainActivity extends AppCompatActivity {
         mAdapter.notifyDataSetChanged();
     }
 
+    private void setupActionBar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
+        setSupportActionBar(toolbar);
+        mActionBar = getSupportActionBar();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+        setupActionBar();
 
         flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
 
@@ -77,15 +93,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onLeftCardExit(Object dataObject) {
-                //Do something on the left!
-                //You also have access to the original object.
-                //If you want to use it just cast it (String) dataObject
-                makeToast(MainActivity.this, "Left!");
             }
 
             @Override
             public void onRightCardExit(Object dataObject) {
-                makeToast(MainActivity.this, "Right!");
             }
 
             @Override
@@ -99,20 +110,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        // Optionally add an OnItemClickListener
-        flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClicked(int itemPosition, Object dataObject) {
-                makeToast(MainActivity.this, "Clicked!");
-            }
-        });
-
         ParseUtils.getAllQuestions();
-    }
-
-    static void makeToast(Context ctx, String s){
-        Toast.makeText(ctx, s, Toast.LENGTH_SHORT).show();
     }
 
     @Override

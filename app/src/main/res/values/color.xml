@@ -20,6 +20,9 @@
     <item name="action_bar_background" type="color">#5AD3D2</item>
     <item name="window_background" type="color">#ACE8E8</item>
 
+    <color name="PrimaryColor">#5AD3D2</color>
+    <color name="PrimaryDarkColor">#5AD3D2</color>
+
     <integer-array name="androidcolors">
         <item>@color/blue</item>
         <item>@color/purple</item>
