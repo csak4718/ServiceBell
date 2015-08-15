@@ -11,6 +11,12 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:colorPrimary">@color/PrimaryColor</item>
         <item name="android:colorPrimaryDark">@color/PrimaryDarkColor</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
+    </style>
+
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@android:color/white</item>
     </style>
 
     <style name="MainActivityTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
@@ -22,6 +28,7 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:colorPrimary">@color/PrimaryColor</item>
         <item name="android:colorPrimaryDark">@color/PrimaryDarkColor</item>
+        <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
     <style name="toolbarTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">

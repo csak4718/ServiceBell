@@ -3,14 +3,18 @@ package com.yahoo.mobile.intern.nest.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.melnykov.fab.FloatingActionButton;
 import com.parse.ParseObject;
 import com.yahoo.mobile.intern.nest.R;
+import com.yahoo.mobile.intern.nest.activity.MainActivity;
 import com.yahoo.mobile.intern.nest.adapter.QuestionCardAdapter;
 import com.yahoo.mobile.intern.nest.event.QuestionEvent;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
@@ -25,10 +29,15 @@ import de.greenrobot.event.EventBus;
  */
 public class FragmentMyNewTask extends Fragment {
 
+    private SwipeRefreshLayout swipeRefreshLayout;
     private View mView;
     private ListView mListView;
     private List<ParseObject> mList;
     private QuestionCardAdapter mAdapter;
+
+    private FloatingActionButton btnAddTask;
+
+    private MainActivity activity;
 
     @Override
     public void onStart() {
@@ -45,6 +54,7 @@ public class FragmentMyNewTask extends Fragment {
     public void onEvent(QuestionEvent event) {
         Log.d("eventbus", "" + event.questionList.size());
         refreshList(event.questionList);
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     private void refreshList(List<ParseObject> list) {
@@ -62,11 +72,30 @@ public class FragmentMyNewTask extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        activity = (MainActivity) getActivity();
+
         mView = inflater.inflate(R.layout.fragment_my_new_task, container, false);
+        swipeRefreshLayout = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_refresh);
         mListView = (ListView) mView.findViewById(R.id.listview_my_task);
         mList = new ArrayList<>();
         mAdapter = new QuestionCardAdapter(getActivity(), mList);
         mListView.setAdapter(mAdapter);
+
+        btnAddTask = (FloatingActionButton) mView.findViewById(R.id.btn_add_post);
+
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                ParseUtils.getAllQuestions();
+            }
+        });
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            }
+        });
 
         ParseUtils.getAllQuestions();
 
