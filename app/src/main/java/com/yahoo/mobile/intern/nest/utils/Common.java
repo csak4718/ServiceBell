@@ -5,6 +5,10 @@ package com.yahoo.mobile.intern.nest.utils;
  */
 public class Common {
 
+    public final static int REQUEST_LOCATION = 5566;
+
+    public final static String EXTRA_LOCATION = "location";
+
     public final static String OBJECT_USER_NICK = "nickname";
     public final static String OBJECT_USER_PROFILE_PIC = "profile_pic";
     public final static String OBJECT_USER_FB_NAME = "fbName";
@@ -12,6 +16,8 @@ public class Common {
 
     public final static String OBJECT_QUESTION = "Question";
     public final static String OBJECT_QUESTION_USER = "user";
+    public final static String OBJECT_QUESTION_TITLE = "title";
     public final static String OBJECT_QUESTION_CONTENT = "content";
+    public final static String OBJECT_QUESTION_PIN = "pin";
 
 }

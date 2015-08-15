@@ -8,7 +8,6 @@
         <item name="actionBarStyle">@style/MyActionBar</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:fitsSystemWindows">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:colorPrimary">@color/PrimaryColor</item>
         <item name="android:colorPrimaryDark">@color/PrimaryDarkColor</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
