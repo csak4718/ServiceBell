@@ -1,6 +1,8 @@
 package com.yahoo.mobile.intern.nest.activity;
 
 import android.content.res.Configuration;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,12 +16,14 @@ import android.widget.FrameLayout;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.fragment.FragmentBuyer;
 import com.yahoo.mobile.intern.nest.fragment.FragmentMyNewTask;
+import com.yahoo.mobile.intern.nest.fragment.FragmentSeller;
 
 public class MainActivity extends AppCompatActivity {
 
     /*
      DrawerLayout
      */
+    private NavigationView navigationView;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
 
@@ -29,7 +33,9 @@ public class MainActivity extends AppCompatActivity {
     /*
      Fragment
      */
-    private FragmentMyNewTask fragmentMyNewTask;
+    private Fragment fragmentContent;
+    private FragmentBuyer fragmentBuyer;
+    private FragmentSeller fragmentSeller;
 
     /*
      Drawer
@@ -42,7 +48,35 @@ public class MainActivity extends AppCompatActivity {
                             R.string.app_name);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
 
+        navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                switch (menuItem.getItemId()) {
+                    case R.id.menu_my_task:
+                        switchContent(fragmentBuyer);
+                        mDrawerLayout.closeDrawers();
+                        break;
+                    case R.id.menu_catch_task:
+                        switchContent(fragmentSeller);
+                        mDrawerLayout.closeDrawers();
+                        break;
+                }
+                return true;
+            }
+        });
+
     }
+
+    private void switchContent(Fragment fragment) {
+        if(fragment != fragmentContent) {
+            fragmentContent = fragment;
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.frame_content, fragment)
+                    .commit();
+        }
+    }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -72,8 +106,12 @@ public class MainActivity extends AppCompatActivity {
         setupActionBar();
         setupDrawer();
 
+        fragmentBuyer = new FragmentBuyer();
+        fragmentSeller = new FragmentSeller();
+        fragmentContent = fragmentBuyer;
+
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_content, new FragmentBuyer())
+                .replace(R.id.frame_content, fragmentBuyer)
                 .commit();
 
     }
@@ -93,11 +131,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }

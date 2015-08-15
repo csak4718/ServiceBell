@@ -2,9 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/post"
+            android:id="@+id/menu_my_task"
             android:checked="false"
             android:icon="@drawable/ic_add_black_24dp"
-            android:title="Post" />
+            android:title="My tasks" />
+        <item
+            android:id="@+id/menu_catch_task"
+            android:checked="false"
+            android:icon="@drawable/ic_add_black_24dp"
+            android:title="Catched Tasks" />
     </group>
 </menu>
