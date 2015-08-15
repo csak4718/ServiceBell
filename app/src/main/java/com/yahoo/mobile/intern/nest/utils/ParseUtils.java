@@ -15,7 +15,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-import event.QuestionEvent;
+import com.yahoo.mobile.intern.nest.event.QuestionEvent;
 
 /**
  * Created by cmwang on 8/12/15.

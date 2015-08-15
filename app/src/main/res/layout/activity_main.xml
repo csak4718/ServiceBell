@@ -20,12 +20,10 @@
             android:theme="@style/toolbarTheme"
             android:background="#5AD3D2" />
 
-        <!-- The rest of your content view -->
-        <com.lorentzos.flingswipe.SwipeFlingAdapterView
-            android:id="@+id/frame"
+        <FrameLayout
+            android:id="@+id/frame_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:rotation_degrees="15.5" />
+            android:layout_height="match_parent"/>
 
     </LinearLayout>
 

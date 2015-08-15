@@ -1,66 +1,26 @@
 package com.yahoo.mobile.intern.nest.activity;
 
-import android.content.Context;
-import android.graphics.Color;
-import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Toast;
+import android.widget.FrameLayout;
 
-import com.lorentzos.flingswipe.SwipeFlingAdapterView;
-import com.parse.ParseObject;
 import com.yahoo.mobile.intern.nest.R;
-import com.yahoo.mobile.intern.nest.adapter.QuestionCardAdapter;
-import com.yahoo.mobile.intern.nest.utils.ParseUtils;
-import com.yahoo.mobile.intern.nest.utils.Utils;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import de.greenrobot.event.EventBus;
-import event.QuestionEvent;
+import com.yahoo.mobile.intern.nest.fragment.FragmentMyNewTask;
 
 public class MainActivity extends AppCompatActivity {
 
     private ActionBar mActionBar;
+    private FrameLayout frameContent;
+
     /*
-      Card
+     Fragment
      */
-    private QuestionCardAdapter mAdapter;
-    private SwipeFlingAdapterView flingContainer;
+    private FragmentMyNewTask fragmentMyNewTask;
 
-    private List<ParseObject> mList;
-
-    @Override
-    public void onStart() {
-        EventBus.getDefault().register(this);
-        super.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        EventBus.getDefault().unregister(this);
-        super.onStop();
-    }
-
-    public void onEvent(QuestionEvent event) {
-        Log.d("eventbus", "" + event.questionList.size());
-        refreshList(event.questionList);
-    }
-
-    private void refreshList(List<ParseObject> list) {
-        mList.clear();
-        mList.addAll(list);
-        mAdapter.notifyDataSetChanged();
-    }
 
     private void setupActionBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.my_awesome_toolbar);
@@ -74,43 +34,11 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         setupActionBar();
+        fragmentMyNewTask = FragmentMyNewTask.newInstance();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame_content, fragmentMyNewTask)
+                .commit();
 
-        flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
-
-        mList = new ArrayList<>();
-        mAdapter = new QuestionCardAdapter(this, mList);
-
-        flingContainer.setAdapter(mAdapter);
-
-        flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener() {
-            @Override
-            public void removeFirstObjectInAdapter() {
-                // this is the simplest way to delete an object from the Adapter (/AdapterView)
-                Log.d("LIST", "removed object!");
-                Collections.swap(mList, 0, mList.size() - 1);
-                mAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onLeftCardExit(Object dataObject) {
-            }
-
-            @Override
-            public void onRightCardExit(Object dataObject) {
-            }
-
-            @Override
-            public void onAdapterAboutToEmpty(int itemsInAdapter) {
-
-            }
-
-            @Override
-            public void onScroll(float scrollProgressPercent) {
-
-            }
-        });
-
-        ParseUtils.getAllQuestions();
     }
 
     @Override

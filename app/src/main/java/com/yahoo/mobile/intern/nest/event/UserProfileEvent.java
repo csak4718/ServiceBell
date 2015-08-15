@@ -1,4 +1,4 @@
-package event;
+package com.yahoo.mobile.intern.nest.event;
 
 /**
  * Created by cmwang on 7/22/15.

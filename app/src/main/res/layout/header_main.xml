@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer_txt_view_personal"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_height="200dp"
     android:clickable="true"
     android:background="#B3E8E3">
 

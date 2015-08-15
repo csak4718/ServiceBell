@@ -27,8 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-import event.FbPictureEvent;
-import event.UserProfileEvent;
+import com.yahoo.mobile.intern.nest.event.FbPictureEvent;
+import com.yahoo.mobile.intern.nest.event.UserProfileEvent;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -95,7 +95,6 @@ public class LoginActivity extends AppCompatActivity {
         animation.startNow();
     }
     public void onEvent(UserProfileEvent event) {
-        Log.d("eventbus", "Get userprofile event");
         mNickName = event.mNickName;
         mFbId = event.mFbId;
         FbUtils.getFbProfilePicture(mFbId);

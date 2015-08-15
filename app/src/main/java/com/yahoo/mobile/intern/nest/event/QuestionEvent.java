@@ -1,4 +1,4 @@
-package event;
+package com.yahoo.mobile.intern.nest.event;
 
 import com.parse.ParseObject;
 

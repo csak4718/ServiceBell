@@ -15,8 +15,8 @@ import org.json.JSONObject;
 import java.net.URL;
 
 import de.greenrobot.event.EventBus;
-import event.FbPictureEvent;
-import event.UserProfileEvent;
+import com.yahoo.mobile.intern.nest.event.FbPictureEvent;
+import com.yahoo.mobile.intern.nest.event.UserProfileEvent;
 
 /**
  * Created by cmwang on 7/22/15.
