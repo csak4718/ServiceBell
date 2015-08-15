@@ -88,8 +88,11 @@
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/MainActivityTheme">
-
+            android:theme="@style/MainActivityTheme" >
+        </activity>
+        <activity
+            android:name=".activity.AddTaskActivity"
+            android:label="@string/title_activity_add_task" >
         </activity>
     </application>
 

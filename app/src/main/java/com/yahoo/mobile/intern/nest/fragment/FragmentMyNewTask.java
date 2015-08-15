@@ -97,6 +97,8 @@ public class FragmentMyNewTask extends Fragment {
             }
         });
 
+//        btnAddTask.setOnClickListener(new );
+
         ParseUtils.getAllQuestions();
 
         return mView;
