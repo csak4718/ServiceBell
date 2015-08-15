@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.yahoo.mobile.intern.nest.R;
+import com.yahoo.mobile.intern.nest.fragment.FragmentBuyer;
 import com.yahoo.mobile.intern.nest.fragment.FragmentMyNewTask;
 
 public class MainActivity extends AppCompatActivity {
@@ -70,9 +71,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setupActionBar();
         setupDrawer();
-        fragmentMyNewTask = FragmentMyNewTask.newInstance();
+
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_content, fragmentMyNewTask)
+                .replace(R.id.frame_content, new FragmentBuyer())
                 .commit();
 
     }
