@@ -18,6 +18,7 @@ import com.yahoo.mobile.intern.nest.activity.MainActivity;
 import com.yahoo.mobile.intern.nest.adapter.QuestionCardAdapter;
 import com.yahoo.mobile.intern.nest.event.QuestionEvent;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
+import com.yahoo.mobile.intern.nest.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +98,12 @@ public class FragmentMyNewTask extends Fragment {
             }
         });
 
-//        btnAddTask.setOnClickListener(new );
+        btnAddTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.gotoAddTaskActivity(getActivity());
+            }
+        });
 
         ParseUtils.getAllQuestions();
 

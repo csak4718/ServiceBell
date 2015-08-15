@@ -12,7 +12,9 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.yahoo.mobile.intern.nest.activity.AddTaskActivity;
 import com.yahoo.mobile.intern.nest.activity.MainActivity;
+import com.yahoo.mobile.intern.nest.activity.MapsActivity;
 
 /**
  * Created by cmwang on 8/12/15.
@@ -47,5 +49,13 @@ public class Utils {
     static public void gotoMainActivity(Context context) {
         Intent it = new Intent(context, MainActivity.class);
         context.startActivity(it);
+    }
+    static public void gotoAddTaskActivity(Context context) {
+        Intent it = new Intent(context, AddTaskActivity.class);
+        context.startActivity(it);
+    }
+    static public void gotoMapsActivityForResult(Activity activity) {
+        Intent it = new Intent(activity, MapsActivity.class);
+        activity.startActivityForResult(it, Common.REQUEST_LOCATION);
     }
 }
