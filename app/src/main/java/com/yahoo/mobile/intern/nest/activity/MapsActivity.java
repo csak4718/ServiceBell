@@ -8,6 +8,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.SeekBar;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -31,6 +32,7 @@ import butterknife.OnClick;
 public class MapsActivity extends FragmentActivity
                         implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleMap.OnCameraChangeListener {
 
+    private boolean mUserChooseLocation;
     static final int MIN_RADIUS = 500;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private LocationManager locationManager;
@@ -51,7 +53,11 @@ public class MapsActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
+        mUserChooseLocation = getIntent().getBooleanExtra(Common.EXTRA_SEEKBAR,false);
+
         ButterKnife.bind(this);
+        if(!mUserChooseLocation)
+            mRadiusSeekBar.setVisibility(View.GONE);
 
         setUpMapIfNeeded();
 
@@ -191,6 +197,9 @@ public class MapsActivity extends FragmentActivity
     }
 
     public void drawCircleOnMap(){
+        if(!mUserChooseLocation)
+            return;
+
         if(mRadiusCircle != null)
             mRadiusCircle.remove();
         mRadiusCircle = mMap.addCircle(new CircleOptions()
