@@ -2,10 +2,13 @@ package com.yahoo.mobile.intern.nest.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
+import android.widget.SeekBar;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -14,20 +17,29 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MapsActivity extends FragmentActivity
-                        implements LocationListener, GoogleApiClient.ConnectionCallbacks{
+                        implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleMap.OnCameraChangeListener {
 
+    static final int MIN_RADIUS = 500;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private LocationManager locationManager;
     private LocationRequest mLocationRequest;
     private GoogleApiClient mGoogleApiClient;
+    private Circle mRadiusCircle;
+    private int mRadius;
+
+    @Bind(R.id.seekBar_radius) SeekBar mRadiusSeekBar;
 
     private Location mCurLocation;
 
@@ -48,6 +60,30 @@ public class MapsActivity extends FragmentActivity
                 .addConnectionCallbacks(this)
                 .addApi(LocationServices.API)
                 .build();
+
+
+        mRadius = MIN_RADIUS;
+        drawCircleOnMap();
+
+        mRadiusSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
+                mRadius = MIN_RADIUS*(1+progress);
+                drawCircleOnMap();
+            }
+        });
+
 
     }
 
@@ -126,6 +162,7 @@ public class MapsActivity extends FragmentActivity
      * This should only be called once and when we are sure that {@link #mMap} is not null.
      */
     private void setUpMap() {
+        mMap.setOnCameraChangeListener(this);
 //        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
     }
 
@@ -146,4 +183,20 @@ public class MapsActivity extends FragmentActivity
     public void onConnectionSuspended(int i) {
 
     }
+
+    @Override
+    public void onCameraChange(CameraPosition cameraPosition) {
+        Log.d("camera changed", "" + cameraPosition);
+        drawCircleOnMap();
+    }
+
+    public void drawCircleOnMap(){
+        if(mRadiusCircle != null)
+            mRadiusCircle.remove();
+        mRadiusCircle = mMap.addCircle(new CircleOptions()
+                .center(mMap.getCameraPosition().target)
+                .radius(mRadius)
+                .strokeColor(Color.BLUE));
+    }
+
 }
