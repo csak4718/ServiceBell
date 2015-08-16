@@ -11,5 +11,9 @@
             android:checked="false"
             android:icon="@drawable/ic_add_black_24dp"
             android:title="Catched Tasks" />
+        <item
+            android:id="@+id/menu_settings"
+            android:checked="false"
+            android:title="Settings" />
     </group>
 </menu>

@@ -1,5 +1,6 @@
 package com.yahoo.mobile.intern.nest.activity;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -13,10 +14,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
-import com.yahoo.mobile.intern.nest.fragment.FragmentBuyer;
-import com.yahoo.mobile.intern.nest.fragment.FragmentMyNewTask;
-import com.yahoo.mobile.intern.nest.fragment.FragmentSeller;
+import com.yahoo.mobile.intern.nest.fragment.FragmentTab;
+import com.yahoo.mobile.intern.nest.utils.Common;
+import com.yahoo.mobile.intern.nest.utils.ParseUtils;
+import com.yahoo.mobile.intern.nest.utils.Utils;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,13 +38,8 @@ public class MainActivity extends AppCompatActivity {
     /*
      Fragment
      */
-    private Fragment fragmentContent;
-    private FragmentBuyer fragmentBuyer;
-    private FragmentSeller fragmentSeller;
+    FragmentTab fragmentTab;
 
-    /*
-     Drawer
-     */
 
     private void setupDrawer() {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -52,29 +52,22 @@ public class MainActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
+                int id = menuItem.getItemId();
+                switch (id) {
                     case R.id.menu_my_task:
-                        switchContent(fragmentBuyer);
-                        mDrawerLayout.closeDrawers();
+                        fragmentTab.switchTab(id);
                         break;
                     case R.id.menu_catch_task:
-                        switchContent(fragmentSeller);
-                        mDrawerLayout.closeDrawers();
+                        if (ParseUtils.isSellerNetSeted()) {
+                            fragmentTab.switchTab(id);
+                        }
+
                         break;
                 }
+                mDrawerLayout.closeDrawers();
                 return true;
             }
         });
-
-    }
-
-    private void switchContent(Fragment fragment) {
-        if(fragment != fragmentContent) {
-            fragmentContent = fragment;
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.frame_content, fragment)
-                    .commit();
-        }
     }
 
     @Override
@@ -106,12 +99,10 @@ public class MainActivity extends AppCompatActivity {
         setupActionBar();
         setupDrawer();
 
-        fragmentBuyer = new FragmentBuyer();
-        fragmentSeller = new FragmentSeller();
-        fragmentContent = fragmentBuyer;
 
+        fragmentTab = FragmentTab.newInstance(R.id.menu_my_task);
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame_content, fragmentBuyer)
+                .replace(R.id.frame_content, fragmentTab)
                 .commit();
 
     }

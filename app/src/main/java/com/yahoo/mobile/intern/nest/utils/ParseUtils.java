@@ -43,6 +43,10 @@ public class ParseUtils {
     /*
      User profile related
      */
+    static public boolean isSellerNetSeted() {
+        ParseUser user = ParseUser.getCurrentUser();
+        return user.getParseGeoPoint(Common.OBJECT_USER_PIN) != null;
+    }
     static public void updateUserProfile(final String nickName, final String mFbId, Bitmap profilePic) {
         final ParseUser user = ParseUser.getCurrentUser();
         user.put(Common.OBJECT_USER_FB_ID, mFbId);

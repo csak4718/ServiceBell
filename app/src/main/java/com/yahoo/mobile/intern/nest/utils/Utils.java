@@ -13,6 +13,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.yahoo.mobile.intern.nest.activity.AddTaskActivity;
+import com.yahoo.mobile.intern.nest.activity.LoginActivity;
 import com.yahoo.mobile.intern.nest.activity.MainActivity;
 import com.yahoo.mobile.intern.nest.activity.MapsActivity;
 
@@ -48,6 +49,10 @@ public class Utils {
      */
     static public void gotoMainActivity(Context context) {
         Intent it = new Intent(context, MainActivity.class);
+        context.startActivity(it);
+    }
+    static public void gotoLoginActivity(Context context) {
+        Intent it = new Intent(context, LoginActivity.class);
         context.startActivity(it);
     }
     static public void gotoAddTaskActivity(Context context) {

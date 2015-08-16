@@ -109,6 +109,10 @@
             android:name=".activity.MapsActivity"
             android:label="@string/title_activity_maps" >
         </activity>
+        <activity
+            android:name=".activity.ProfileSettingActivity"
+            android:label="@string/title_activity_profile_setting" >
+        </activity>
     </application>
 
 </manifest>
