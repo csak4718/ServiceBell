@@ -16,7 +16,7 @@ import com.parse.ParseObject;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.activity.MainActivity;
 import com.yahoo.mobile.intern.nest.adapter.QuestionCardAdapter;
-import com.yahoo.mobile.intern.nest.event.QuestionEvent;
+import com.yahoo.mobile.intern.nest.event.MyTaskEvent;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 import com.yahoo.mobile.intern.nest.utils.Utils;
 
@@ -52,7 +52,7 @@ public class FragmentMyNewTask extends Fragment {
         super.onStop();
     }
 
-    public void onEvent(QuestionEvent event) {
+    public void onEvent(MyTaskEvent event) {
         Log.d("eventbus", "" + event.questionList.size());
         refreshList(event.questionList);
         swipeRefreshLayout.setRefreshing(false);
@@ -88,7 +88,7 @@ public class FragmentMyNewTask extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                ParseUtils.getAllQuestions();
+                ParseUtils.getMyTasks();
             }
         });
 
@@ -105,7 +105,7 @@ public class FragmentMyNewTask extends Fragment {
             }
         });
 
-        ParseUtils.getAllQuestions();
+        ParseUtils.getMyTasks();
 
         return mView;
     }

@@ -14,6 +14,7 @@ public class Common {
     public final static String OBJECT_USER_FB_NAME = "fbName";
     public final static String OBJECT_USER_FB_ID = "fbId";
     public final static String OBJECT_USER_PIN = "pin";
+    public final static String OBJECT_USER_RADIUS = "radius";
 
     public final static String OBJECT_QUESTION = "Question";
     public final static String OBJECT_QUESTION_USER = "user";

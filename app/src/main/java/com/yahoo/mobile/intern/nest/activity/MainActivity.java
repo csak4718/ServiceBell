@@ -61,7 +61,12 @@ public class MainActivity extends AppCompatActivity {
                         if (ParseUtils.isSellerNetSeted()) {
                             fragmentTab.switchTab(id);
                         }
-
+                        else {
+                            Utils.gotoProfileSettingActivity(MainActivity.this);
+                        }
+                        break;
+                    case R.id.menu_settings:
+                        Utils.gotoProfileSettingActivity(MainActivity.this);
                         break;
                 }
                 mDrawerLayout.closeDrawers();

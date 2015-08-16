@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
                                 FbUtils.getUserProfile(AccessToken.getCurrentAccessToken());
                             } else {
                                 Log.d("MyApp", "User logged in through Facebook!");
-
+                                Utils.gotoMainActivity(LoginActivity.this);
                             }
 
                         }
