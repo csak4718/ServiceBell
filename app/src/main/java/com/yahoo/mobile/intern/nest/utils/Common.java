@@ -9,6 +9,12 @@ public class Common {
 
     public final static String EXTRA_LOCATION = "location";
     public final static String EXTRA_SEEKBAR = "seekbar";
+    public final static String EXTRA_TASK_ID = "task_id";
+
+    /*
+     Parse object
+     */
+    public final static String INSTALLATION_USER = "user";
 
     public final static String OBJECT_USER_NICK = "nickname";
     public final static String OBJECT_USER_PROFILE_PIC = "profile_pic";

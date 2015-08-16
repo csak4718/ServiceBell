@@ -6,7 +6,10 @@ import com.facebook.FacebookSdk;
 import com.parse.Parse;
 import com.parse.ParseCrashReporting;
 import com.parse.ParseFacebookUtils;
+import com.parse.ParseInstallation;
 import com.parse.ParsePush;
+import com.parse.ParseUser;
+import com.yahoo.mobile.intern.nest.utils.Common;
 
 /**
  * Created by cmwang on 8/12/15.
@@ -22,6 +25,10 @@ public class MainApplication extends Application {
         ParseFacebookUtils.initialize(this);
 
         ParsePush.subscribeInBackground("");
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.put(Common.INSTALLATION_USER, ParseUser.getCurrentUser());
+        installation.saveInBackground();
+
     }
 
 }
