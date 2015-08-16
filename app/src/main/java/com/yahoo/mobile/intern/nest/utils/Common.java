@@ -28,5 +28,6 @@ public class Common {
     public final static String OBJECT_QUESTION_TITLE = "title";
     public final static String OBJECT_QUESTION_CONTENT = "content";
     public final static String OBJECT_QUESTION_PIN = "pin";
+    public final static String OBJECT_QUESTION_DATE = "date";
 
 }

@@ -22,13 +22,15 @@ import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.Utils;
 
 import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class AddTaskActivity extends AppCompatActivity {
-
+    private int mYear, mMonth, mDay;
+    private int mHour, mMinute;
     @Bind(R.id.edt_task_title) EditText edtTaskTitle;
     @Bind(R.id.edt_task_content) EditText edtTaskContent;
     @Bind(R.id.btn_set_location) Button btnSetLocation;
@@ -55,9 +57,9 @@ public class AddTaskActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_set_date) void setDateBtnSetLocation() {
         final Calendar c = Calendar.getInstance();
-        int mYear = c.get(Calendar.YEAR);
-        int mMonth = c.get(Calendar.MONTH);
-        int mDay = c.get(Calendar.DAY_OF_MONTH);
+        mYear = c.get(Calendar.YEAR);
+        mMonth = c.get(Calendar.MONTH);
+        mDay = c.get(Calendar.DAY_OF_MONTH);
 
         DatePickerDialog dpd = new DatePickerDialog(this,
                 new DatePickerDialog.OnDateSetListener() {
@@ -74,8 +76,8 @@ public class AddTaskActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_set_time) void setTimeBtnSetLocation() {
         final Calendar c = Calendar.getInstance();
-        int mHour = c.get(Calendar.HOUR_OF_DAY);
-        int mMinute = c.get(Calendar.MINUTE);
+        mHour = c.get(Calendar.HOUR_OF_DAY);
+        mMinute = c.get(Calendar.MINUTE);
 
         TimePickerDialog tpd = new TimePickerDialog(this,
                 new TimePickerDialog.OnTimeSetListener() {
@@ -108,12 +110,15 @@ public class AddTaskActivity extends AppCompatActivity {
         String content = edtTaskContent.getText().toString();
         Double lat = Double.valueOf(txtLat.getText().toString());
         Double lng = Double.valueOf(txtLng.getText().toString());
+        Date myDgitate = new Date(mYear, mMonth, mDay, mHour, mHour, mMinute);
+
 
         ParseObject task = new ParseObject(Common.OBJECT_QUESTION);
         task.put(Common.OBJECT_QUESTION_USER, ParseUser.getCurrentUser());
         task.put(Common.OBJECT_QUESTION_TITLE, title);
         task.put(Common.OBJECT_QUESTION_CONTENT, content);
         task.put(Common.OBJECT_QUESTION_PIN, new ParseGeoPoint(lat, lng));
+        task.put(Common.OBJECT_QUESTION_DATE, myDate);
 
         task.saveInBackground();
         finish();
