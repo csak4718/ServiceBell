@@ -16,6 +16,7 @@ import com.yahoo.mobile.intern.nest.activity.AddTaskActivity;
 import com.yahoo.mobile.intern.nest.activity.LoginActivity;
 import com.yahoo.mobile.intern.nest.activity.MainActivity;
 import com.yahoo.mobile.intern.nest.activity.MapsActivity;
+import com.yahoo.mobile.intern.nest.activity.ProfileSettingActivity;
 
 /**
  * Created by cmwang on 8/12/15.
@@ -62,5 +63,9 @@ public class Utils {
     static public void gotoMapsActivityForResult(Activity activity) {
         Intent it = new Intent(activity, MapsActivity.class);
         activity.startActivityForResult(it, Common.REQUEST_LOCATION);
+    }
+    static public void gotoProfileSettingActivity(Activity activity) {
+        Intent it = new Intent(activity, ProfileSettingActivity.class);
+        activity.startActivity(it);
     }
 }

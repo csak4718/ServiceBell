@@ -6,6 +6,7 @@ import android.util.Log;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -15,7 +16,9 @@ import java.io.ByteArrayOutputStream;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-import com.yahoo.mobile.intern.nest.event.QuestionEvent;
+
+import com.yahoo.mobile.intern.nest.event.CatchTaskEvent;
+import com.yahoo.mobile.intern.nest.event.MyTaskEvent;
 
 /**
  * Created by cmwang on 8/12/15.
@@ -25,16 +28,49 @@ public class ParseUtils {
     /*
      Question related
      */
-    static public void getAllQuestions() {
+    static public void getAllTasks() {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(Common.OBJECT_QUESTION);
         query.orderByDescending("updatedAt");
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> questionList, ParseException e) {
                 if (e == null) {
                     Log.d("questions", "Retrieved " + questionList.size() + " questions");
-                    EventBus.getDefault().post(new QuestionEvent(questionList));
+                    EventBus.getDefault().post(new MyTaskEvent(questionList));
                 } else {
                     Log.d("questions", "Error: " + e.getMessage());
+                }
+            }
+        });
+    }
+    static public void getMyTasks() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Common.OBJECT_QUESTION);
+        query.orderByDescending("updatedAt");
+        query.whereEqualTo(Common.OBJECT_QUESTION_USER, ParseUser.getCurrentUser());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if(e == null) {
+                    EventBus.getDefault().post(new MyTaskEvent(list));
+                }
+            }
+        });
+    }
+    static public void getCatchedTasks() {
+
+        ParseUser user = ParseUser.getCurrentUser();
+
+        ParseGeoPoint servicePosition = user.getParseGeoPoint(Common.OBJECT_USER_PIN);
+        int radius = user.getInt(Common.OBJECT_USER_RADIUS);
+
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Common.OBJECT_QUESTION);
+        query.orderByDescending("updatedAt");
+        query.whereWithinKilometers(Common.OBJECT_QUESTION_PIN, servicePosition, radius);
+        query.whereNotEqualTo(Common.OBJECT_QUESTION_USER, user);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if(e == null) {
+                    EventBus.getDefault().post(new CatchTaskEvent(list));
                 }
             }
         });

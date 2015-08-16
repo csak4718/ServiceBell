@@ -35,9 +35,9 @@ public class FragmentTab extends Fragment {
             adapter.addFrag(new FragmentMyNewTask(), "Done");
         }
         else if(id == R.id.menu_catch_task) {
-            adapter.addFrag(new FragmentMyNewTask(), "New");
-            adapter.addFrag(new FragmentMyNewTask(), "fuck");
-            adapter.addFrag(new FragmentMyNewTask(), "Done");
+            adapter.addFrag(new FragmentCatchedTask(), "New");
+            adapter.addFrag(new FragmentCatchedTask(), "fuck");
+            adapter.addFrag(new FragmentCatchedTask(), "Done");
         }
     }
 

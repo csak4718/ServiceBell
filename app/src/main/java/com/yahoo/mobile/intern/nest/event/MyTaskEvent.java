@@ -7,9 +7,9 @@ import java.util.List;
 /**
  * Created by cmwang on 7/16/15.
  */
-public class QuestionEvent {
+public class MyTaskEvent {
     public final List<ParseObject> questionList;
-    public QuestionEvent(List<ParseObject> list) {
+    public MyTaskEvent(List<ParseObject> list) {
         questionList = list;
     }
 }
