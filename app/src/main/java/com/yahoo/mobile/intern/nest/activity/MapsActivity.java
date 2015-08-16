@@ -214,7 +214,7 @@ public class MapsActivity extends FragmentActivity
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if (addresses != null || addresses.size()  != 0) {
+        if (addresses != null && addresses.size() > 0) {
             mTextAddress.setText(addresses.get(0).getAddressLine(0));
         }
 

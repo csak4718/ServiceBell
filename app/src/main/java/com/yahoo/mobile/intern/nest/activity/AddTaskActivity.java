@@ -1,13 +1,17 @@
 package com.yahoo.mobile.intern.nest.activity;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseGeoPoint;
@@ -16,6 +20,8 @@ import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.Utils;
+
+import java.util.Calendar;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,6 +32,8 @@ public class AddTaskActivity extends AppCompatActivity {
     @Bind(R.id.edt_task_title) EditText edtTaskTitle;
     @Bind(R.id.edt_task_content) EditText edtTaskContent;
     @Bind(R.id.btn_set_location) Button btnSetLocation;
+    @Bind(R.id.btn_set_date) Button btnSetDate;
+    @Bind(R.id.btn_set_time) Button btnSetTime;
     @Bind(R.id.txt_lat) TextView txtLat;
     @Bind(R.id.txt_lng) TextView txtLng;
 
@@ -41,9 +49,46 @@ public class AddTaskActivity extends AppCompatActivity {
 //        btnSetLocation
     }
 
-    @OnClick(R.id.btn_set_location) void setBtnSetLocation() {
+    @OnClick(R.id.btn_set_location) void setLocaionBtnSetLocation() {
         Utils.gotoMapsActivityForResult(this);
     }
+
+    @OnClick(R.id.btn_set_date) void setDateBtnSetLocation() {
+        final Calendar c = Calendar.getInstance();
+        int mYear = c.get(Calendar.YEAR);
+        int mMonth = c.get(Calendar.MONTH);
+        int mDay = c.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog dpd = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        // 完成選擇，顯示日期
+                        btnSetDate.setText(year + "-" + (monthOfYear + 1) + "-"
+                                + dayOfMonth);
+
+                    }
+                }, mYear, mMonth, mDay);
+        dpd.show();
+    }
+
+    @OnClick(R.id.btn_set_time) void setTimeBtnSetLocation() {
+        final Calendar c = Calendar.getInstance();
+        int mHour = c.get(Calendar.HOUR_OF_DAY);
+        int mMinute = c.get(Calendar.MINUTE);
+
+        TimePickerDialog tpd = new TimePickerDialog(this,
+                new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        btnSetTime.setText(hourOfDay + ":" + minute);
+                    }
+                }, mHour, mMinute, false);
+        tpd.show();
+    }
+
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
