@@ -96,7 +96,7 @@ public class FragmentMyNewTask extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ParseObject task = (ParseObject) mAdapter.getItem(position);
-                Utils.gotoViewTaskAcitivity(getActivity(), task.getObjectId());
+                Utils.gotoMyTaskAcitivity(getActivity(), task.getObjectId());
             }
         });
 

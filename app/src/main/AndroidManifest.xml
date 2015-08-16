@@ -123,7 +123,7 @@
             android:label="@string/title_activity_view_task" >
         </activity>
         <activity
-            android:name=".activity.CatcheTaskActivity"
+            android:name=".activity.CatchTaskActivity"
             android:label="@string/title_activity_catche_task" >
         </activity>
     </application>

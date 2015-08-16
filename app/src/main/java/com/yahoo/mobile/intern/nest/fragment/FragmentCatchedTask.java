@@ -8,14 +8,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.parse.ParseObject;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.adapter.QuestionCardAdapter;
 import com.yahoo.mobile.intern.nest.event.CatchTaskEvent;
-import com.yahoo.mobile.intern.nest.event.MyTaskEvent;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
+import com.yahoo.mobile.intern.nest.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +71,14 @@ public class FragmentCatchedTask extends Fragment {
             @Override
             public void onRefresh() {
                 ParseUtils.getCatchedTasks();
+            }
+        });
+
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ParseObject task = (ParseObject) mAdapter.getItem(position);
+                Utils.gotoCatchTaskAcitivity(getActivity(), task.getObjectId());
             }
         });
 
