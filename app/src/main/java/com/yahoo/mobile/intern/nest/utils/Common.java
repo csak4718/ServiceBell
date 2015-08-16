@@ -8,6 +8,7 @@ public class Common {
     public final static int REQUEST_LOCATION = 5566;
 
     public final static String EXTRA_LOCATION = "location";
+    public final static String EXTRA_SEEKBAR = "seekbar";
     public final static String EXTRA_TASK_ID = "task_id";
 
     /*

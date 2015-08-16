@@ -3,7 +3,6 @@ package com.yahoo.mobile.intern.nest.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -63,6 +62,11 @@ public class Utils {
     }
     static public void gotoMapsActivityForResult(Activity activity) {
         Intent it = new Intent(activity, MapsActivity.class);
+        if(activity instanceof ProfileSettingActivity)
+            it.putExtra(Common.EXTRA_SEEKBAR, true);
+        else
+            it.putExtra(Common.EXTRA_SEEKBAR,false);
+
         activity.startActivityForResult(it, Common.REQUEST_LOCATION);
     }
     static public void gotoProfileSettingActivity(Activity activity) {
