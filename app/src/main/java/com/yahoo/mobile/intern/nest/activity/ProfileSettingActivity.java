@@ -1,11 +1,10 @@
 package com.yahoo.mobile.intern.nest.activity;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.SeekBar;
 
 import com.google.android.gms.maps.model.LatLng;

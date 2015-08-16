@@ -62,6 +62,11 @@ public class Utils {
     }
     static public void gotoMapsActivityForResult(Activity activity) {
         Intent it = new Intent(activity, MapsActivity.class);
+        if(activity instanceof ProfileSettingActivity)
+            it.putExtra(Common.EXTRA_SEEKBAR, true);
+        else
+            it.putExtra(Common.EXTRA_SEEKBAR,false);
+
         activity.startActivityForResult(it, Common.REQUEST_LOCATION);
     }
     static public void gotoProfileSettingActivity(Activity activity) {
