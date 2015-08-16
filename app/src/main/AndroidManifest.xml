@@ -121,6 +121,10 @@
             android:name=".activity.ViewTaskActivity"
             android:label="@string/title_activity_view_task" >
         </activity>
+        <activity
+            android:name=".activity.CatcheTaskActivity"
+            android:label="@string/title_activity_catche_task" >
+        </activity>
     </application>
 
 </manifest>

@@ -3,7 +3,6 @@ package com.yahoo.mobile.intern.nest.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -17,7 +16,7 @@ import com.yahoo.mobile.intern.nest.activity.LoginActivity;
 import com.yahoo.mobile.intern.nest.activity.MainActivity;
 import com.yahoo.mobile.intern.nest.activity.MapsActivity;
 import com.yahoo.mobile.intern.nest.activity.ProfileSettingActivity;
-import com.yahoo.mobile.intern.nest.activity.ViewTaskActivity;
+import com.yahoo.mobile.intern.nest.activity.MyTaskActivity;
 
 /**
  * Created by cmwang on 8/12/15.
@@ -70,7 +69,7 @@ public class Utils {
         activity.startActivity(it);
     }
     static public void gotoViewTaskAcitivity(Activity activity, String taskId) {
-        Intent it = new Intent(activity, ViewTaskActivity.class);
+        Intent it = new Intent(activity, MyTaskActivity.class);
         it.putExtra(Common.EXTRA_TASK_ID, taskId);
         activity.startActivity(it);
     }

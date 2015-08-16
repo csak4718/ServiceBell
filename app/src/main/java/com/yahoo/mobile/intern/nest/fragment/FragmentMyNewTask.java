@@ -1,6 +1,5 @@
 package com.yahoo.mobile.intern.nest.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,17 +15,14 @@ import com.melnykov.fab.FloatingActionButton;
 import com.parse.ParseObject;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.activity.MainActivity;
-import com.yahoo.mobile.intern.nest.activity.ViewTaskActivity;
 import com.yahoo.mobile.intern.nest.adapter.QuestionCardAdapter;
 import com.yahoo.mobile.intern.nest.event.MyTaskEvent;
-import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 import com.yahoo.mobile.intern.nest.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.OnItemClick;
 import de.greenrobot.event.EventBus;
 
 /**
