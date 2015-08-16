@@ -3,17 +3,18 @@ package com.yahoo.mobile.intern.nest.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 
-import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
 
@@ -21,10 +22,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MapsActivity extends FragmentActivity
-                        implements LocationListener {
+                        implements LocationListener, GoogleApiClient.ConnectionCallbacks{
 
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private LocationManager locationManager;
+    private LocationRequest mLocationRequest;
+    private GoogleApiClient mGoogleApiClient;
+
+    private Location mCurLocation;
 
     private static final long MIN_TIME = 400;
     private static final float MIN_DISTANCE = 1000;
@@ -39,14 +44,19 @@ public class MapsActivity extends FragmentActivity
         setUpMapIfNeeded();
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, MIN_TIME, MIN_DISTANCE, this);
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addApi(LocationServices.API)
+                .build();
+
     }
 
     @OnClick(R.id.btn_ok)
     void btnOk() {
 
-        LatLng position = mMap.getCameraPosition().target;
+        //LatLng position = new LatLng(mCurLocation.getLatitude(),mCurLocation.getLongitude());//mMap.getCameraPosition().target;
 
+        LatLng position = mMap.getCameraPosition().target;
         Intent it = new Intent();
         it.putExtra(Common.EXTRA_LOCATION, position);
         setResult(RESULT_OK, it);
@@ -55,26 +65,24 @@ public class MapsActivity extends FragmentActivity
 
     @Override
     public void onLocationChanged(Location location) {
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 10);
-        mMap.animateCamera(cameraUpdate);
-        locationManager.removeUpdates(this);
+        //LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+        //CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 10);
+        //mMap.animateCamera(cameraUpdate);
+        //locationManager.removeUpdates(this);
     }
 
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
+    public void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
     }
 
     @Override
-    public void onProviderEnabled(String provider) {
-
+    public void onStop(){
+        mGoogleApiClient.disconnect();
+        super.onStop();
     }
 
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
 
     @Override
     protected void onResume() {
@@ -104,6 +112,7 @@ public class MapsActivity extends FragmentActivity
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map))
                     .getMap();
             // Check if we were successful in obtaining the map.
+
             if (mMap != null) {
                 setUpMap();
             }
@@ -118,5 +127,23 @@ public class MapsActivity extends FragmentActivity
      */
     private void setUpMap() {
 //        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        mLocationRequest = LocationRequest.create();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(1000); // Update location every second
+
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        mCurLocation  = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        LatLng latLng = new LatLng(mCurLocation.getLatitude(), mCurLocation.getLongitude());
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
     }
 }
