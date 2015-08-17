@@ -11,14 +11,17 @@ import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
+import com.yahoo.mobile.intern.nest.event.AcceptTaskEvent;
 import com.yahoo.mobile.intern.nest.event.CatchTaskEvent;
 import com.yahoo.mobile.intern.nest.event.MyTaskEvent;
 
@@ -60,19 +63,28 @@ public class ParseUtils {
     static public void getCatchedTasks() {
 
         ParseUser user = ParseUser.getCurrentUser();
-
-        ParseGeoPoint servicePosition = user.getParseGeoPoint(Common.OBJECT_USER_PIN);
-        int radius = user.getInt(Common.OBJECT_USER_RADIUS);
-
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(Common.OBJECT_QUESTION);
+        ParseRelation<ParseObject> relation = user.getRelation(Common.OBJECT_USER_CATCH_QUESTIONS);
+        ParseQuery<ParseObject> query = relation.getQuery();
         query.orderByDescending("updatedAt");
-        query.whereWithinKilometers(Common.OBJECT_QUESTION_PIN, servicePosition, radius);
-        query.whereNotEqualTo(Common.OBJECT_QUESTION_USER, user);
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 if(e == null) {
                     EventBus.getDefault().post(new CatchTaskEvent(list));
+                }
+            }
+        });
+    }
+    static public void getAcceptedTasks() {
+        ParseUser user = ParseUser.getCurrentUser();
+        ParseRelation<ParseObject> relation = user.getRelation(Common.OBJECT_USER_ACCEPTED_QUESTIONS);
+        ParseQuery<ParseObject> query = relation.getQuery();
+        query.orderByDescending("updatedAt");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if(e == null) {
+                    EventBus.getDefault().post(new AcceptTaskEvent(list));
                 }
             }
         });
@@ -106,19 +118,5 @@ public class ParseUtils {
                 user.saveInBackground();
             }
         });
-    }
-    /*
-     User accept task
-     */
-    static public boolean isUserAcceptTask(ParseUser user, ParseObject task) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(Common.OBJECT_ACCEPTED_TASKS);
-        query.whereEqualTo(Common.OBJECT_ACCEPTED_TASKS_USER, user);
-        query.whereEqualTo(Common.OBJECT_ACCEPTED_TASKS_TASK, task);
-        try {
-            return query.count() > 0;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 }

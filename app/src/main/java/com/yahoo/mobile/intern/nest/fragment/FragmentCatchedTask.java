@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import com.parse.ParseObject;
 import com.yahoo.mobile.intern.nest.R;
+import com.yahoo.mobile.intern.nest.adapter.CatchTaskAdapter;
 import com.yahoo.mobile.intern.nest.adapter.MyTaskAdapter;
 import com.yahoo.mobile.intern.nest.event.CatchTaskEvent;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
@@ -33,7 +34,7 @@ public class FragmentCatchedTask extends Fragment {
     private View mView;
     private ListView mListView;
     private List<ParseObject> mList;
-    private MyTaskAdapter mAdapter;
+    private CatchTaskAdapter mAdapter;
 
     @Override
     public void onStart() {
@@ -65,7 +66,7 @@ public class FragmentCatchedTask extends Fragment {
         swipeRefreshLayout = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_refresh);
         mListView = (ListView) mView.findViewById(R.id.listview_my_task);
         mList = new ArrayList<>();
-        mAdapter = new MyTaskAdapter(getActivity(), mList);
+        mAdapter = new CatchTaskAdapter(getActivity(), mList);
         mListView.setAdapter(mAdapter);
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

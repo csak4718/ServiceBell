@@ -6,10 +6,9 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
         <!-- We use a Toolbar so that our drawer can be displayed
              in front of the action bar -->
         <android.support.v7.widget.Toolbar
@@ -22,10 +21,22 @@
 
         <FrameLayout
             android:id="@+id/frame_content"
+            android:layout_below="@+id/my_awesome_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-    </LinearLayout>
+        <com.melnykov.fab.FloatingActionButton
+            android:id="@+id/btn_add_post"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_add_white_24dp"
+            app:fab_colorNormal="#5AD3D2"/>
+    </RelativeLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_view"

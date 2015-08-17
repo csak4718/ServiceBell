@@ -17,6 +17,7 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
@@ -46,6 +47,20 @@ public class CatchTaskActivity extends AppCompatActivity{//} implements OnMapRea
         return false;
     }
 
+
+    private void acceptTask(ParseObject task) {
+        ParseUser user = ParseUser.getCurrentUser();
+        ParseRelation<ParseObject> catchRelation = user.getRelation(Common.OBJECT_USER_CATCH_QUESTIONS);
+        ParseRelation<ParseObject> acceptedRelation = user.getRelation(Common.OBJECT_USER_ACCEPTED_QUESTIONS);
+        catchRelation.remove(task);
+        acceptedRelation.add(task);
+        user.saveInBackground();
+
+        ParseRelation<ParseUser> acceptedUser = task.getRelation(Common.OBJECT_QUESTION_ACCEPTED_USER);
+        acceptedUser.add(user);
+        task.saveInBackground();
+    }
+
     private void setupTask() {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(Common.OBJECT_QUESTION);
         query.getInBackground(taskId, new GetCallback<ParseObject>() {
@@ -60,6 +75,7 @@ public class CatchTaskActivity extends AppCompatActivity{//} implements OnMapRea
 
                 txtTitle.setText(title);
                 txtContent.setText(content);
+
 
                 if (isTaskAccepted(task)) {
                     txtMsgAccepted.setVisibility(View.VISIBLE);
@@ -77,6 +93,15 @@ public class CatchTaskActivity extends AppCompatActivity{//} implements OnMapRea
                         }
                     });
                 }
+
+                btnAcceptTask.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        acceptTask(task);
+                        btnAcceptTask.setVisibility(View.GONE);
+                        txtMsgAccepted.setVisibility(View.VISIBLE);
+                    }
+                });
             }
         });
     }
