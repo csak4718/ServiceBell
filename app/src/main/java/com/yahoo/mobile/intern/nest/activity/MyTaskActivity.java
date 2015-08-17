@@ -2,7 +2,6 @@ package com.yahoo.mobile.intern.nest.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -16,7 +15,6 @@ import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.adapter.AcceptedUserAdapter;
 import com.yahoo.mobile.intern.nest.event.AcceptedUserEvent;
-import com.yahoo.mobile.intern.nest.event.MyTaskEvent;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 
@@ -77,7 +75,7 @@ public class MyTaskActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_view_task);
+        setContentView(R.layout.activity_my_task);
         ButterKnife.bind(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
