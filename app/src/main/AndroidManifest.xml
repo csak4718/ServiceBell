@@ -113,7 +113,6 @@
             android:name=".activity.MapsActivity"
             android:label="@string/title_activity_maps" >
         </activity>
-
         <activity
             android:name=".activity.ProfileSettingActivity"
             android:label="@string/title_activity_profile_setting" >
@@ -121,6 +120,21 @@
         <activity
             android:name=".activity.ViewTaskActivity"
             android:label="@string/title_activity_view_task" >
+        </activity>
+
+        <service
+            android:name=".activity.SinchService"
+            android:enabled="true"
+            android:exported="true" >
+        </service>
+
+        <activity
+            android:name=".activity.SpinnerActivity"
+            android:label="@string/title_activity_spinner" >
+        </activity>
+        <activity
+            android:name=".activity.MessagingActivity"
+            android:label="@string/title_activity_messaging" >
         </activity>
     </application>
 

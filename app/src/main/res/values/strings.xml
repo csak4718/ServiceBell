@@ -13,4 +13,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_profile_setting">Setting</string>
     <string name="title_activity_view_task">ViewTaskActivity</string>
+    <string name="title_activity_spinner">SpinnerActivity</string>
+    <string name="title_activity_messaging">MessagingActivity</string>
 </resources>

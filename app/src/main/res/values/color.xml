@@ -22,6 +22,7 @@
 
     <color name="PrimaryColor">#5AD3D2</color>
     <color name="PrimaryDarkColor">#5AD3D2</color>
+    <color name="dark_gray">#ffb3b3b3</color>
 
     <integer-array name="androidcolors">
         <item>@color/blue</item>
