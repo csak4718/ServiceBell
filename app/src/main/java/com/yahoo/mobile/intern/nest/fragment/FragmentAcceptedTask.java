@@ -1,7 +1,6 @@
 package com.yahoo.mobile.intern.nest.fragment;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,12 +11,11 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.melnykov.fab.FloatingActionButton;
 import com.parse.ParseObject;
 import com.yahoo.mobile.intern.nest.R;
-import com.yahoo.mobile.intern.nest.activity.MainActivity;
-import com.yahoo.mobile.intern.nest.adapter.MyTaskAdapter;
-import com.yahoo.mobile.intern.nest.event.MyTaskEvent;
+import com.yahoo.mobile.intern.nest.adapter.CatchTaskAdapter;
+import com.yahoo.mobile.intern.nest.event.AcceptTaskEvent;
+import com.yahoo.mobile.intern.nest.event.CatchTaskEvent;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 import com.yahoo.mobile.intern.nest.utils.Utils;
 
@@ -27,17 +25,14 @@ import java.util.List;
 import de.greenrobot.event.EventBus;
 
 /**
- * Created by cmwang on 8/15/15.
+ * Created by cmwang on 8/17/15.
  */
-public class FragmentMyNewTask extends Fragment {
-
+public class FragmentAcceptedTask extends Fragment {
     private SwipeRefreshLayout swipeRefreshLayout;
     private View mView;
     private ListView mListView;
     private List<ParseObject> mList;
-    private MyTaskAdapter mAdapter;
-
-    private MainActivity activity;
+    private CatchTaskAdapter mAdapter;
 
     @Override
     public void onStart() {
@@ -51,9 +46,9 @@ public class FragmentMyNewTask extends Fragment {
         super.onStop();
     }
 
-    public void onEvent(MyTaskEvent event) {
-        Log.d("eventbus", "" + event.questionList.size());
-        refreshList(event.questionList);
+    public void onEvent(AcceptTaskEvent event) {
+        Log.d("eventbus", "" + event.taskList.size());
+        refreshList(event.taskList);
         swipeRefreshLayout.setRefreshing(false);
     }
 
@@ -62,29 +57,20 @@ public class FragmentMyNewTask extends Fragment {
         mList.addAll(list);
         mAdapter.notifyDataSetChanged();
     }
-
-    public static FragmentMyNewTask newInstance() {
-        FragmentMyNewTask fragment = new FragmentMyNewTask();
-        return fragment;
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        activity = (MainActivity) getActivity();
-
-        mView = inflater.inflate(R.layout.fragment_my_new_task, container, false);
+        mView = inflater.inflate(R.layout.fragment_catched_task, container, false);
         swipeRefreshLayout = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_refresh);
         mListView = (ListView) mView.findViewById(R.id.listview_my_task);
         mList = new ArrayList<>();
-        mAdapter = new MyTaskAdapter(getActivity(), mList);
+        mAdapter = new CatchTaskAdapter(getActivity(), mList);
         mListView.setAdapter(mAdapter);
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                ParseUtils.getMyTasks();
+                ParseUtils.getAcceptedTasks();
             }
         });
 
@@ -92,11 +78,11 @@ public class FragmentMyNewTask extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ParseObject task = (ParseObject) mAdapter.getItem(position);
-                Utils.gotoMyTaskActivity(getActivity(), task.getObjectId());
+                Utils.gotoCatchTaskActivity(getActivity(), task.getObjectId());
             }
         });
 
-        ParseUtils.getMyTasks();
+        ParseUtils.getAcceptedTasks();
 
         return mView;
     }

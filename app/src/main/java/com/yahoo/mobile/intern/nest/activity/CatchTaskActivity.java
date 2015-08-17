@@ -12,11 +12,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.parse.CountCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
@@ -24,26 +26,28 @@ import com.yahoo.mobile.intern.nest.utils.Common;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class CatchTaskActivity extends AppCompatActivity{//} implements OnMapReadyCallback {
+public class CatchTaskActivity extends AppCompatActivity{
 
     private String taskId;
     private GoogleMap mMap;
 
     @Bind(R.id.txt_title) TextView txtTitle;
     @Bind(R.id.txt_content) TextView txtContent;
+    @Bind(R.id.txt_people) TextView txtAcceptedUser;
     @Bind(R.id.btn_accept_task) Button btnAcceptTask;
     @Bind(R.id.txt_msg_accepted) TextView txtMsgAccepted;
 
-    private boolean isTaskAccepted(ParseObject task) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(Common.OBJECT_ACCEPTED_TASKS);
-        query.whereEqualTo(Common.OBJECT_ACCEPTED_TASKS_USER, ParseUser.getCurrentUser());
-        query.whereEqualTo(Common.OBJECT_ACCEPTED_TASKS_TASK, task);
-        try {
-            return query.count() > 0;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return false;
+    private void acceptTask(ParseObject task) {
+        ParseUser user = ParseUser.getCurrentUser();
+        ParseRelation<ParseObject> catchRelation = user.getRelation(Common.OBJECT_USER_CATCH_QUESTIONS);
+        ParseRelation<ParseObject> acceptedRelation = user.getRelation(Common.OBJECT_USER_ACCEPTED_QUESTIONS);
+        catchRelation.remove(task);
+        acceptedRelation.add(task);
+        user.saveInBackground();
+
+        ParseRelation<ParseUser> acceptedUser = task.getRelation(Common.OBJECT_QUESTION_ACCEPTED_USER);
+        acceptedUser.add(user);
+        task.saveInBackground();
     }
 
     private void setupTask() {
@@ -61,22 +65,22 @@ public class CatchTaskActivity extends AppCompatActivity{//} implements OnMapRea
                 txtTitle.setText(title);
                 txtContent.setText(content);
 
-                if (isTaskAccepted(task)) {
-                    txtMsgAccepted.setVisibility(View.VISIBLE);
-                } else {
-                    btnAcceptTask.setVisibility(View.VISIBLE);
-                    btnAcceptTask.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ParseObject acceptedTasks = new ParseObject(Common.OBJECT_ACCEPTED_TASKS);
-                            acceptedTasks.put(Common.OBJECT_ACCEPTED_TASKS_USER, ParseUser.getCurrentUser());
-                            acceptedTasks.put(Common.OBJECT_ACCEPTED_TASKS_TASK, task);
-                            acceptedTasks.saveInBackground();
-                            btnAcceptTask.setVisibility(View.GONE);
-                            txtMsgAccepted.setVisibility(View.VISIBLE);
-                        }
-                    });
-                }
+                ParseRelation<ParseUser> acceptedUser = task.getRelation(Common.OBJECT_QUESTION_ACCEPTED_USER);
+                acceptedUser.getQuery().countInBackground(new CountCallback() {
+                    @Override
+                    public void done(int count, ParseException e) {
+                        txtAcceptedUser.setText(Integer.toString(count)+"人也接受");
+                    }
+                });
+
+                btnAcceptTask.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        acceptTask(task);
+                        btnAcceptTask.setVisibility(View.GONE);
+                        txtMsgAccepted.setVisibility(View.VISIBLE);
+                    }
+                });
             }
         });
     }

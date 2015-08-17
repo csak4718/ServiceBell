@@ -12,9 +12,11 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.melnykov.fab.FloatingActionButton;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
@@ -23,17 +25,21 @@ import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 import com.yahoo.mobile.intern.nest.utils.Utils;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class MainActivity extends AppCompatActivity {
 
     /*
      DrawerLayout
      */
-    private NavigationView navigationView;
-    private DrawerLayout mDrawerLayout;
+    @Bind(R.id.navigation_view) NavigationView navigationView;
+    @Bind(R.id.drawer_layout) DrawerLayout mDrawerLayout;
+    @Bind(R.id.btn_add_post) FloatingActionButton btnAddPost;
     private ActionBarDrawerToggle mDrawerToggle;
 
     private ActionBar mActionBar;
-    private FrameLayout frameContent;
 
     /*
      Fragment
@@ -42,13 +48,10 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void setupDrawer() {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                             R.string.app_name,
                             R.string.app_name);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-
-        navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
@@ -56,10 +59,12 @@ public class MainActivity extends AppCompatActivity {
                 switch (id) {
                     case R.id.menu_my_task:
                         fragmentTab.switchTab(id);
+                        btnAddPost.setVisibility(View.VISIBLE);
                         break;
                     case R.id.menu_catch_task:
                         if (ParseUtils.isSellerNetSeted()) {
                             fragmentTab.switchTab(id);
+                            btnAddPost.setVisibility(View.GONE);
                         }
                         else {
                             Utils.gotoProfileSettingActivity(MainActivity.this);
@@ -67,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.menu_settings:
                         Utils.gotoProfileSettingActivity(MainActivity.this);
+                        btnAddPost.setVisibility(View.GONE);
                         break;
                 }
                 mDrawerLayout.closeDrawers();
@@ -80,6 +86,10 @@ public class MainActivity extends AppCompatActivity {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
         mDrawerToggle.syncState();
+    }
+
+    @OnClick(R.id.btn_add_post) void addPost() {
+        Utils.gotoAddTaskActivity(this);
     }
 
     @Override
@@ -101,9 +111,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
         setupActionBar();
         setupDrawer();
-
 
         fragmentTab = FragmentTab.newInstance(R.id.menu_my_task);
         getSupportFragmentManager().beginTransaction()
