@@ -39,7 +39,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"/>
-
+        <Button
+            android:id="@+id/btn_toSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="IM to service requester" />
     </LinearLayout>
 
     <Button
@@ -52,7 +56,9 @@
         android:text="Accept task"
         android:layout_marginBottom="10dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true" />
+
 
 
 </RelativeLayout>
+

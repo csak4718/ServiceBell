@@ -1,7 +1,11 @@
 package com.yahoo.mobile.intern.nest.activity;
 
-import android.os.Bundle;
+
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
+
+import android.os.Bundle;
+
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +34,7 @@ public class CatchTaskActivity extends AppCompatActivity{//} implements OnMapRea
     private String taskId;
     private GoogleMap mMap;
 
+    @Bind(R.id.btn_toSpinner) Button btnToSpinner;
     @Bind(R.id.txt_title) TextView txtTitle;
     @Bind(R.id.txt_content) TextView txtContent;
     @Bind(R.id.btn_accept_task) Button btnAcceptTask;
@@ -116,6 +121,24 @@ public class CatchTaskActivity extends AppCompatActivity{//} implements OnMapRea
 
         taskId = getIntent().getStringExtra(Common.EXTRA_TASK_ID);
         setupTask();
+
+
+        btnToSpinner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                if (currentUser != null) {
+                    //start sinch service
+                    //start next activity
+
+                    final Intent intent = new Intent(CatchTaskActivity.this, SpinnerActivity.class);
+                    final Intent serviceIntent = new Intent(CatchTaskActivity.this, SinchService.class);
+                    CatchTaskActivity.this.startService(serviceIntent);
+                    startActivity(intent);
+                }
+            }
+        });
+
         setUpMapIfNeeded();
     }
 

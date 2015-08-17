@@ -16,7 +16,10 @@ import com.melnykov.fab.FloatingActionButton;
 import com.parse.ParseObject;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.activity.MainActivity;
+
+
 import com.yahoo.mobile.intern.nest.adapter.MyTaskAdapter;
+
 import com.yahoo.mobile.intern.nest.event.MyTaskEvent;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 import com.yahoo.mobile.intern.nest.utils.Utils;
@@ -81,6 +84,7 @@ public class FragmentMyNewTask extends Fragment {
         mAdapter = new MyTaskAdapter(getActivity(), mList);
         mListView.setAdapter(mAdapter);
 
+
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -97,6 +101,8 @@ public class FragmentMyNewTask extends Fragment {
         });
 
         ParseUtils.getMyTasks();
+
+
 
         return mView;
     }
