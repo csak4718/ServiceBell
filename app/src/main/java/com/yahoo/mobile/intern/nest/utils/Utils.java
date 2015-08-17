@@ -74,12 +74,12 @@ public class Utils {
         Intent it = new Intent(activity, ProfileSettingActivity.class);
         activity.startActivity(it);
     }
-    static public void gotoMyTaskAcitivity(Activity activity, String taskId) {
+    static public void gotoMyTaskActivity(Activity activity, String taskId) {
         Intent it = new Intent(activity, MyTaskActivity.class);
         it.putExtra(Common.EXTRA_TASK_ID, taskId);
         activity.startActivity(it);
     }
-    static public void gotoCatchTaskAcitivity(Activity activity, String taskId) {
+    static public void gotoCatchTaskActivity(Activity activity, String taskId) {
         Intent it = new Intent(activity, CatchTaskActivity.class);
         it.putExtra(Common.EXTRA_TASK_ID, taskId);
         activity.startActivity(it);

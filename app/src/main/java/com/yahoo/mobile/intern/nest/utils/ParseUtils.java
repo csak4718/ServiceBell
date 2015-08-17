@@ -105,4 +105,28 @@ public class ParseUtils {
             }
         });
     }
+    /*
+     User accept task
+     */
+    static public boolean isUserAcceptTask(ParseUser user, ParseObject task) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Common.OBJECT_ACCEPTED_TASKS);
+        query.whereEqualTo(Common.OBJECT_ACCEPTED_TASKS_USER, user);
+        query.whereEqualTo(Common.OBJECT_ACCEPTED_TASKS_TASK, task);
+        try {
+            return query.count() > 0;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    static public int taskAcceptedCount(ParseObject task) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Common.OBJECT_ACCEPTED_TASKS);
+        query.whereEqualTo(Common.OBJECT_ACCEPTED_TASKS_TASK, task);
+        try {
+            return query.count();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }
