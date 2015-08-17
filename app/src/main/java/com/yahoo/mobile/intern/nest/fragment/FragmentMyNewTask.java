@@ -1,6 +1,5 @@
 package com.yahoo.mobile.intern.nest.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -15,12 +14,8 @@ import android.widget.ListView;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.parse.ParseObject;
-import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.activity.MainActivity;
-
-import com.yahoo.mobile.intern.nest.activity.SinchService;
-import com.yahoo.mobile.intern.nest.activity.SpinnerActivity;
 
 
 import com.yahoo.mobile.intern.nest.adapter.MyTaskAdapter;
@@ -48,10 +43,6 @@ public class FragmentMyNewTask extends Fragment {
     private FloatingActionButton btnAddTask;
 
     private MainActivity activity;
-
-//    IM test
-    private FloatingActionButton btnToSpinner;
-
 
     @Override
     public void onStart() {
@@ -97,10 +88,6 @@ public class FragmentMyNewTask extends Fragment {
 
         btnAddTask = (FloatingActionButton) mView.findViewById(R.id.btn_add_post);
 
-//        IM test
-        btnToSpinner = (FloatingActionButton) mView.findViewById(R.id.btn_toSpinner);
-
-
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -124,25 +111,6 @@ public class FragmentMyNewTask extends Fragment {
         });
 
         ParseUtils.getMyTasks();
-
-
-
-
-        btnToSpinner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ParseUser currentUser = ParseUser.getCurrentUser();
-                if (currentUser != null) {
-                    //start sinch service
-                    //start next activity
-
-                    final Intent intent = new Intent(activity, SpinnerActivity.class);
-                    final Intent serviceIntent = new Intent(activity, SinchService.class);
-                    activity.startService(serviceIntent);
-                    startActivity(intent);
-                }
-            }
-        });
 
 
 
