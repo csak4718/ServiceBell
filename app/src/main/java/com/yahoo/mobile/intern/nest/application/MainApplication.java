@@ -26,7 +26,8 @@ public class MainApplication extends Application {
 
         ParsePush.subscribeInBackground("");
         ParseInstallation installation = ParseInstallation.getCurrentInstallation();
-        installation.put(Common.INSTALLATION_USER, ParseUser.getCurrentUser());
+        if(ParseUser.getCurrentUser() != null)
+            installation.put(Common.INSTALLATION_USER, ParseUser.getCurrentUser());
         installation.saveInBackground();
 
     }
