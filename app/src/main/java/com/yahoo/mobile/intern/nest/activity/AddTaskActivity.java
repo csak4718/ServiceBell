@@ -65,7 +65,6 @@ public class AddTaskActivity extends AppCompatActivity {
                 new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
-                        // 完成選擇，顯示日期
                         btnSetDate.setText(year + "-" + (monthOfYear + 1) + "-"
                                 + dayOfMonth);
 
@@ -77,15 +76,17 @@ public class AddTaskActivity extends AppCompatActivity {
     @OnClick(R.id.btn_set_time) void setTimeBtnSetLocation() {
         final Calendar c = Calendar.getInstance();
         mHour = c.get(Calendar.HOUR_OF_DAY);
-        mMinute = c.get(Calendar.MINUTE);
+        mMinute  = c.get(Calendar.MINUTE);
 
         TimePickerDialog tpd = new TimePickerDialog(this,
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         btnSetTime.setText(hourOfDay + ":" + minute);
+                        mHour = hourOfDay;
+                        mMinute = minute;
                     }
-                }, mHour, mMinute, false);
+                },mHour, mMinute, false);
         tpd.show();
     }
 
@@ -110,15 +111,14 @@ public class AddTaskActivity extends AppCompatActivity {
         String content = edtTaskContent.getText().toString();
         Double lat = Double.valueOf(txtLat.getText().toString());
         Double lng = Double.valueOf(txtLng.getText().toString());
-        Date myDgitate = new Date(mYear, mMonth, mDay, mHour, mHour, mMinute);
-
+        Date date = new Date(mYear-1900, mMonth, mDay, mHour, mMinute);//minus 1900 because of deprecate "date" usageg
 
         ParseObject task = new ParseObject(Common.OBJECT_QUESTION);
         task.put(Common.OBJECT_QUESTION_USER, ParseUser.getCurrentUser());
         task.put(Common.OBJECT_QUESTION_TITLE, title);
         task.put(Common.OBJECT_QUESTION_CONTENT, content);
         task.put(Common.OBJECT_QUESTION_PIN, new ParseGeoPoint(lat, lng));
-        task.put(Common.OBJECT_QUESTION_DATE, myDate);
+        task.put(Common.OBJECT_QUESTION_DATE, date);
 
         task.saveInBackground();
         finish();
