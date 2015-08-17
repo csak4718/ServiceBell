@@ -1,6 +1,7 @@
 package com.yahoo.mobile.intern.nest.adapter;
 
 import android.content.Context;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,18 +9,24 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.parse.CountCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
+import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by cmwang on 8/12/15.
  */
-public class QuestionCardAdapter extends BaseAdapter {
+public class MyTaskAdapter extends BaseAdapter {
 
     private Context mContext;
     private LayoutInflater mInflater;
@@ -28,22 +35,16 @@ public class QuestionCardAdapter extends BaseAdapter {
 
     static class ViewHolder {
 
-        public TextView txtName;
-        public CircleImageView imgProfile;
-        public TextView txtDate;
-        public TextView txtContent;
-        public ImageView imgQuestion;
+        @Bind(R.id.txt_title) public TextView txtTitle;
+        @Bind(R.id.txt_date) public TextView txtDate;
+        @Bind(R.id.txt_num_accepted) public TextView txtNumAccepted;
 
         public ViewHolder(View view) {
-            txtName = (TextView) view.findViewById(R.id.txtName);
-            imgProfile = (CircleImageView) view.findViewById(R.id.imgProfile);
-            txtDate = (TextView) view.findViewById(R.id.txt_date);
-            txtContent = (TextView) view.findViewById(R.id.txt_content);
-            imgQuestion = (ImageView) view.findViewById(R.id.img_view_question_picture);
+            ButterKnife.bind(this, view);
         }
     }
 
-    public QuestionCardAdapter(Context context, List<ParseObject> list) {
+    public MyTaskAdapter(Context context, List<ParseObject> list) {
         mContext = context;
         mInflater = LayoutInflater.from(mContext);
 
@@ -67,9 +68,9 @@ public class QuestionCardAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
+        final ViewHolder holder;
         if(convertView == null) {
-            convertView = mInflater.inflate(R.layout.card_question, parent, false);
+            convertView = mInflater.inflate(R.layout.card_my_task, parent, false);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         }
@@ -77,9 +78,21 @@ public class QuestionCardAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        ParseObject question = mList.get(position);
-        holder.txtContent.setText(question.getString(Common.OBJECT_QUESTION_CONTENT));
-
+        final ParseObject task = mList.get(position);
+        holder.txtTitle.setText(task.getString(Common.OBJECT_QUESTION_TITLE));
+//        holder.txtDate.setText(task.getCreatedAt().toString());
+        taskAcceptedCountAsync(task, holder);
         return convertView;
+    }
+
+    private void taskAcceptedCountAsync(ParseObject task, final ViewHolder holder) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Common.OBJECT_ACCEPTED_TASKS);
+        query.whereEqualTo(Common.OBJECT_ACCEPTED_TASKS_TASK, task);
+        query.countInBackground(new CountCallback() {
+            @Override
+            public void done(final int count, ParseException e) {
+                holder.txtNumAccepted.setText(Integer.toString(count));
+            }
+        });
     }
 }

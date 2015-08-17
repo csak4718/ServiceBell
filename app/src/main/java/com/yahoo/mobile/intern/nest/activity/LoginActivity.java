@@ -1,9 +1,9 @@
 package com.yahoo.mobile.intern.nest.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,12 +12,15 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.facebook.AccessToken;
 import com.parse.LogInCallback;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
+import com.yahoo.mobile.intern.nest.event.FbPictureEvent;
+import com.yahoo.mobile.intern.nest.event.UserProfileEvent;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.FbUtils;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
@@ -26,12 +29,11 @@ import com.yahoo.mobile.intern.nest.utils.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
-import com.yahoo.mobile.intern.nest.event.FbPictureEvent;
-import com.yahoo.mobile.intern.nest.event.UserProfileEvent;
 
 public class LoginActivity extends AppCompatActivity {
-
 
     private Button mBtnLoginFacebook;
     private ImageView mImgSplashLogo;
@@ -39,14 +41,18 @@ public class LoginActivity extends AppCompatActivity {
     private String mNickName;
     private String mFbId;
 
+    @Bind(R.id.progressbar_login) ProgressBar mProgressBar;
+
     private void setupLoginButton() {
 
         mBtnLoginFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                v.setVisibility(View.GONE);
+                mProgressBar.setVisibility(View.VISIBLE);
                 final List<String> permissions = new ArrayList<>();
                 permissions.add("public_profile");
-//                permissions.add("user_status");
+//              permissions.add("user_status");
                 permissions.add("user_friends");
                 ParseFacebookUtils.logInWithReadPermissionsInBackground(LoginActivity.this, permissions, new LogInCallback() {
                     @Override
@@ -124,6 +130,7 @@ public class LoginActivity extends AppCompatActivity {
         getSupportActionBar().hide();
 
         setContentView(R.layout.activity_login);
+        ButterKnife.bind(this);
 
         mBtnLoginFacebook = (Button) findViewById(R.id.btn_login_facebook);
         mImgSplashLogo = (ImageView) findViewById(R.id.img_splash_logo);

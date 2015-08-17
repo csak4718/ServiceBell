@@ -16,7 +16,7 @@ import com.yahoo.mobile.intern.nest.utils.Common;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class ViewTaskActivity extends AppCompatActivity {
+public class MyTaskActivity extends AppCompatActivity {
 
     private String taskId;
 

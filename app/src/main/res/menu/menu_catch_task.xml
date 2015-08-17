@@ -1,6 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.yahoo.mobile.intern.nest.activity.MyTaskActivity">
-
+    tools:context="com.yahoo.mobile.intern.nest.activity.CatchTaskActivity">
 </menu>

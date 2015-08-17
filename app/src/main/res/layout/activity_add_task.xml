@@ -21,6 +21,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="set location"/>
+    <Button
+        android:id="@+id/btn_set_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="set date"/>
+
+    <Button
+        android:id="@+id/btn_set_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="set time"/>
+
+
     <TextView
         android:id="@+id/txt_lat"
         android:layout_width="match_parent"

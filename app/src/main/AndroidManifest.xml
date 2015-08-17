@@ -37,7 +37,7 @@
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:theme="@android:style/Theme.NoDisplay" />
 
         <provider
             android:name="com.facebook.FacebookContentProvider"
@@ -118,7 +118,7 @@
             android:label="@string/title_activity_profile_setting" >
         </activity>
         <activity
-            android:name=".activity.ViewTaskActivity"
+            android:name=".activity.MyTaskActivity"
             android:label="@string/title_activity_view_task" >
         </activity>
 
@@ -135,6 +135,11 @@
         <activity
             android:name=".activity.MessagingActivity"
             android:label="@string/title_activity_messaging" >
+        </activity>
+
+        <activity
+            android:name=".activity.CatchTaskActivity"
+            android:label="@string/title_activity_catche_task" >
         </activity>
     </application>
 

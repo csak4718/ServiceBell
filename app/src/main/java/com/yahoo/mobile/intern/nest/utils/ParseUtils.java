@@ -1,8 +1,10 @@
 package com.yahoo.mobile.intern.nest.utils;
 
 import android.graphics.Bitmap;
+import android.os.Handler;
 import android.util.Log;
 
+import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -104,5 +106,19 @@ public class ParseUtils {
                 user.saveInBackground();
             }
         });
+    }
+    /*
+     User accept task
+     */
+    static public boolean isUserAcceptTask(ParseUser user, ParseObject task) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Common.OBJECT_ACCEPTED_TASKS);
+        query.whereEqualTo(Common.OBJECT_ACCEPTED_TASKS_USER, user);
+        query.whereEqualTo(Common.OBJECT_ACCEPTED_TASKS_TASK, task);
+        try {
+            return query.count() > 0;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
