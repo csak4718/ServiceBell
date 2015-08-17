@@ -21,6 +21,7 @@ import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
+import com.yahoo.mobile.intern.nest.event.AcceptTaskEvent;
 import com.yahoo.mobile.intern.nest.event.CatchTaskEvent;
 import com.yahoo.mobile.intern.nest.event.MyTaskEvent;
 
@@ -74,6 +75,20 @@ public class ParseUtils {
             }
         });
     }
+    static public void getAcceptedTasks() {
+        ParseUser user = ParseUser.getCurrentUser();
+        ParseRelation<ParseObject> relation = user.getRelation(Common.OBJECT_USER_ACCEPTED_QUESTIONS);
+        ParseQuery<ParseObject> query = relation.getQuery();
+        query.orderByDescending("updatedAt");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if(e == null) {
+                    EventBus.getDefault().post(new AcceptTaskEvent(list));
+                }
+            }
+        });
+    }
 
     /*
      User profile related
@@ -104,7 +119,4 @@ public class ParseUtils {
             }
         });
     }
-    /*
-     User accept task
-     */
 }
