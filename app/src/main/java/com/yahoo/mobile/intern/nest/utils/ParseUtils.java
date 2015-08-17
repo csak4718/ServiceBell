@@ -22,6 +22,7 @@ import java.util.List;
 import de.greenrobot.event.EventBus;
 
 import com.yahoo.mobile.intern.nest.event.AcceptTaskEvent;
+import com.yahoo.mobile.intern.nest.event.AcceptedUserEvent;
 import com.yahoo.mobile.intern.nest.event.CatchTaskEvent;
 import com.yahoo.mobile.intern.nest.event.MyTaskEvent;
 
@@ -85,6 +86,17 @@ public class ParseUtils {
             public void done(List<ParseObject> list, ParseException e) {
                 if(e == null) {
                     EventBus.getDefault().post(new AcceptTaskEvent(list));
+                }
+            }
+        });
+    }
+    static public void getTaskAcceptedUser(ParseObject task) {
+        ParseRelation<ParseUser> acceptedUser = task.getRelation(Common.OBJECT_QUESTION_ACCEPTED_USER);
+        acceptedUser.getQuery().findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> list, ParseException e) {
+                if(e == null) {
+                    EventBus.getDefault().post(new AcceptedUserEvent(list));
                 }
             }
         });
