@@ -1,32 +1,64 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.yahoo.mobile.intern.nest.activity.CatchTaskActivity">
+    android:layout_height="match_parent">
 
-    <TextView android:text="@string/hello_world"
-        android:id="@+id/txt_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView android:text="@string/hello_world"
-        android:id="@+id/txt_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/txt_msg_accepted"
-        android:text="You have accepted this task"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.yahoo.mobile.intern.nest.activity.CatchTaskActivity">
+
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/mapview_task_location"
+            tools:context="com.yahoo.mobile.intern.nest.activity.CatchTaskActivity"
+            android:name="com.google.android.gms.maps.SupportMapFragment" />
+
+        <TextView
+            android:id="@+id/txt_title"
+            android:text="@string/hello_world"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/txt_content"
+            android:text="@string/hello_world"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/txt_people"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="現在有x個人也接受"/>
+        <TextView
+            android:id="@+id/txt_msg_accepted"
+            android:text="You have accepted this task"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+        <Button
+            android:id="@+id/btn_toSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="IM to service requester" />
+    </LinearLayout>
+
     <Button
         android:id="@+id/btn_accept_task"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Accept task"/>
-    <Button
-        android:id="@+id/btn_toSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="IM to service requester"/>
-</LinearLayout>
+
+        android:gravity="center"
+        android:visibility="gone"
+        android:text="Accept task"
+        android:layout_marginBottom="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+
+
+</RelativeLayout>
+

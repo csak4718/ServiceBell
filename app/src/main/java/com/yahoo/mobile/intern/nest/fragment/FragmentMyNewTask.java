@@ -40,8 +40,6 @@ public class FragmentMyNewTask extends Fragment {
     private List<ParseObject> mList;
     private MyTaskAdapter mAdapter;
 
-    private FloatingActionButton btnAddTask;
-
     private MainActivity activity;
 
     @Override
@@ -86,7 +84,6 @@ public class FragmentMyNewTask extends Fragment {
         mAdapter = new MyTaskAdapter(getActivity(), mList);
         mListView.setAdapter(mAdapter);
 
-        btnAddTask = (FloatingActionButton) mView.findViewById(R.id.btn_add_post);
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -100,13 +97,6 @@ public class FragmentMyNewTask extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ParseObject task = (ParseObject) mAdapter.getItem(position);
                 Utils.gotoMyTaskActivity(getActivity(), task.getObjectId());
-            }
-        });
-
-        btnAddTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.gotoAddTaskActivity(getActivity());
             }
         });
 
