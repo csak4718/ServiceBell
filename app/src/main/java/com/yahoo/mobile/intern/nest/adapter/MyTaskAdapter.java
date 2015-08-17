@@ -13,6 +13,7 @@ import com.parse.CountCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
@@ -86,11 +87,10 @@ public class MyTaskAdapter extends BaseAdapter {
     }
 
     private void taskAcceptedCountAsync(ParseObject task, final ViewHolder holder) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(Common.OBJECT_ACCEPTED_TASKS);
-        query.whereEqualTo(Common.OBJECT_ACCEPTED_TASKS_TASK, task);
-        query.countInBackground(new CountCallback() {
+        ParseRelation<ParseObject> relation = task.getRelation(Common.OBJECT_QUESTION_ACCEPTED_USER);
+        relation.getQuery().countInBackground(new CountCallback() {
             @Override
-            public void done(final int count, ParseException e) {
+            public void done(int count, ParseException e) {
                 holder.txtNumAccepted.setText(Integer.toString(count));
             }
         });
