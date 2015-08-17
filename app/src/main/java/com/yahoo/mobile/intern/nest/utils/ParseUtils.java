@@ -1,8 +1,10 @@
 package com.yahoo.mobile.intern.nest.utils;
 
 import android.graphics.Bitmap;
+import android.os.Handler;
 import android.util.Log;
 
+import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -118,15 +120,5 @@ public class ParseUtils {
             e.printStackTrace();
         }
         return false;
-    }
-    static public int taskAcceptedCount(ParseObject task) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(Common.OBJECT_ACCEPTED_TASKS);
-        query.whereEqualTo(Common.OBJECT_ACCEPTED_TASKS_TASK, task);
-        try {
-            return query.count();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return 0;
     }
 }

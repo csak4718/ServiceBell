@@ -39,8 +39,6 @@ public class FragmentMyNewTask extends Fragment {
 
     private FloatingActionButton btnAddTask;
 
-    private Handler mHandler = new Handler();
-
     private MainActivity activity;
 
     @Override
@@ -82,7 +80,7 @@ public class FragmentMyNewTask extends Fragment {
         swipeRefreshLayout = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_refresh);
         mListView = (ListView) mView.findViewById(R.id.listview_my_task);
         mList = new ArrayList<>();
-        mAdapter = new MyTaskAdapter(getActivity(), mList, mHandler);
+        mAdapter = new MyTaskAdapter(getActivity(), mList);
         mListView.setAdapter(mAdapter);
 
         btnAddTask = (FloatingActionButton) mView.findViewById(R.id.btn_add_post);

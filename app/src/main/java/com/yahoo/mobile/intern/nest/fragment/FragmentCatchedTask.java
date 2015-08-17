@@ -35,8 +35,6 @@ public class FragmentCatchedTask extends Fragment {
     private List<ParseObject> mList;
     private MyTaskAdapter mAdapter;
 
-    private Handler mHandler = new Handler();
-
     @Override
     public void onStart() {
         EventBus.getDefault().register(this);
@@ -67,7 +65,7 @@ public class FragmentCatchedTask extends Fragment {
         swipeRefreshLayout = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_refresh);
         mListView = (ListView) mView.findViewById(R.id.listview_my_task);
         mList = new ArrayList<>();
-        mAdapter = new MyTaskAdapter(getActivity(), mList, mHandler);
+        mAdapter = new MyTaskAdapter(getActivity(), mList);
         mListView.setAdapter(mAdapter);
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {

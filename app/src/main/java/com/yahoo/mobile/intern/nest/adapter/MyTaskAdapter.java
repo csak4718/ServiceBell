@@ -9,7 +9,10 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.parse.CountCallback;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
@@ -29,7 +32,6 @@ public class MyTaskAdapter extends BaseAdapter {
     private LayoutInflater mInflater;
 
     private List<ParseObject> mList;
-    private Handler mHandler;
 
     static class ViewHolder {
 
@@ -42,12 +44,11 @@ public class MyTaskAdapter extends BaseAdapter {
         }
     }
 
-    public MyTaskAdapter(Context context, List<ParseObject> list, Handler handler) {
+    public MyTaskAdapter(Context context, List<ParseObject> list) {
         mContext = context;
         mInflater = LayoutInflater.from(mContext);
 
         mList = list;
-        mHandler = handler;
     }
 
     @Override
@@ -80,13 +81,18 @@ public class MyTaskAdapter extends BaseAdapter {
         final ParseObject task = mList.get(position);
         holder.txtTitle.setText(task.getString(Common.OBJECT_QUESTION_TITLE));
 //        holder.txtDate.setText(task.getCreatedAt().toString());
-        mHandler.post(new Runnable() {
+        taskAcceptedCountAsync(task, holder);
+        return convertView;
+    }
+
+    private void taskAcceptedCountAsync(ParseObject task, final ViewHolder holder) {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(Common.OBJECT_ACCEPTED_TASKS);
+        query.whereEqualTo(Common.OBJECT_ACCEPTED_TASKS_TASK, task);
+        query.countInBackground(new CountCallback() {
             @Override
-            public void run() {
-                int numAccepted = ParseUtils.taskAcceptedCount(task);
-                holder.txtNumAccepted.setText(Integer.toString(numAccepted));
+            public void done(final int count, ParseException e) {
+                holder.txtNumAccepted.setText(Integer.toString(count));
             }
         });
-        return convertView;
     }
 }

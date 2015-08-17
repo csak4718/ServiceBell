@@ -3,6 +3,8 @@ package com.yahoo.mobile.intern.nest.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -25,6 +28,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -38,10 +45,12 @@ public class MapsActivity extends FragmentActivity
     private LocationManager locationManager;
     private LocationRequest mLocationRequest;
     private GoogleApiClient mGoogleApiClient;
+    private Geocoder mGeocoder;
     private Circle mRadiusCircle;
     private int mRadius;
 
     @Bind(R.id.seekBar_radius) SeekBar mRadiusSeekBar;
+    @Bind(R.id.txt_address) TextView mTextAddress;
 
     private Location mCurLocation;
 
@@ -61,6 +70,7 @@ public class MapsActivity extends FragmentActivity
 
         setUpMapIfNeeded();
 
+        mGeocoder = new Geocoder(this, Locale.getDefault());
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -84,8 +94,8 @@ public class MapsActivity extends FragmentActivity
             }
 
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress,boolean fromUser) {
-                mRadius = MIN_RADIUS*(1+progress);
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mRadius = MIN_RADIUS * (1 + progress);
                 drawCircleOnMap();
             }
         });
@@ -194,6 +204,20 @@ public class MapsActivity extends FragmentActivity
     public void onCameraChange(CameraPosition cameraPosition) {
         Log.d("camera changed", "" + cameraPosition);
         drawCircleOnMap();
+
+        List<Address> addresses = null;
+        try {
+            addresses = mGeocoder.getFromLocation(
+                    cameraPosition.target.latitude ,
+                    cameraPosition.target.longitude,
+                    1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (addresses != null && addresses.size() > 0) {
+            mTextAddress.setText(addresses.get(0).getAddressLine(0));
+        }
+
     }
 
     public void drawCircleOnMap(){
