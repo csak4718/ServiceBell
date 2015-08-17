@@ -37,6 +37,7 @@ public class CatchTaskActivity extends AppCompatActivity{
     @Bind(R.id.btn_accept_task) Button btnAcceptTask;
     @Bind(R.id.txt_msg_accepted) TextView txtMsgAccepted;
 
+
     private void acceptTask(ParseObject task) {
         ParseUser user = ParseUser.getCurrentUser();
         ParseRelation<ParseObject> catchRelation = user.getRelation(Common.OBJECT_USER_CATCH_QUESTIONS);
@@ -72,6 +73,7 @@ public class CatchTaskActivity extends AppCompatActivity{
                         txtAcceptedUser.setText(Integer.toString(count)+"人也接受");
                     }
                 });
+
 
                 btnAcceptTask.setOnClickListener(new View.OnClickListener() {
                     @Override
