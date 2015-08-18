@@ -18,5 +18,6 @@
     <string name="title_activity_messaging">MessagingActivity</string>
 
     <string name="title_activity_catche_task">CatcheTaskActivity</string>
+    <string name="title_activity_seller_profile">SellerProfileActivity</string>
 
 </resources>

@@ -136,10 +136,13 @@
             android:name=".activity.MessagingActivity"
             android:label="@string/title_activity_messaging" >
         </activity>
-
         <activity
             android:name=".activity.CatchTaskActivity"
             android:label="@string/title_activity_catche_task" >
+        </activity>
+        <activity
+            android:name=".activity.SellerProfileActivity"
+            android:label="@string/title_activity_seller_profile" >
         </activity>
     </application>
 

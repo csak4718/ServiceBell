@@ -38,8 +38,6 @@ public class AcceptedUserAdapter extends BaseAdapter {
         @Bind(R.id.img_pic) public CircleImageView imgPic;
         @Bind(R.id.txt_name) public TextView txtName;
         @Bind(R.id.txt_title) public TextView txtTitle;
-        @Bind(R.id.btn_done) public ImageButton btnDone;
-        @Bind(R.id.btn_chat) public ImageButton btnChat;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);

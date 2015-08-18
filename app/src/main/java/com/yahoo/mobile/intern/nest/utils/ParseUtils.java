@@ -1,11 +1,13 @@
 package com.yahoo.mobile.intern.nest.utils;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.util.Log;
 
 import com.parse.CountCallback;
 import com.parse.FindCallback;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
@@ -20,6 +22,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import com.yahoo.mobile.intern.nest.event.AcceptTaskEvent;
 import com.yahoo.mobile.intern.nest.event.AcceptedUserEvent;
@@ -128,6 +131,23 @@ public class ParseUtils {
                 user.put(Common.OBJECT_USER_NICK, nickName);
                 user.put(Common.OBJECT_USER_PROFILE_PIC, imgFile);
                 user.saveInBackground();
+            }
+        });
+    }
+    /*
+     Misc
+     */
+    static public void displayParseImage(final ParseFile imgFile, final CircleImageView imgView) {
+        imgFile.getDataInBackground(new GetDataCallback() {
+            @Override
+            public void done(byte[] bytes, ParseException e) {
+                if (e == null) {
+                    Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0,
+                            bytes.length);
+                    if (bmp != null) {
+                        imgView.setImageBitmap(bmp);
+                    }
+                }
             }
         });
     }

@@ -10,6 +10,7 @@ public class Common {
     public final static String EXTRA_LOCATION = "location";
     public final static String EXTRA_SEEKBAR = "seekbar";
     public final static String EXTRA_TASK_ID = "task_id";
+    public final static String EXTRA_USER_ID = "user_id";
 
     /*
      Parse object
