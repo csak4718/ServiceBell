@@ -1,11 +1,15 @@
 package com.yahoo.mobile.intern.nest.utils;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.util.Log;
 
 import com.parse.CountCallback;
 import com.parse.FindCallback;
+import com.parse.FunctionCallback;
+import com.parse.GetDataCallback;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
@@ -17,9 +21,12 @@ import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.greenrobot.event.EventBus;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 import com.yahoo.mobile.intern.nest.event.AcceptTaskEvent;
 import com.yahoo.mobile.intern.nest.event.AcceptedUserEvent;
@@ -48,10 +55,10 @@ public class ParseUtils {
             }
         });
     }
-    static public void getMyTasks() {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(Common.OBJECT_QUESTION);
+    static public void getMyNewTasks() {
+        ParseRelation<ParseObject> myNewQuestions = ParseUser.getCurrentUser().getRelation(Common.OBJECT_USER_MY_NEW_QUESTIONS);
+        ParseQuery<ParseObject> query = myNewQuestions.getQuery();
         query.orderByDescending("updatedAt");
-        query.whereEqualTo(Common.OBJECT_QUESTION_USER, ParseUser.getCurrentUser());
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
@@ -101,6 +108,16 @@ public class ParseUtils {
             }
         });
     }
+    /*
+     Task transcation
+     */
+    static public void doneTask(ParseObject task, ParseUser buyer, ParseUser seller) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("taskId", task.getObjectId());
+        params.put("buyerId", buyer.getObjectId());
+        params.put("sellerId", seller.getObjectId());
+        ParseCloud.callFunctionInBackground("doneTask", params);
+    }
 
     /*
      User profile related
@@ -128,6 +145,23 @@ public class ParseUtils {
                 user.put(Common.OBJECT_USER_NICK, nickName);
                 user.put(Common.OBJECT_USER_PROFILE_PIC, imgFile);
                 user.saveInBackground();
+            }
+        });
+    }
+    /*
+     Misc
+     */
+    static public void displayParseImage(final ParseFile imgFile, final CircleImageView imgView) {
+        imgFile.getDataInBackground(new GetDataCallback() {
+            @Override
+            public void done(byte[] bytes, ParseException e) {
+                if (e == null) {
+                    Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0,
+                            bytes.length);
+                    if (bmp != null) {
+                        imgView.setImageBitmap(bmp);
+                    }
+                }
             }
         });
     }

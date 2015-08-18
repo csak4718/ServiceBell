@@ -27,6 +27,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_setting);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ButterKnife.bind(this);
     }
 
@@ -69,6 +70,9 @@ public class ProfileSettingActivity extends AppCompatActivity {
             user.saveInBackground();
             finish();
             return true;
+        }
+        if (id == android.R.id.home) {
+            finish();
         }
 
         return super.onOptionsItemSelected(item);

@@ -1,7 +1,6 @@
 package com.yahoo.mobile.intern.nest.fragment;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.melnykov.fab.FloatingActionButton;
 import com.parse.ParseObject;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.activity.MainActivity;
@@ -88,7 +86,7 @@ public class FragmentMyNewTask extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                ParseUtils.getMyTasks();
+                ParseUtils.getMyNewTasks();
             }
         });
 
@@ -100,7 +98,7 @@ public class FragmentMyNewTask extends Fragment {
             }
         });
 
-        ParseUtils.getMyTasks();
+        ParseUtils.getMyNewTasks();
 
 
 

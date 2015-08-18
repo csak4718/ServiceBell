@@ -11,9 +11,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
@@ -122,7 +125,7 @@ public class AddTaskActivity extends AppCompatActivity {
         if (checkContent()){
             Date date = new Date(mYear-1900, mMonth, mDay, mHour, mMinute);//minus 1900 because of deprecate "date" usageg
 
-            ParseObject task = new ParseObject(Common.OBJECT_QUESTION);
+            final ParseObject task = new ParseObject(Common.OBJECT_QUESTION);
             task.put(Common.OBJECT_QUESTION_USER, ParseUser.getCurrentUser());
             task.put(Common.OBJECT_QUESTION_TITLE, title);
             task.put(Common.OBJECT_QUESTION_CONTENT, content);
@@ -130,7 +133,17 @@ public class AddTaskActivity extends AppCompatActivity {
             task.put(Common.OBJECT_QUESTION_TIME, time);
             task.put(Common.OBJECT_QUESTION_DATE, date);
 
-            task.saveInBackground();
+            task.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    if(e == null) {
+                        ParseUser user = ParseUser.getCurrentUser();
+                        ParseRelation<ParseObject> myNewQuestions = user.getRelation(Common.OBJECT_USER_MY_NEW_QUESTIONS);
+                        myNewQuestions.add(task);
+                        user.saveInBackground();
+                    }
+                }
+            });
             finish();
         }
     }

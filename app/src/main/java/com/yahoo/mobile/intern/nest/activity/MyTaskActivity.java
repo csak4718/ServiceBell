@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -17,6 +19,7 @@ import com.yahoo.mobile.intern.nest.adapter.AcceptedUserAdapter;
 import com.yahoo.mobile.intern.nest.event.AcceptedUserEvent;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
+import com.yahoo.mobile.intern.nest.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,6 +58,13 @@ public class MyTaskActivity extends AppCompatActivity {
         mList = new ArrayList<>();
         mAdapter = new AcceptedUserAdapter(this, mList);
         mListView.setAdapter(mAdapter);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ParseUser seller = (ParseUser) mAdapter.getItem(position);
+                Utils.gotoSellerProfileActivity(MyTaskActivity.this, seller.getObjectId(), taskId);
+            }
+        });
     }
     @Override
     public void onStart() {
