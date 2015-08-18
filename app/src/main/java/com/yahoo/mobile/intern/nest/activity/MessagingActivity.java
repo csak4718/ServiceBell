@@ -1,16 +1,16 @@
 package com.yahoo.mobile.intern.nest.activity;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseUser;
 import com.sinch.android.rtc.PushPair;
 import com.sinch.android.rtc.messaging.Message;
 import com.sinch.android.rtc.messaging.MessageClient;
@@ -19,24 +19,35 @@ import com.sinch.android.rtc.messaging.MessageDeliveryInfo;
 import com.sinch.android.rtc.messaging.MessageFailureInfo;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.adapter.MessageAdapter;
+import com.yahoo.mobile.intern.nest.event.RecipientEvent;
+import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 public class MessagingActivity extends BaseActivity implements MessageClientListener {
 
     private static final String TAG = MessagingActivity.class.getSimpleName();
 
     private MessageAdapter mMessageAdapter;
-    private EditText mTxtRecipient;
+    private TextView recipientNickname;
     private EditText mTxtTextBody;
     private Button mBtnSend;
+    private ParseUser recipient;
+    private String recipientObjectId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.messaging);
+        recipientNickname = (TextView) findViewById(R.id.recipient_nickname);
 
-        mTxtRecipient = (EditText) findViewById(R.id.txtRecipient);
+        Intent it = getIntent();
+        recipientObjectId = it.getStringExtra("recipientObjectId");
+        ParseUtils.getRecipient(recipientObjectId);
+
+
         mTxtTextBody = (EditText) findViewById(R.id.txtTextBody);
 
         mMessageAdapter = new MessageAdapter(this);
@@ -50,6 +61,24 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
                 sendMessage();
             }
         });
+
+    }
+
+    @Override
+    public void onStart() {
+        EventBus.getDefault().register(this);
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        EventBus.getDefault().unregister(this);
+        super.onStop();
+    }
+
+    public void onEvent(RecipientEvent event){
+        recipient = event.recipient;
+        recipientNickname.setText(recipient.getString("nickname"));
     }
 
     @Override
@@ -73,9 +102,9 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
     }
 
     private void sendMessage() {
-        String recipient = mTxtRecipient.getText().toString();
+        String recipientId = recipient.getObjectId().toString();
         String textBody = mTxtTextBody.getText().toString();
-        if (recipient.isEmpty()) {
+        if (recipientId.isEmpty()) {
             Toast.makeText(this, "No recipient added", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -84,7 +113,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
             return;
         }
 
-        getSinchServiceInterface().sendMessage(recipient, textBody);
+        getSinchServiceInterface().sendMessage(recipientId, textBody);
         mTxtTextBody.setText("");
     }
 

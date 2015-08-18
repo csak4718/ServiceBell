@@ -1,11 +1,13 @@
 package com.yahoo.mobile.intern.nest.utils;
 
+import android.app.usage.UsageEvents;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.util.Log;
 
 import com.parse.CountCallback;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
@@ -25,6 +27,7 @@ import com.yahoo.mobile.intern.nest.event.AcceptTaskEvent;
 import com.yahoo.mobile.intern.nest.event.AcceptedUserEvent;
 import com.yahoo.mobile.intern.nest.event.CatchTaskEvent;
 import com.yahoo.mobile.intern.nest.event.MyTaskEvent;
+import com.yahoo.mobile.intern.nest.event.RecipientEvent;
 
 /**
  * Created by cmwang on 8/12/15.
@@ -101,6 +104,23 @@ public class ParseUtils {
             }
         });
     }
+
+    static public void getRecipient(String recipientObjectId){
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.getInBackground(recipientObjectId, new GetCallback<ParseUser>() {
+            public void done(ParseUser recipient, ParseException e) {
+                if (e == null) {
+                    // The query was successful.
+                    EventBus.getDefault().post(new RecipientEvent(recipient));
+
+                } else {
+                    // Something went wrong.
+                }
+            }
+        });
+
+    }
+
 
     /*
      User profile related
