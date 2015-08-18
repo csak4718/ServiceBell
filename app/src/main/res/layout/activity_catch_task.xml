@@ -1,50 +1,225 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.yahoo.mobile.intern.nest.activity.CatchTaskActivity">
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context="com.yahoo.mobile.intern.nest.activity.CatchTaskActivity">
+        android:layout_height="300dp">
 
         <fragment
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="match_parent"
             android:id="@+id/mapview_task_location"
             tools:context="com.yahoo.mobile.intern.nest.activity.CatchTaskActivity"
             android:name="com.google.android.gms.maps.SupportMapFragment" />
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/img_map"/>
+
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+        <LinearLayout
+            android:layout_gravity="top|left"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_like"/>
+        </LinearLayout>
+
         <TextView
+            android:textSize="20dp"
             android:id="@+id/txt_title"
-            android:text="@string/hello_world"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/txt_content"
-            android:text="@string/hello_world"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
-            android:id="@+id/txt_people"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="現在有x個人也接受"/>
-        <TextView
-            android:id="@+id/txt_msg_accepted"
-            android:text="You have accepted this task"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
-        <Button
-            android:id="@+id/btn_toSpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="IM to service requester" />
+            android:singleLine="true"
+            android:background="@android:color/transparent"/>
     </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+        <LinearLayout
+            android:layout_gravity="top|left"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_like"/>
+        </LinearLayout>
+        <TextView
+            android:textSize="20dp"
+            android:id="@+id/txt_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:background="@android:color/transparent"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <LinearLayout
+        android:id="@+id/btn_set_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+        <LinearLayout
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/pin"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/edt_time"
+            android:background="@android:color/transparent"
+            android:textSize="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/apptask_time"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <LinearLayout
+        android:background="?android:attr/selectableItemBackground"
+        android:id="@+id/btn_set_expiretime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+        <LinearLayout
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/pin"/>
+        </LinearLayout>
+
+        <TextView
+            android:textColor="@color/black"
+            android:id="@+id/text_expiretime"
+            android:hint="@string/apptask_expiretime"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_user_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_account_circle_black_48dp" />
+        <LinearLayout
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="center_vertical"
+            android:layout_toRightOf="@+id/img_user_pic">
+            <TextView
+                android:id="@+id/txt_user_name"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/txt_title"
+                android:text="Title"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </RelativeLayout>
+
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <LinearLayout
+        android:background="?android:attr/selectableItemBackground"
+        android:id="@+id/btn_set_expiretime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+        <LinearLayout
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/pin"/>
+        </LinearLayout>
+
+        <TextView
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:id="@+id/txt_num_people_accepted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""/>
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/txt_msg_accepted"
+        android:text="You have accepted this task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+    <Button
+        android:id="@+id/btn_toSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="IM to service requester" />
 
     <Button
         android:id="@+id/btn_accept_task"
@@ -52,13 +227,9 @@
         android:layout_height="wrap_content"
 
         android:gravity="center"
-        android:visibility="gone"
         android:text="Accept task"
         android:layout_marginBottom="10dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_gravity="center_horizontal"/>
 
-
-
-</RelativeLayout>
-
+</LinearLayout>
+</ScrollView>

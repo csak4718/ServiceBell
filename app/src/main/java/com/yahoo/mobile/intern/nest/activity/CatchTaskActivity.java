@@ -2,22 +2,26 @@ package com.yahoo.mobile.intern.nest.activity;
 
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.parse.CountCallback;
 import com.parse.GetCallback;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -28,8 +32,9 @@ import com.yahoo.mobile.intern.nest.utils.Common;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
-public class CatchTaskActivity extends AppCompatActivity{//} implements OnMapReadyCallback {
+public class CatchTaskActivity extends AppCompatActivity{
 
     private String taskId;
     private GoogleMap mMap;
@@ -37,21 +42,12 @@ public class CatchTaskActivity extends AppCompatActivity{//} implements OnMapRea
     @Bind(R.id.btn_toSpinner) Button btnToSpinner;
     @Bind(R.id.txt_title) TextView txtTitle;
     @Bind(R.id.txt_content) TextView txtContent;
+    @Bind(R.id.txt_num_people_accepted) TextView txtAcceptedUser;
     @Bind(R.id.btn_accept_task) Button btnAcceptTask;
     @Bind(R.id.txt_msg_accepted) TextView txtMsgAccepted;
-
-    private boolean isTaskAccepted(ParseObject task) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(Common.OBJECT_ACCEPTED_TASKS);
-        query.whereEqualTo(Common.OBJECT_ACCEPTED_TASKS_USER, ParseUser.getCurrentUser());
-        query.whereEqualTo(Common.OBJECT_ACCEPTED_TASKS_TASK, task);
-        try {
-            return query.count() > 0;
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
+    @Bind(R.id.img_user_pic)CircleImageView imgUserPic;
+    @Bind(R.id.txt_user_name) TextView txtUserName;
+    @Bind(R.id.img_map) ImageView imgMap;
 
     private void acceptTask(ParseObject task) {
         ParseUser user = ParseUser.getCurrentUser();
@@ -71,33 +67,56 @@ public class CatchTaskActivity extends AppCompatActivity{//} implements OnMapRea
         query.getInBackground(taskId, new GetCallback<ParseObject>() {
             @Override
             public void done(final ParseObject task, ParseException e) {
+                ParseUser user = (ParseUser)task.get(Common.OBJECT_QUESTION_USER);
                 String title = task.getString(Common.OBJECT_QUESTION_TITLE);
                 String content = task.getString(Common.OBJECT_QUESTION_CONTENT);
                 ParseGeoPoint geoPoint = (ParseGeoPoint) task.get(Common.OBJECT_QUESTION_LOCATION);
 
+                txtUserName.setText((String) user.get(Common.OBJECT_USER_FB_NAME));
+                ParseFile imgFile = user.getParseFile(Common.OBJECT_USER_PROFILE_PIC);
+                imgFile.getDataInBackground(new GetDataCallback() {
+                    @Override
+                    public void done(byte[] bytes, ParseException e) {
+                        if (e == null) {
+                            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0,
+                                    bytes.length);
+                            if (bmp != null) {
+                                imgUserPic.setImageBitmap(bmp);
+                            }
+                        }
+                    }
+                });
+
                 LatLng latLng = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                    @Override
+                    public void onMapLoaded() {
+                        mMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+                            @Override
+                            public void onSnapshotReady(Bitmap bitmap) {
+                                if (imgMap == null)
+                                    imgMap = (ImageView) findViewById(R.id.img_map);
+                                imgMap.setImageBitmap(bitmap);
+
+                                SupportMapFragment mapFragment =  ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapview_task_location));
+                                getSupportFragmentManager().beginTransaction().remove(mapFragment).commit();
+                            }
+                        });
+                    }
+                });
 
                 txtTitle.setText(title);
                 txtContent.setText(content);
 
+                ParseRelation<ParseUser> acceptedUser = task.getRelation(Common.OBJECT_QUESTION_ACCEPTED_USER);
+                acceptedUser.getQuery().countInBackground(new CountCallback() {
+                    @Override
+                    public void done(int count, ParseException e) {
+                        txtAcceptedUser.setText("現在共有"+Integer.toString(count)+"人接受此任務");
+                    }
+                });
 
-                if (isTaskAccepted(task)) {
-                    txtMsgAccepted.setVisibility(View.VISIBLE);
-                } else {
-                    btnAcceptTask.setVisibility(View.VISIBLE);
-                    btnAcceptTask.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ParseObject acceptedTasks = new ParseObject(Common.OBJECT_ACCEPTED_TASKS);
-                            acceptedTasks.put(Common.OBJECT_ACCEPTED_TASKS_USER, ParseUser.getCurrentUser());
-                            acceptedTasks.put(Common.OBJECT_ACCEPTED_TASKS_TASK, task);
-                            acceptedTasks.saveInBackground();
-                            btnAcceptTask.setVisibility(View.GONE);
-                            txtMsgAccepted.setVisibility(View.VISIBLE);
-                        }
-                    });
-                }
 
                 btnAcceptTask.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -172,10 +191,7 @@ public class CatchTaskActivity extends AppCompatActivity{//} implements OnMapRea
             // Try to obtain the map from the SupportMapFragment.
             mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapview_task_location))
                     .getMap();
-            // Check if we were successful in obtaining the map.
-
         }
-
     }
 
 }
