@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +17,9 @@ import com.yahoo.mobile.intern.nest.activity.MainActivity;
 
 import com.yahoo.mobile.intern.nest.adapter.MyTaskAdapter;
 
-import com.yahoo.mobile.intern.nest.event.MyTaskEvent;
+import com.yahoo.mobile.intern.nest.event.MyDoneTaskEvent;
+import com.yahoo.mobile.intern.nest.event.MyNewTaskEvent;
+import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 import com.yahoo.mobile.intern.nest.utils.Utils;
 
@@ -30,7 +31,9 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by cmwang on 8/15/15.
  */
-public class FragmentMyNewTask extends Fragment {
+public class FragmentBuyerTask extends Fragment {
+
+    private int mType;
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private View mView;
@@ -52,10 +55,17 @@ public class FragmentMyNewTask extends Fragment {
         super.onStop();
     }
 
-    public void onEvent(MyTaskEvent event) {
-        Log.d("eventbus", "" + event.questionList.size());
-        refreshList(event.questionList);
-        swipeRefreshLayout.setRefreshing(false);
+    public void onEvent(MyNewTaskEvent event) {
+        if(mType == Common.BUYER_NEW) {
+            refreshList(event.questionList);
+            swipeRefreshLayout.setRefreshing(false);
+        }
+    }
+    public void onEvent(MyDoneTaskEvent event) {
+        if(mType == Common.BUYER_DONE) {
+            refreshList(event.taskList);
+            swipeRefreshLayout.setRefreshing(false);
+        }
     }
 
     private void refreshList(List<ParseObject> list) {
@@ -64,9 +74,28 @@ public class FragmentMyNewTask extends Fragment {
         mAdapter.notifyDataSetChanged();
     }
 
-    public static FragmentMyNewTask newInstance() {
-        FragmentMyNewTask fragment = new FragmentMyNewTask();
+    public static FragmentBuyerTask newInstance(int type) {
+        FragmentBuyerTask fragment = new FragmentBuyerTask();
+        Bundle args = new Bundle();
+        args.putInt("type", type);
+        fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle args = getArguments();
+        mType = args.getInt("type");
+    }
+
+    private void getNewData() {
+        if(mType == Common.BUYER_NEW) {
+            ParseUtils.getMyNewTasks();
+        }
+        else if(mType == Common.BUYER_DONE) {
+            ParseUtils.getMyDoneTasks();
+        }
     }
 
     @Nullable
@@ -86,7 +115,7 @@ public class FragmentMyNewTask extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                ParseUtils.getMyNewTasks();
+                getNewData();
             }
         });
 
@@ -97,10 +126,7 @@ public class FragmentMyNewTask extends Fragment {
                 Utils.gotoMyTaskActivity(getActivity(), task.getObjectId());
             }
         });
-
-        ParseUtils.getMyNewTasks();
-
-
+        getNewData();
 
         return mView;
     }
