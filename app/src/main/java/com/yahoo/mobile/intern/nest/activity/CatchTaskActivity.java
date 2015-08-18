@@ -47,7 +47,10 @@ public class CatchTaskActivity extends AppCompatActivity{
     @Bind(R.id.txt_msg_accepted) TextView txtMsgAccepted;
     @Bind(R.id.img_user_pic)CircleImageView imgUserPic;
     @Bind(R.id.txt_user_name) TextView txtUserName;
+    @Bind(R.id.txt_task_date) TextView txtTaskDate;
+    @Bind(R.id.txt_task_time) TextView txtTaskTime;
     @Bind(R.id.img_map) ImageView imgMap;
+
 
     private void acceptTask(ParseObject task) {
         ParseUser user = ParseUser.getCurrentUser();
@@ -86,6 +89,9 @@ public class CatchTaskActivity extends AppCompatActivity{
                         }
                     }
                 });
+                txtTaskDate.setText(task.getDate(Common.OBJECT_QUESTION_DATE).toString());
+                txtTaskTime.setText(task.getString(Common.OBJECT_QUESTION_TIME));
+
 
                 LatLng latLng = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
