@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
@@ -24,6 +25,7 @@ public class SellerProfileActivity extends AppCompatActivity {
 
 
     private ParseUser seller;
+    private ParseObject task;
 
     @Bind(R.id.img_pic) CircleImageView imgPic;
     @Bind(R.id.txt_name) TextView txtName;
@@ -31,7 +33,7 @@ public class SellerProfileActivity extends AppCompatActivity {
 
     }
     @OnClick(R.id.btn_done) void taskDone() {
-
+        ParseUtils.doneTask(task, ParseUser.getCurrentUser(), seller);
     }
 
     private void setupView() {
@@ -49,14 +51,20 @@ public class SellerProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_seller_profile);
         ButterKnife.bind(this);
 
-        String userId = getIntent().getStringExtra(Common.EXTRA_USER_ID);
+        final String userId = getIntent().getStringExtra(Common.EXTRA_USER_ID);
+        final String taskId = getIntent().getStringExtra(Common.EXTRA_TASK_ID);
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.getInBackground(userId, new GetCallback<ParseUser>() {
             @Override
             public void done(ParseUser parseUser, ParseException e) {
                 if(e == null) {
                     seller = parseUser;
-                    setupView();
+                    try {
+                        task = ParseQuery.getQuery(Common.OBJECT_QUESTION).get(taskId);
+                        setupView();
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    }
                 }
             }
         });

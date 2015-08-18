@@ -85,9 +85,10 @@ public class Utils {
         it.putExtra(Common.EXTRA_TASK_ID, taskId);
         activity.startActivity(it);
     }
-    static public void gotoSellerProfileActivity(Activity activity, String userId) {
+    static public void gotoSellerProfileActivity(Activity activity, String userId, String taskId) {
         Intent it = new Intent(activity, SellerProfileActivity.class);
         it.putExtra(Common.EXTRA_USER_ID, userId);
+        it.putExtra(Common.EXTRA_TASK_ID, taskId);
         activity.startActivity(it);
     }
 }

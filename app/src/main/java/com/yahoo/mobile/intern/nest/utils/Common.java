@@ -23,9 +23,11 @@ public class Common {
     public final static String OBJECT_USER_FB_ID = "fbId";
     public final static String OBJECT_USER_PIN = "pin";
     public final static String OBJECT_USER_RADIUS = "radius";
+    public final static String OBJECT_USER_MY_NEW_QUESTIONS = "myNewQuestions";
+    public final static String OBJECT_USER_MY_DONE_QUESTIONS = "myDoneQuestions";
     public final static String OBJECT_USER_ACCEPTED_QUESTIONS = "acceptedQuestions";
     public final static String OBJECT_USER_CATCH_QUESTIONS = "catchQuestions";
-
+    public final static String OBJECT_USER_DONE_QUESTIONS = "doneQuestions";
 
     public final static String OBJECT_QUESTION = "Question";
     public final static String OBJECT_QUESTION_USER = "user";
