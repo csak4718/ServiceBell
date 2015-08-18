@@ -111,6 +111,7 @@ public class MapsActivity extends FragmentActivity
         LatLng position = mMap.getCameraPosition().target;
         Intent it = new Intent();
         it.putExtra(Common.EXTRA_LOCATION, position);
+        it.putExtra(Common.EXTRA_ADDRESS, mTextAddress.getText());
         setResult(RESULT_OK, it);
         finish();
     }
