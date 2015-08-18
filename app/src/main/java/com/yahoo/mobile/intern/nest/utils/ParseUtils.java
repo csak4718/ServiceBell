@@ -101,6 +101,20 @@ public class ParseUtils {
     }
     static public void getAcceptedTasks() {
         ParseUser user = ParseUser.getCurrentUser();
+        ParseRelation<ParseObject> relation = user.getRelation(Common.OBJECT_USER_ACCEPTED_QUESTIONS);
+        ParseQuery<ParseObject> query = relation.getQuery();
+        query.orderByDescending("updatedAt");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if(e == null) {
+                    EventBus.getDefault().post(new AcceptTaskEvent(list));
+                }
+            }
+        });
+    }
+    static public void getDoneTasks() {
+        ParseUser user = ParseUser.getCurrentUser();
         ParseRelation<ParseObject> relation = user.getRelation(Common.OBJECT_USER_DONE_QUESTIONS);
         ParseQuery<ParseObject> query = relation.getQuery();
         query.orderByDescending("updatedAt");
@@ -109,20 +123,6 @@ public class ParseUtils {
             public void done(List<ParseObject> list, ParseException e) {
                 if(e == null) {
                     EventBus.getDefault().post(new DoneTaskEvent(list));
-                }
-            }
-        });
-    }
-    static public void getDoneTasks() {
-        ParseUser user = ParseUser.getCurrentUser();
-        ParseRelation<ParseObject> relation = user.getRelation(Common.OBJECT_USER_CATCH_QUESTIONS);
-        ParseQuery<ParseObject> query = relation.getQuery();
-        query.orderByDescending("updatedAt");
-        query.findInBackground(new FindCallback<ParseObject>() {
-            @Override
-            public void done(List<ParseObject> list, ParseException e) {
-                if(e == null) {
-                    EventBus.getDefault().post(new CatchTaskEvent(list));
                 }
             }
         });

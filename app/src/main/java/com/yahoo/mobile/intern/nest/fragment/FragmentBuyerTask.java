@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by cmwang on 8/15/15.
  */
-public class FragmentMyNewTask extends Fragment {
+public class FragmentBuyerTask extends Fragment {
 
     private int mType;
 
@@ -75,8 +74,8 @@ public class FragmentMyNewTask extends Fragment {
         mAdapter.notifyDataSetChanged();
     }
 
-    public static FragmentMyNewTask newInstance(int type) {
-        FragmentMyNewTask fragment = new FragmentMyNewTask();
+    public static FragmentBuyerTask newInstance(int type) {
+        FragmentBuyerTask fragment = new FragmentBuyerTask();
         Bundle args = new Bundle();
         args.putInt("type", type);
         fragment.setArguments(args);

@@ -32,13 +32,13 @@ public class FragmentTab extends Fragment {
 
     private void setupAdapter(int id) {
         if(id == R.id.menu_my_task) {
-            adapter.addFrag(FragmentMyNewTask.newInstance(Common.BUYER_NEW), "New");
-            adapter.addFrag(FragmentMyNewTask.newInstance(Common.BUYER_DONE), "Done");
+            adapter.addFrag(FragmentBuyerTask.newInstance(Common.BUYER_NEW), "New");
+            adapter.addFrag(FragmentBuyerTask.newInstance(Common.BUYER_DONE), "Done");
         }
         else if(id == R.id.menu_catch_task) {
-            adapter.addFrag(new FragmentCatchedTask(), "New");
-            adapter.addFrag(new FragmentAcceptedTask(), "Accepted");
-            adapter.addFrag(new FragmentCatchedTask(), "Done");
+            adapter.addFrag(FragmentSellerTask.newInstance(Common.SELLER_NEW), "New");
+            adapter.addFrag(FragmentSellerTask.newInstance(Common.SELLER_ACCEPTED), "Accepted");
+            adapter.addFrag(FragmentSellerTask.newInstance(Common.SELLER_DONE), "Done");
         }
     }
 
