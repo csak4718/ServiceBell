@@ -10,7 +10,7 @@ public class Common {
     public final static String EXTRA_LOCATION = "location";
     public final static String EXTRA_SEEKBAR = "seekbar";
     public final static String EXTRA_TASK_ID = "task_id";
-
+    public final static String EXTRA_ADDRESS = "address";
     /*
      Parse object
      */
@@ -25,12 +25,14 @@ public class Common {
     public final static String OBJECT_USER_ACCEPTED_QUESTIONS = "acceptedQuestions";
     public final static String OBJECT_USER_CATCH_QUESTIONS = "catchQuestions";
 
+
     public final static String OBJECT_QUESTION = "Question";
     public final static String OBJECT_QUESTION_USER = "user";
     public final static String OBJECT_QUESTION_TITLE = "title";
     public final static String OBJECT_QUESTION_CONTENT = "content";
     public final static String OBJECT_QUESTION_PIN = "pin";
     public final static String OBJECT_QUESTION_DATE = "date";
+    public final static String OBJECT_QUESTION_TIME = "time";
     public final static String OBJECT_QUESTION_LOCATION = "pin";
 
     public final static String OBJECT_ACCEPTED_TASKS = "AcceptedTasks";

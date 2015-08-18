@@ -1,22 +1,22 @@
 package com.yahoo.mobile.intern.nest.activity;
 
-import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
+import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
+import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.Utils;
@@ -31,13 +31,16 @@ import butterknife.OnClick;
 public class AddTaskActivity extends AppCompatActivity {
     private int mYear, mMonth, mDay;
     private int mHour, mMinute;
+    private String mDateTime;
+    LatLng mLocation;
     @Bind(R.id.edt_task_title) EditText edtTaskTitle;
     @Bind(R.id.edt_task_content) EditText edtTaskContent;
-    @Bind(R.id.btn_set_location) Button btnSetLocation;
-    @Bind(R.id.btn_set_date) Button btnSetDate;
-    @Bind(R.id.btn_set_time) Button btnSetTime;
-    @Bind(R.id.txt_lat) TextView txtLat;
-    @Bind(R.id.txt_lng) TextView txtLng;
+    @Bind(R.id.btn_set_location) LinearLayout btnSetLocation;
+    @Bind(R.id.btn_set_date) LinearLayout btnSetDate;
+    @Bind(R.id.btn_set_expiretime) LinearLayout btnSetExpTime;
+    @Bind(R.id.edt_time) EditText edtTaskTime;
+    @Bind(R.id.text_expiretime) TextView textViewExpireTime;
+    @Bind(R.id.text_location) TextView textViewLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,38 +59,42 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.btn_set_date) void setDateBtnSetLocation() {
+
+
+    }
+
+    @OnClick(R.id.btn_set_expiretime) void setExpireTimeBtnSetLocation() {
         final Calendar c = Calendar.getInstance();
+        final String datetime;
         mYear = c.get(Calendar.YEAR);
         mMonth = c.get(Calendar.MONTH);
         mDay = c.get(Calendar.DAY_OF_MONTH);
-
-        DatePickerDialog dpd = new DatePickerDialog(this,
-                new DatePickerDialog.OnDateSetListener() {
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
-                        btnSetDate.setText(year + "-" + (monthOfYear + 1) + "-"
-                                + dayOfMonth);
-
-                    }
-                }, mYear, mMonth, mDay);
-        dpd.show();
-    }
-
-    @OnClick(R.id.btn_set_time) void setTimeBtnSetLocation() {
-        final Calendar c = Calendar.getInstance();
         mHour = c.get(Calendar.HOUR_OF_DAY);
         mMinute  = c.get(Calendar.MINUTE);
 
-        TimePickerDialog tpd = new TimePickerDialog(this,
+        final TimePickerDialog tpd = TimePickerDialog.newInstance(
                 new TimePickerDialog.OnTimeSetListener() {
                     @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        btnSetTime.setText(hourOfDay + ":" + minute);
+                    public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
+                        mDateTime = mDateTime +" "+ String.format("%02d:%02d",hourOfDay,minute);
                         mHour = hourOfDay;
                         mMinute = minute;
+                        textViewExpireTime.setText(mDateTime);
                     }
                 },mHour, mMinute, false);
-        tpd.show();
+        DatePickerDialog dpd = DatePickerDialog.newInstance(
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int
+                            dayOfMonth) {
+                        mDateTime = year + "/" + (monthOfYear + 1) + "/" + dayOfMonth;
+                        mDay = dayOfMonth;
+                        mMonth = monthOfYear;
+                        mYear = year;
+                        tpd.show(getFragmentManager(), "Timepickerdialog" );
+                    }
+                }, mYear, mMonth, mDay);
+        dpd.show(getFragmentManager(), "Datepickerdialog");
     }
 
 
@@ -98,10 +105,11 @@ public class AddTaskActivity extends AppCompatActivity {
         if(requestCode == Common.REQUEST_LOCATION) {
             if(resultCode == RESULT_OK) {
                 LatLng position = data.getParcelableExtra(Common.EXTRA_LOCATION);
-                String lat = Double.toString(position.latitude);
-                String lng = Double.toString(position.longitude);
-                txtLat.setText(lat);
-                txtLng.setText(lng);
+                mLocation = position;
+                String address = data.getStringExtra(Common.EXTRA_ADDRESS);
+                //txtLat.setText(lat.toString());
+                //txtLng.setText(lng.toString());
+                textViewLocation.setText(address);
             }
         }
     }
@@ -109,19 +117,22 @@ public class AddTaskActivity extends AppCompatActivity {
     private void addTask() {
         String title = edtTaskTitle.getText().toString();
         String content = edtTaskContent.getText().toString();
-        Double lat = Double.valueOf(txtLat.getText().toString());
-        Double lng = Double.valueOf(txtLng.getText().toString());
-        Date date = new Date(mYear-1900, mMonth, mDay, mHour, mMinute);//minus 1900 because of deprecate "date" usageg
+        String time = edtTaskTime.getText().toString();
 
-        ParseObject task = new ParseObject(Common.OBJECT_QUESTION);
-        task.put(Common.OBJECT_QUESTION_USER, ParseUser.getCurrentUser());
-        task.put(Common.OBJECT_QUESTION_TITLE, title);
-        task.put(Common.OBJECT_QUESTION_CONTENT, content);
-        task.put(Common.OBJECT_QUESTION_PIN, new ParseGeoPoint(lat, lng));
-        task.put(Common.OBJECT_QUESTION_DATE, date);
+        if (checkContent()){
+            Date date = new Date(mYear-1900, mMonth, mDay, mHour, mMinute);//minus 1900 because of deprecate "date" usageg
 
-        task.saveInBackground();
-        finish();
+            ParseObject task = new ParseObject(Common.OBJECT_QUESTION);
+            task.put(Common.OBJECT_QUESTION_USER, ParseUser.getCurrentUser());
+            task.put(Common.OBJECT_QUESTION_TITLE, title);
+            task.put(Common.OBJECT_QUESTION_CONTENT, content);
+            task.put(Common.OBJECT_QUESTION_PIN, new ParseGeoPoint(mLocation.latitude, mLocation.longitude));
+            task.put(Common.OBJECT_QUESTION_TIME, time);
+            task.put(Common.OBJECT_QUESTION_DATE, date);
+
+            task.saveInBackground();
+            finish();
+        }
     }
 
     @Override
@@ -143,5 +154,31 @@ public class AddTaskActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean checkContent(){
+        String title = edtTaskTitle.getText().toString();
+        String content = edtTaskContent.getText().toString();
+        String time = edtTaskTime.getText().toString();
+        String expiretime = textViewExpireTime.getText().toString();
+
+        if (title.isEmpty()){
+            showToast("標題不能空白");
+        } else if(content.isEmpty()){
+            showToast("內容不能空白");
+        } else if (mLocation == null){
+            showToast("請選地點");
+        } else if(time.isEmpty()){
+            showToast("請敘述任務時段");
+        } else if(expiretime.isEmpty()){
+            showToast("請選任務截止時間");
+        } else {
+            return true;
+        }
+        return false;
+    }
+
+    private void showToast(String str){
+        Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
     }
 }
