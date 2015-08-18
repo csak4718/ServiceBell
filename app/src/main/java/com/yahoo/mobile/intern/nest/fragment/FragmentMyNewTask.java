@@ -1,7 +1,7 @@
 package com.yahoo.mobile.intern.nest.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -16,17 +16,17 @@ import com.melnykov.fab.FloatingActionButton;
 import com.parse.ParseObject;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.activity.MainActivity;
-import com.yahoo.mobile.intern.nest.activity.ViewTaskActivity;
-import com.yahoo.mobile.intern.nest.adapter.QuestionCardAdapter;
+
+
+import com.yahoo.mobile.intern.nest.adapter.MyTaskAdapter;
+
 import com.yahoo.mobile.intern.nest.event.MyTaskEvent;
-import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 import com.yahoo.mobile.intern.nest.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.OnItemClick;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -38,9 +38,7 @@ public class FragmentMyNewTask extends Fragment {
     private View mView;
     private ListView mListView;
     private List<ParseObject> mList;
-    private QuestionCardAdapter mAdapter;
-
-    private FloatingActionButton btnAddTask;
+    private MyTaskAdapter mAdapter;
 
     private MainActivity activity;
 
@@ -83,10 +81,8 @@ public class FragmentMyNewTask extends Fragment {
         swipeRefreshLayout = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_refresh);
         mListView = (ListView) mView.findViewById(R.id.listview_my_task);
         mList = new ArrayList<>();
-        mAdapter = new QuestionCardAdapter(getActivity(), mList);
+        mAdapter = new MyTaskAdapter(getActivity(), mList);
         mListView.setAdapter(mAdapter);
-
-        btnAddTask = (FloatingActionButton) mView.findViewById(R.id.btn_add_post);
 
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -100,18 +96,13 @@ public class FragmentMyNewTask extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ParseObject task = (ParseObject) mAdapter.getItem(position);
-                Utils.gotoViewTaskAcitivity(getActivity(), task.getObjectId());
-            }
-        });
-
-        btnAddTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Utils.gotoAddTaskActivity(getActivity());
+                Utils.gotoMyTaskActivity(getActivity(), task.getObjectId());
             }
         });
 
         ParseUtils.getMyTasks();
+
+
 
         return mView;
     }

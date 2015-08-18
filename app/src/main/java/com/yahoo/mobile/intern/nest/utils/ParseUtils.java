@@ -1,22 +1,28 @@
 package com.yahoo.mobile.intern.nest.utils;
 
 import android.graphics.Bitmap;
+import android.os.Handler;
 import android.util.Log;
 
+import com.parse.CountCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
 
+import com.yahoo.mobile.intern.nest.event.AcceptTaskEvent;
+import com.yahoo.mobile.intern.nest.event.AcceptedUserEvent;
 import com.yahoo.mobile.intern.nest.event.CatchTaskEvent;
 import com.yahoo.mobile.intern.nest.event.MyTaskEvent;
 
@@ -58,19 +64,39 @@ public class ParseUtils {
     static public void getCatchedTasks() {
 
         ParseUser user = ParseUser.getCurrentUser();
-
-        ParseGeoPoint servicePosition = user.getParseGeoPoint(Common.OBJECT_USER_PIN);
-        int radius = user.getInt(Common.OBJECT_USER_RADIUS);
-
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(Common.OBJECT_QUESTION);
+        ParseRelation<ParseObject> relation = user.getRelation(Common.OBJECT_USER_CATCH_QUESTIONS);
+        ParseQuery<ParseObject> query = relation.getQuery();
         query.orderByDescending("updatedAt");
-        query.whereWithinKilometers(Common.OBJECT_QUESTION_PIN, servicePosition, radius);
-        query.whereNotEqualTo(Common.OBJECT_QUESTION_USER, user);
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> list, ParseException e) {
                 if(e == null) {
                     EventBus.getDefault().post(new CatchTaskEvent(list));
+                }
+            }
+        });
+    }
+    static public void getAcceptedTasks() {
+        ParseUser user = ParseUser.getCurrentUser();
+        ParseRelation<ParseObject> relation = user.getRelation(Common.OBJECT_USER_ACCEPTED_QUESTIONS);
+        ParseQuery<ParseObject> query = relation.getQuery();
+        query.orderByDescending("updatedAt");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if(e == null) {
+                    EventBus.getDefault().post(new AcceptTaskEvent(list));
+                }
+            }
+        });
+    }
+    static public void getTaskAcceptedUser(ParseObject task) {
+        ParseRelation<ParseUser> acceptedUser = task.getRelation(Common.OBJECT_QUESTION_ACCEPTED_USER);
+        acceptedUser.getQuery().findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> list, ParseException e) {
+                if(e == null) {
+                    EventBus.getDefault().post(new AcceptedUserEvent(list));
                 }
             }
         });

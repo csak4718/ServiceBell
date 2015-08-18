@@ -22,6 +22,8 @@ public class Common {
     public final static String OBJECT_USER_FB_ID = "fbId";
     public final static String OBJECT_USER_PIN = "pin";
     public final static String OBJECT_USER_RADIUS = "radius";
+    public final static String OBJECT_USER_ACCEPTED_QUESTIONS = "acceptedQuestions";
+    public final static String OBJECT_USER_CATCH_QUESTIONS = "catchQuestions";
 
 
     public final static String OBJECT_QUESTION = "Question";
@@ -31,6 +33,10 @@ public class Common {
     public final static String OBJECT_QUESTION_PIN = "pin";
     public final static String OBJECT_QUESTION_DATE = "date";
     public final static String OBJECT_QUESTION_TIME = "time";
+    public final static String OBJECT_QUESTION_LOCATION = "pin";
 
-
+    public final static String OBJECT_ACCEPTED_TASKS = "AcceptedTasks";
+    public final static String OBJECT_ACCEPTED_TASKS_USER = "user";
+    public final static String OBJECT_ACCEPTED_TASKS_TASK = "task";
+    public final static String OBJECT_QUESTION_ACCEPTED_USER = "acceptedUser";
 }

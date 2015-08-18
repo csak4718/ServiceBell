@@ -12,11 +12,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.yahoo.mobile.intern.nest.activity.AddTaskActivity;
+import com.yahoo.mobile.intern.nest.activity.CatchTaskActivity;
 import com.yahoo.mobile.intern.nest.activity.LoginActivity;
 import com.yahoo.mobile.intern.nest.activity.MainActivity;
 import com.yahoo.mobile.intern.nest.activity.MapsActivity;
 import com.yahoo.mobile.intern.nest.activity.ProfileSettingActivity;
-import com.yahoo.mobile.intern.nest.activity.ViewTaskActivity;
+import com.yahoo.mobile.intern.nest.activity.MyTaskActivity;
 
 /**
  * Created by cmwang on 8/12/15.
@@ -73,8 +74,13 @@ public class Utils {
         Intent it = new Intent(activity, ProfileSettingActivity.class);
         activity.startActivity(it);
     }
-    static public void gotoViewTaskAcitivity(Activity activity, String taskId) {
-        Intent it = new Intent(activity, ViewTaskActivity.class);
+    static public void gotoMyTaskActivity(Activity activity, String taskId) {
+        Intent it = new Intent(activity, MyTaskActivity.class);
+        it.putExtra(Common.EXTRA_TASK_ID, taskId);
+        activity.startActivity(it);
+    }
+    static public void gotoCatchTaskActivity(Activity activity, String taskId) {
+        Intent it = new Intent(activity, CatchTaskActivity.class);
         it.putExtra(Common.EXTRA_TASK_ID, taskId);
         activity.startActivity(it);
     }
