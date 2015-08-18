@@ -13,10 +13,15 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_profile_setting">Setting</string>
     <string name="title_activity_view_task">ViewTaskActivity</string>
+    <string name="apptask_title">任務名稱</string>
+    <string name="apptask_content">任務說明</string>
+    <string name="apptask_time">任務時段</string>
+    <string name="apptask_expiretime">任務截止時間</string>
+    <string name="apptask_location">任務地點</string>
 
     <string name="title_activity_spinner">SpinnerActivity</string>
     <string name="title_activity_messaging">MessagingActivity</string>
 
     <string name="title_activity_catche_task">CatcheTaskActivity</string>
-
+    <string name="title_activity_seller_profile">SellerProfileActivity</string>
 </resources>

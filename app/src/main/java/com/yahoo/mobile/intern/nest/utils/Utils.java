@@ -18,6 +18,7 @@ import com.yahoo.mobile.intern.nest.activity.MainActivity;
 import com.yahoo.mobile.intern.nest.activity.MapsActivity;
 import com.yahoo.mobile.intern.nest.activity.ProfileSettingActivity;
 import com.yahoo.mobile.intern.nest.activity.MyTaskActivity;
+import com.yahoo.mobile.intern.nest.activity.SellerProfileActivity;
 
 /**
  * Created by cmwang on 8/12/15.
@@ -82,6 +83,11 @@ public class Utils {
     static public void gotoCatchTaskActivity(Activity activity, String taskId) {
         Intent it = new Intent(activity, CatchTaskActivity.class);
         it.putExtra(Common.EXTRA_TASK_ID, taskId);
+        activity.startActivity(it);
+    }
+    static public void gotoSellerProfileActivity(Activity activity, String userId) {
+        Intent it = new Intent(activity, SellerProfileActivity.class);
+        it.putExtra(Common.EXTRA_USER_ID, userId);
         activity.startActivity(it);
     }
 }
