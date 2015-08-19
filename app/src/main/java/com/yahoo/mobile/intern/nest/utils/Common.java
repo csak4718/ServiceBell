@@ -37,6 +37,9 @@ public class Common {
     public final static String OBJECT_USER_ACCEPTED_QUESTIONS = "acceptedQuestions";
     public final static String OBJECT_USER_CATCH_QUESTIONS = "catchQuestions";
     public final static String OBJECT_USER_DONE_QUESTIONS = "doneQuestions";
+    public final static String OBJECT_USER_PHONE = "phone";
+    public final static String OBJECT_USER_ADDRESS = "address";
+    public final static String OBJECT_USER_OTHERS = "others";
 
     public final static String OBJECT_QUESTION = "Question";
     public final static String OBJECT_QUESTION_USER = "user";

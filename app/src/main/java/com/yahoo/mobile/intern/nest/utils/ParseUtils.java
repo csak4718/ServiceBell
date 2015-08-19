@@ -14,6 +14,12 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.yahoo.mobile.intern.nest.event.AcceptTaskEvent;
+import com.yahoo.mobile.intern.nest.event.AcceptedUserEvent;
+import com.yahoo.mobile.intern.nest.event.CatchTaskEvent;
+import com.yahoo.mobile.intern.nest.event.DoneTaskEvent;
+import com.yahoo.mobile.intern.nest.event.MyDoneTaskEvent;
+import com.yahoo.mobile.intern.nest.event.MyNewTaskEvent;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
@@ -22,13 +28,6 @@ import java.util.Map;
 
 import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
-
-import com.yahoo.mobile.intern.nest.event.AcceptTaskEvent;
-import com.yahoo.mobile.intern.nest.event.AcceptedUserEvent;
-import com.yahoo.mobile.intern.nest.event.CatchTaskEvent;
-import com.yahoo.mobile.intern.nest.event.DoneTaskEvent;
-import com.yahoo.mobile.intern.nest.event.MyDoneTaskEvent;
-import com.yahoo.mobile.intern.nest.event.MyNewTaskEvent;
 
 /**
  * Created by cmwang on 8/12/15.
@@ -157,13 +156,13 @@ public class ParseUtils {
         ParseUser user = ParseUser.getCurrentUser();
         return user.getParseGeoPoint(Common.OBJECT_USER_PIN) != null;
     }
-    static public void updateUserProfile(final String nickName, final String mFbId, Bitmap profilePic) {
+    static public void updateUserProfile(final Map<String,String> profile, final String mFbId, Bitmap profilePic) {
         final ParseUser user = ParseUser.getCurrentUser();
         user.put(Common.OBJECT_USER_FB_ID, mFbId);
-        updateUserProfile(nickName, profilePic);
+        updateUserProfile(profile, profilePic);
     }
 
-    static public void updateUserProfile(final String nickName, Bitmap profilePic) {
+    static public void updateUserProfile(final Map<String,String> profile, Bitmap profilePic) {
         final ParseUser user = ParseUser.getCurrentUser();
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -173,7 +172,10 @@ public class ParseUtils {
         imgFile.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                user.put(Common.OBJECT_USER_NICK, nickName);
+                if (profile.containsKey(Common.OBJECT_USER_NICK)) {user.put(Common.OBJECT_USER_NICK, profile.get(Common.OBJECT_USER_NICK));}
+                if (profile.containsKey(Common.OBJECT_USER_ADDRESS)){user.put(Common.OBJECT_USER_ADDRESS, profile.get(Common.OBJECT_USER_ADDRESS));}
+                if (profile.containsKey(Common.OBJECT_USER_PHONE)){user.put(Common.OBJECT_USER_PHONE, profile.get(Common.OBJECT_USER_PHONE));}
+                if (profile.containsKey(Common.OBJECT_USER_OTHERS)){user.put(Common.OBJECT_USER_OTHERS, profile.get(Common.OBJECT_USER_OTHERS));}
                 user.put(Common.OBJECT_USER_PROFILE_PIC, imgFile);
                 user.saveInBackground();
             }

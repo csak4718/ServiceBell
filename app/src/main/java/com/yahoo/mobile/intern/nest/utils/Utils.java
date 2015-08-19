@@ -12,6 +12,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.yahoo.mobile.intern.nest.activity.AddTaskActivity;
+import com.yahoo.mobile.intern.nest.activity.BSInfoSettingActivity;
 import com.yahoo.mobile.intern.nest.activity.CatchTaskActivity;
 import com.yahoo.mobile.intern.nest.activity.LoginActivity;
 import com.yahoo.mobile.intern.nest.activity.MainActivity;
@@ -72,7 +73,7 @@ public class Utils {
         activity.startActivityForResult(it, Common.REQUEST_LOCATION);
     }
     static public void gotoProfileSettingActivity(Activity activity) {
-        Intent it = new Intent(activity, ProfileSettingActivity.class);
+        Intent it = new Intent(activity, BSInfoSettingActivity.class);
         activity.startActivity(it);
     }
     static public void gotoMyTaskActivity(Activity activity, String taskId) {

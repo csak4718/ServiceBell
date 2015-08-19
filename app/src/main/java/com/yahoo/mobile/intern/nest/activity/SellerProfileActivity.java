@@ -1,9 +1,10 @@
 package com.yahoo.mobile.intern.nest.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.parse.GetCallback;
@@ -13,6 +14,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
+import com.yahoo.mobile.intern.nest.fragment.DialogFragmentSellerProfile;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 
@@ -26,9 +28,13 @@ public class SellerProfileActivity extends AppCompatActivity {
 
     private ParseUser seller;
     private ParseObject task;
-
+    @Bind(R.id.btn_popup) Button btnPopup;
     @Bind(R.id.img_pic) CircleImageView imgPic;
     @Bind(R.id.txt_name) TextView txtName;
+    @OnClick(R.id.btn_popup) void popUp(){
+        DialogFragmentSellerProfile dialogFragment = DialogFragmentSellerProfile.newInstance(seller);
+        dialogFragment.show(getSupportFragmentManager(),"TTT");
+    }
     @OnClick(R.id.btn_chat) void chatClick() {
 
     }
