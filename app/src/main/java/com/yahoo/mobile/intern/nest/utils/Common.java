@@ -52,8 +52,11 @@ public class Common {
     public final static String OBJECT_QUESTION_ACCEPTED_USER = "acceptedUser";
     public final static String OBJECT_QUESTION_DONE_USER = "doneUser";
 
-    public final static String OBJECT_ACCEPTED_TASKS = "AcceptedTasks";
-    public final static String OBJECT_ACCEPTED_TASKS_USER = "user";
-    public final static String OBJECT_ACCEPTED_TASKS_TASK = "task";
+
+    /*
+     Cloud code function
+     */
+    public final static String CLOUD_NOTIFY_ACCEPT = "notifySellerAccept";
+    public final static String CLOUD_NOTIFY_ACCEPT_BUYERID = "buyerId";
 
 }
