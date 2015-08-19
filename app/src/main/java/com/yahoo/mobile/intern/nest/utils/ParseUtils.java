@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
@@ -18,8 +19,10 @@ import com.yahoo.mobile.intern.nest.event.AcceptTaskEvent;
 import com.yahoo.mobile.intern.nest.event.AcceptedUserEvent;
 import com.yahoo.mobile.intern.nest.event.CatchTaskEvent;
 import com.yahoo.mobile.intern.nest.event.DoneTaskEvent;
+import com.yahoo.mobile.intern.nest.event.FriendsEvent;
 import com.yahoo.mobile.intern.nest.event.MyDoneTaskEvent;
 import com.yahoo.mobile.intern.nest.event.MyNewTaskEvent;
+import com.yahoo.mobile.intern.nest.event.RecipientEvent;
 
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
@@ -28,6 +31,7 @@ import java.util.Map;
 
 import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
+
 
 /**
  * Created by cmwang on 8/12/15.
@@ -148,6 +152,39 @@ public class ParseUtils {
         params.put("sellerId", seller.getObjectId());
         ParseCloud.callFunctionInBackground("doneTask", params);
     }
+
+//    TODO: lastest friend at first row
+    static public void getFriends(ParseUser currentUser){
+        ParseRelation<ParseUser> friends = currentUser.getRelation(Common.OBJECT_USER_FRIENDS);
+        friends.getQuery().findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> list, ParseException e) {
+                if (e == null) {
+                    EventBus.getDefault().post(new FriendsEvent(list));
+                }
+            }
+        });
+    }
+
+
+
+
+    static public void getRecipient(String recipientObjectId){
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.getInBackground(recipientObjectId, new GetCallback<ParseUser>() {
+            public void done(ParseUser recipient, ParseException e) {
+                if (e == null) {
+                    // The query was successful.
+                    EventBus.getDefault().post(new RecipientEvent(recipient));
+
+                } else {
+                    // Something went wrong.
+                }
+            }
+        });
+
+    }
+
 
     /*
      User profile related

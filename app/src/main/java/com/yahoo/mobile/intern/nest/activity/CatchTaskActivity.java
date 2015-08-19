@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.parse.CountCallback;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
+import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
@@ -30,12 +31,16 @@ import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CatchTaskActivity extends AppCompatActivity{
 
+    private ParseObject mTask;
     private String taskId;
     private GoogleMap mMap;
 
@@ -47,7 +52,10 @@ public class CatchTaskActivity extends AppCompatActivity{
     @Bind(R.id.txt_msg_accepted) TextView txtMsgAccepted;
     @Bind(R.id.img_user_pic)CircleImageView imgUserPic;
     @Bind(R.id.txt_user_name) TextView txtUserName;
+    @Bind(R.id.txt_task_date) TextView txtTaskDate;
+    @Bind(R.id.txt_task_time) TextView txtTaskTime;
     @Bind(R.id.img_map) ImageView imgMap;
+
 
     private void acceptTask(ParseObject task) {
         ParseUser user = ParseUser.getCurrentUser();
@@ -60,6 +68,13 @@ public class CatchTaskActivity extends AppCompatActivity{
         ParseRelation<ParseUser> acceptedUser = task.getRelation(Common.OBJECT_QUESTION_ACCEPTED_USER);
         acceptedUser.add(user);
         task.saveInBackground();
+
+        /*
+         Use cloud code to notify buyer
+         */
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put(Common.CLOUD_NOTIFY_ACCEPT_BUYERID, mTask.getParseUser(Common.OBJECT_QUESTION_USER).getObjectId());
+        ParseCloud.callFunctionInBackground(Common.CLOUD_NOTIFY_ACCEPT, params);
     }
 
     private void setupTask() {
@@ -67,6 +82,7 @@ public class CatchTaskActivity extends AppCompatActivity{
         query.getInBackground(taskId, new GetCallback<ParseObject>() {
             @Override
             public void done(final ParseObject task, ParseException e) {
+                mTask = task;
                 ParseUser user = (ParseUser)task.get(Common.OBJECT_QUESTION_USER);
                 String title = task.getString(Common.OBJECT_QUESTION_TITLE);
                 String content = task.getString(Common.OBJECT_QUESTION_CONTENT);
@@ -86,6 +102,9 @@ public class CatchTaskActivity extends AppCompatActivity{
                         }
                     }
                 });
+                txtTaskDate.setText(task.getDate(Common.OBJECT_QUESTION_DATE).toString());
+                txtTaskTime.setText(task.getString(Common.OBJECT_QUESTION_TIME));
+
 
                 LatLng latLng = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));

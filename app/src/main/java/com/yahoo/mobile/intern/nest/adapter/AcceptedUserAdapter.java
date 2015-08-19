@@ -3,11 +3,14 @@ package com.yahoo.mobile.intern.nest.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.parse.GetDataCallback;
@@ -18,6 +21,7 @@ import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -32,22 +36,49 @@ public class AcceptedUserAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mInflater;
     private List<ParseUser> mList;
+    private List<Boolean> checkStatus;
+    private int mCheck;
+    private boolean mSelectable;
 
     static class ViewHolder {
 
         @Bind(R.id.img_pic) public CircleImageView imgPic;
         @Bind(R.id.txt_name) public TextView txtName;
         @Bind(R.id.txt_title) public TextView txtTitle;
+        @Bind(R.id.radio_select) public RadioButton rdSelect;
+        @Bind(R.id.btn_chat) public ImageButton btnChat;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
     }
 
+    public void receivedAcceptedUser() {
+        checkStatus = new ArrayList<>();
+        for(int i = 0; i < mList.size(); i++) {
+            checkStatus.add(false);
+        }
+        notifyDataSetChanged();
+    }
+
     public AcceptedUserAdapter(Context context, List<ParseUser> list) {
         mContext = context;
         mInflater = LayoutInflater.from(mContext);
         mList = list;
+        mCheck = -1;
+        mSelectable = false;
+    }
+
+    public ParseUser getCheckedUser() {
+        if(mCheck != -1) {
+            return mList.get(mCheck);
+        }
+        return null;
+    }
+
+    public void setSelectable(boolean state) {
+        mSelectable = state;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -81,8 +112,20 @@ public class AcceptedUserAdapter extends BaseAdapter {
         });
     }
 
+    private void checkPosition(int position) {
+        checkStatus.set(position, true);
+        mCheck = position;
+        for(int i = 0; i < mList.size(); i++) {
+            if(i == position) {
+                continue;
+            }
+            checkStatus.set(i, false);
+        }
+        notifyDataSetChanged();
+    }
+
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
         if(convertView == null) {
             convertView = mInflater.inflate(R.layout.card_accepted_user, parent, false);
@@ -96,6 +139,23 @@ public class AcceptedUserAdapter extends BaseAdapter {
         final ParseUser user = mList.get(position);
         holder.txtName.setText(user.getString(Common.OBJECT_USER_NICK));
         displayUserParseImage(holder, user);
+
+        if(!mSelectable) {
+            holder.btnChat.setVisibility(View.VISIBLE);
+            holder.rdSelect.setVisibility(View.GONE);
+        }
+        else {
+            holder.btnChat.setVisibility(View.GONE);
+            holder.rdSelect.setVisibility(View.VISIBLE);
+            holder.rdSelect.setChecked(checkStatus.get(position));
+
+            holder.rdSelect.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    checkPosition(position);
+                }
+            });
+        }
 
         return convertView;
     }

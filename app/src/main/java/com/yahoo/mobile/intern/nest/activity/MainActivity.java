@@ -14,9 +14,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.melnykov.fab.FloatingActionButton;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
@@ -28,6 +30,7 @@ import com.yahoo.mobile.intern.nest.utils.Utils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,8 +40,10 @@ public class MainActivity extends AppCompatActivity {
     @Bind(R.id.navigation_view) NavigationView navigationView;
     @Bind(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @Bind(R.id.btn_add_post) FloatingActionButton btnAddPost;
-    private ActionBarDrawerToggle mDrawerToggle;
+    @Bind(R.id.drawer_img_profile) CircleImageView imgProfile;
+    @Bind(R.id.drawer_txt_name)TextView txtName;
 
+    private ActionBarDrawerToggle mDrawerToggle;
     private ActionBar mActionBar;
 
     /*
@@ -70,6 +75,10 @@ public class MainActivity extends AppCompatActivity {
                             Utils.gotoProfileSettingActivity(MainActivity.this);
                         }
                         break;
+                    case R.id.menu_instant_message:
+                        Utils.gotoIMListActivity(MainActivity.this);
+                        btnAddPost.setVisibility(View.GONE);
+                        break;
                     case R.id.menu_settings:
                         Utils.gotoProfileSettingActivity(MainActivity.this);
                         btnAddPost.setVisibility(View.GONE);
@@ -79,6 +88,14 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        /*
+         setup header layout
+         */
+        ParseFile imgFile = ParseUser.getCurrentUser().getParseFile(Common.OBJECT_USER_PROFILE_PIC);
+        ParseUtils.displayParseImage(imgFile, imgProfile);
+        txtName.setText(ParseUser.getCurrentUser().getString(Common.OBJECT_USER_NICK));
+
     }
 
     @Override
