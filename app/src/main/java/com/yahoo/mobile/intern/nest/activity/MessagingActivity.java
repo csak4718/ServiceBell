@@ -10,6 +10,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseObject;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.sinch.android.rtc.PushPair;
 import com.sinch.android.rtc.messaging.Message;
@@ -130,9 +132,9 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
     @Override
     public void onMessageSent(MessageClient client, Message message, String recipientId) {
         mMessageAdapter.addMessage(message, MessageAdapter.DIRECTION_OUTGOING);
-        ParseUser currentUser = ParseUser.getCurrentUser();
 
-
+        ParseUser sender = ParseUser.getCurrentUser();
+        ParseUtils.createChatConnection(sender, recipient);
     }
 
     @Override

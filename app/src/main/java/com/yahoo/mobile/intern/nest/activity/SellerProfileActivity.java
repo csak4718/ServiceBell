@@ -21,6 +21,7 @@ import com.sinch.android.rtc.SinchError;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
+import com.yahoo.mobile.intern.nest.utils.Utils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -68,7 +69,7 @@ public class SellerProfileActivity extends BaseActivity implements SinchService.
             getSinchServiceInterface().startClient(userName);
             showSpinner();
         } else {
-            openMessagingActivity();
+            Utils.gotoMessagingActivity(SellerProfileActivity.this, seller.getObjectId());
         }
     }
 
@@ -131,13 +132,7 @@ public class SellerProfileActivity extends BaseActivity implements SinchService.
 
     @Override
     public void onStarted() {
-        openMessagingActivity();
-    }
-
-    private void openMessagingActivity() {
-        Intent it = new Intent(this, MessagingActivity.class);
-        it.putExtra("recipientObjectId", seller.getObjectId().toString());
-        startActivity(it);
+        Utils.gotoMessagingActivity(SellerProfileActivity.this, seller.getObjectId());
     }
 
     private void showSpinner() {
