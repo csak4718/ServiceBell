@@ -12,7 +12,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="200dp">
 
         <fragment
             android:layout_width="match_parent"
@@ -103,12 +103,11 @@
         </LinearLayout>
 
         <TextView
-            android:id="@+id/edt_time"
+            android:id="@+id/txt_task_date"
             android:background="@android:color/transparent"
             android:textSize="20dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/apptask_time"/>
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <View
@@ -134,8 +133,7 @@
 
         <TextView
             android:textColor="@color/black"
-            android:id="@+id/text_expiretime"
-            android:hint="@string/apptask_expiretime"
+            android:id="@+id/txt_task_time"
             android:textSize="20dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

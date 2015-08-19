@@ -230,7 +230,8 @@ public class MapsActivity extends FragmentActivity
         mRadiusCircle = mMap.addCircle(new CircleOptions()
                 .center(mMap.getCameraPosition().target)
                 .radius(mRadius)
-                .strokeColor(Color.BLUE));
+                .strokeColor(Color.BLUE)
+                .fillColor(0x445BDACE));
     }
 
 }
