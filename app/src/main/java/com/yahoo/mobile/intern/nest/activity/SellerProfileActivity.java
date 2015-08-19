@@ -50,7 +50,6 @@ public class SellerProfileActivity extends BaseActivity implements SinchService.
         ParseUtils.displayParseImage(parseImg, imgPic);
         txtName.setText(seller.getString(Common.OBJECT_USER_NICK));
 
-
         btnChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
