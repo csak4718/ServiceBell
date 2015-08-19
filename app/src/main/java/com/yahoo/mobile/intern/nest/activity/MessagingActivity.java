@@ -20,6 +20,7 @@ import com.sinch.android.rtc.messaging.MessageFailureInfo;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.adapter.MessageAdapter;
 import com.yahoo.mobile.intern.nest.event.RecipientEvent;
+import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 
 import java.util.List;
@@ -44,7 +45,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
         recipientNickname = (TextView) findViewById(R.id.recipient_nickname);
 
         Intent it = getIntent();
-        recipientObjectId = it.getStringExtra("recipientObjectId");
+        recipientObjectId = it.getStringExtra(Common.EXTRA_RECIPIENT_OBJECT_ID);
         ParseUtils.getRecipient(recipientObjectId);
 
 
@@ -102,9 +103,9 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
     }
 
     private void sendMessage() {
-        String recipientId = recipient.getObjectId().toString();
+
         String textBody = mTxtTextBody.getText().toString();
-        if (recipientId.isEmpty()) {
+        if (recipientObjectId.isEmpty()) {
             Toast.makeText(this, "No recipient added", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -113,7 +114,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
             return;
         }
 
-        getSinchServiceInterface().sendMessage(recipientId, textBody);
+        getSinchServiceInterface().sendMessage(recipientObjectId, textBody);
         mTxtTextBody.setText("");
     }
 
@@ -129,6 +130,9 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
     @Override
     public void onMessageSent(MessageClient client, Message message, String recipientId) {
         mMessageAdapter.addMessage(message, MessageAdapter.DIRECTION_OUTGOING);
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        
+
     }
 
     @Override

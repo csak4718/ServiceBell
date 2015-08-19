@@ -32,6 +32,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import com.yahoo.mobile.intern.nest.event.AcceptTaskEvent;
 import com.yahoo.mobile.intern.nest.event.AcceptedUserEvent;
 import com.yahoo.mobile.intern.nest.event.CatchTaskEvent;
+import com.yahoo.mobile.intern.nest.event.FriendsEvent;
 import com.yahoo.mobile.intern.nest.event.MyTaskEvent;
 import com.yahoo.mobile.intern.nest.event.RecipientEvent;
 
@@ -110,6 +111,22 @@ public class ParseUtils {
             }
         });
     }
+
+//    TODO: lastest friend at first row
+    static public void getFriends(ParseUser currentUser){
+        ParseRelation<ParseUser> friends = currentUser.getRelation(Common.OBJECT_USER_FRIENDS);
+        friends.getQuery().findInBackground(new FindCallback<ParseUser>() {
+            @Override
+            public void done(List<ParseUser> list, ParseException e) {
+                if (e == null) {
+                    EventBus.getDefault().post(new FriendsEvent(list));
+                }
+            }
+        });
+    }
+
+
+
 
     static public void getRecipient(String recipientObjectId){
         ParseQuery<ParseUser> query = ParseUser.getQuery();

@@ -70,6 +70,10 @@ public class MainActivity extends AppCompatActivity {
                             Utils.gotoProfileSettingActivity(MainActivity.this);
                         }
                         break;
+                    case R.id.menu_instant_message:
+                        Utils.gotoIMListActivity(MainActivity.this);
+                        btnAddPost.setVisibility(View.GONE);
+                        break;
                     case R.id.menu_settings:
                         Utils.gotoProfileSettingActivity(MainActivity.this);
                         btnAddPost.setVisibility(View.GONE);
