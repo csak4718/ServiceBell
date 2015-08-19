@@ -131,7 +131,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
     public void onMessageSent(MessageClient client, Message message, String recipientId) {
         mMessageAdapter.addMessage(message, MessageAdapter.DIRECTION_OUTGOING);
         ParseUser currentUser = ParseUser.getCurrentUser();
-        
+
 
     }
 

@@ -69,7 +69,7 @@ public class MyTaskActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ParseUser seller = (ParseUser) mAdapter.getItem(position);
-                Utils.gotoSellerProfileActivity(MyTaskActivity.this, seller.getObjectId());
+                Utils.gotoSellerProfileActivity(MyTaskActivity.this, seller.getObjectId(), taskId);
             }
         });
     }

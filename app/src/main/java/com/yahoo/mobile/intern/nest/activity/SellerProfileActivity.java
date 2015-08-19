@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.sinch.android.rtc.SinchError;
@@ -30,15 +31,18 @@ public class SellerProfileActivity extends BaseActivity implements SinchService.
 
 
     private ParseUser seller;
+
     private ProgressDialog mSpinner;
     private ImageButton btnChat;
+
+    private ParseObject task;
 
     @Bind(R.id.img_pic) CircleImageView imgPic;
     @Bind(R.id.txt_name) TextView txtName;
 
 
     @OnClick(R.id.btn_done) void taskDone() {
-
+        ParseUtils.doneTask(task, ParseUser.getCurrentUser(), seller);
     }
 
     private void setupView() {
@@ -80,15 +84,21 @@ public class SellerProfileActivity extends BaseActivity implements SinchService.
         btnChat = (ImageButton) findViewById(R.id.btn_chat);
         btnChat.setEnabled(false);
 
+        final String userId = getIntent().getStringExtra(Common.EXTRA_USER_ID);
+        final String taskId = getIntent().getStringExtra(Common.EXTRA_TASK_ID);
 
-        String userId = getIntent().getStringExtra(Common.EXTRA_USER_ID);
         ParseQuery<ParseUser> query = ParseUser.getQuery();
         query.getInBackground(userId, new GetCallback<ParseUser>() {
             @Override
             public void done(ParseUser parseUser, ParseException e) {
                 if(e == null) {
                     seller = parseUser;
-                    setupView();
+                    try {
+                        task = ParseQuery.getQuery(Common.OBJECT_QUESTION).get(taskId);
+                        setupView();
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    }
                 }
             }
         });

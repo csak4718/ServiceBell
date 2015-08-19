@@ -7,6 +7,15 @@ public class Common {
 
     public final static int REQUEST_LOCATION = 5566;
 
+    /*
+        Fragment type
+     */
+    public final static int BUYER_NEW = 0;
+    public final static int BUYER_DONE = 1;
+    public final static int SELLER_NEW = 2;
+    public final static int SELLER_ACCEPTED = 3;
+    public final static int SELLER_DONE = 4;
+
     public final static String EXTRA_LOCATION = "location";
     public final static String EXTRA_SEEKBAR = "seekbar";
     public final static String EXTRA_TASK_ID = "task_id";
@@ -24,9 +33,12 @@ public class Common {
     public final static String OBJECT_USER_FB_ID = "fbId";
     public final static String OBJECT_USER_PIN = "pin";
     public final static String OBJECT_USER_RADIUS = "radius";
+    public final static String OBJECT_USER_MY_NEW_QUESTIONS = "myNewQuestions";
+    public final static String OBJECT_USER_MY_DONE_QUESTIONS = "myDoneQuestions";
     public final static String OBJECT_USER_ACCEPTED_QUESTIONS = "acceptedQuestions";
     public final static String OBJECT_USER_CATCH_QUESTIONS = "catchQuestions";
     public final static String OBJECT_USER_FRIENDS = "friends";
+    public final static String OBJECT_USER_DONE_QUESTIONS = "doneQuestions";
 
 
     public final static String OBJECT_QUESTION = "Question";
