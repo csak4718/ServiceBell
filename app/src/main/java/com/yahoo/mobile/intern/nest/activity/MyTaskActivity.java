@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,33 +32,57 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 public class MyTaskActivity extends AppCompatActivity {
 
     private String taskId;
+    private ParseObject mTask;
 
     @Bind(R.id.txt_title) TextView txtTitle;
     @Bind(R.id.txt_content) TextView txtContent;
     @Bind(R.id.list_view_accepted_seller) ListView mListView;
+    @Bind(R.id.btn_deal) Button btnDeal;
+    @Bind(R.id.select_seller) LinearLayout selectSeller;
+    @Bind(R.id.btn_confirm) Button btnConfirm;
+    @Bind(R.id.btn_cancel) Button btnCancel;
 
     private AcceptedUserAdapter mAdapter;
     private List<ParseUser> mList;
 
 
-
+    @OnClick(R.id.btn_deal) void dealOnClick() {
+        mAdapter.setSelectable(true);
+        btnDeal.setVisibility(View.GONE);
+        selectSeller.setVisibility(View.VISIBLE);
+    }
+    @OnClick(R.id.btn_cancel) void cancelOnClick() {
+        mAdapter.setSelectable(false);
+        btnDeal.setVisibility(View.VISIBLE);
+        selectSeller.setVisibility(View.GONE);
+    }
+    @OnClick(R.id.btn_confirm) void confirmOnClick() {
+        ParseUser seller = mAdapter.getCheckedUser();
+        if(seller != null) {
+            ParseUtils.doneTask(mTask, ParseUser.getCurrentUser(), seller);
+        }
+    }
 
     private void setupTask() {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(Common.OBJECT_QUESTION);
         query.getInBackground(taskId, new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject task, ParseException e) {
-                String title = task.getString(Common.OBJECT_QUESTION_TITLE);
-                String content = task.getString(Common.OBJECT_QUESTION_CONTENT);
-                txtTitle.setText(title);
-                txtContent.setText(content);
-                setupAcceptedSellers();
-                ParseUtils.getTaskAcceptedUser(task);
+                if(e == null) {
+                    mTask = task;
+                    String title = task.getString(Common.OBJECT_QUESTION_TITLE);
+                    String content = task.getString(Common.OBJECT_QUESTION_CONTENT);
+                    txtTitle.setText(title);
+                    txtContent.setText(content);
+                    setupAcceptedSellers();
+                    ParseUtils.getTaskAcceptedUser(task);
+                }
             }
         });
     }
@@ -68,8 +94,7 @@ public class MyTaskActivity extends AppCompatActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ParseUser seller = (ParseUser) mAdapter.getItem(position);
-                Utils.gotoSellerProfileActivity(MyTaskActivity.this, seller.getObjectId(), taskId);
+
             }
         });
     }
@@ -87,7 +112,7 @@ public class MyTaskActivity extends AppCompatActivity {
 
     public void onEvent(AcceptedUserEvent event) {
         mList.addAll(event.userList);
-        mAdapter.notifyDataSetChanged();
+        mAdapter.receivedAcceptedUser();
     }
 
     @Override

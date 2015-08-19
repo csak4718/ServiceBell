@@ -49,9 +49,14 @@ public class Common {
     public final static String OBJECT_QUESTION_DATE = "date";
     public final static String OBJECT_QUESTION_TIME = "time";
     public final static String OBJECT_QUESTION_LOCATION = "pin";
-
-    public final static String OBJECT_ACCEPTED_TASKS = "AcceptedTasks";
-    public final static String OBJECT_ACCEPTED_TASKS_USER = "user";
-    public final static String OBJECT_ACCEPTED_TASKS_TASK = "task";
     public final static String OBJECT_QUESTION_ACCEPTED_USER = "acceptedUser";
+    public final static String OBJECT_QUESTION_DONE_USER = "doneUser";
+
+
+    /*
+     Cloud code function
+     */
+    public final static String CLOUD_NOTIFY_ACCEPT = "notifySellerAccept";
+    public final static String CLOUD_NOTIFY_ACCEPT_BUYERID = "buyerId";
+
 }
