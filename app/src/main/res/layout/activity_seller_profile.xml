@@ -3,18 +3,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.yahoo.mobile.intern.nest.activity.SellerProfileActivity">
+    tools:context="com.yahoo.mobile.intern.nest.activity.SellerProfileActivity"
+    android:gravity="center_horizontal">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/img_pic"
-        android:src="@drawable/ic_account_circle_black_48dp"
-        android:layout_width="80dp"
-        android:layout_height="80dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/gray"
+        android:gravity="center">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_pic"
+            android:src="@drawable/ic_account_circle_black_48dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp" />
+    </LinearLayout>
+
     <TextView
+        android:layout_marginTop="6dp"
         android:id="@+id/txt_name"
-        android:text="Name"
+        android:text="FanFan潮店"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <TextView
+        android:layout_marginTop="6dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_phone"
+        android:text="0987654321"/>
+    <TextView
+        android:layout_marginTop="6dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/address"
+        android:text="三重路21號"/>
+    <TextView
+        android:layout_marginTop="6dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/others"
+        android:text="水電達人、各式水電到府服務\n各種完善售後服務"/>
 
     <ImageButton
         android:id="@+id/btn_chat"
@@ -30,6 +58,9 @@
         android:background="@android:color/transparent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        />
+        android:layout_margin="5dp"/>
+    <Button
+        android:id="@+id/btn_popup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 </LinearLayout>

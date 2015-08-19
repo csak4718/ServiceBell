@@ -2,11 +2,11 @@ package com.yahoo.mobile.intern.nest.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,6 +19,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.sinch.android.rtc.SinchError;
 import com.yahoo.mobile.intern.nest.R;
+import com.yahoo.mobile.intern.nest.fragment.DialogFragmentSellerProfile;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 
@@ -36,10 +37,14 @@ public class SellerProfileActivity extends BaseActivity implements SinchService.
     private ImageButton btnChat;
 
     private ParseObject task;
-
+    @Bind(R.id.btn_popup) Button btnPopup;
     @Bind(R.id.img_pic) CircleImageView imgPic;
     @Bind(R.id.txt_name) TextView txtName;
 
+    @OnClick(R.id.btn_popup) void popUp(){
+        DialogFragmentSellerProfile dialogFragment = DialogFragmentSellerProfile.newInstance(seller);
+        dialogFragment.show(getSupportFragmentManager(),"TTT");
+    }
 
     @OnClick(R.id.btn_done) void taskDone() {
         ParseUtils.doneTask(task, ParseUser.getCurrentUser(), seller);

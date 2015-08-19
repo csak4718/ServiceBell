@@ -1,0 +1,137 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.yahoo.mobile.intern.nest.activity.BSInfoSettingActivity">
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_profile_pic"
+                android:layout_marginTop="30dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/ic_account_circle_black_48dp"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:padding="5dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="20dp">
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_like"/>
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_like"/>
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_like"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="40dp"
+                android:layout_marginRight="40dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|left"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_marginBottom="10dp"
+                    android:text="Name" />
+                <EditText
+                    android:id="@+id/edt_setting_nickname"
+                    android:singleLine="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="20dp"
+                    android:padding="5dp"
+                    android:text="Fan Fan"
+                    android:hint="" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|left"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_marginBottom="10dp"
+                    android:text="Phone" />
+                <EditText
+                    android:id="@+id/edt_phone"
+                    android:singleLine="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@android:color/white"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="20dp"
+                    android:padding="5dp"
+                    android:text="Fan Fan"
+                    android:hint="" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|left"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_marginBottom="10dp"
+                    android:text="Address" />
+                <EditText
+                    android:id="@+id/edt_address"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@android:color/white"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="20dp"
+                    android:padding="5dp"
+                    android:text="Fan Fan"
+                    android:hint="" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|left"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_marginBottom="10dp"
+                    android:text="Others" />
+                <EditText
+                    android:id="@+id/edt_others"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:layout_gravity="bottom"
+                    android:layout_marginBottom="20dp"
+                    android:padding="5dp"
+                    android:text="Fan Fan"
+                    android:hint="" />
+                <Button
+                    android:id="@+id/btn_log_out"
+                    android:text="LOGOUT"
+                    android:textColor="@android:color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#44609D" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+</LinearLayout>
