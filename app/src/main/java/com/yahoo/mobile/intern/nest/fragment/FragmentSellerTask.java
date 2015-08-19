@@ -41,7 +41,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by cmwang on 8/15/15.
  */
-public class FragmentSellerTask extends Fragment {
+public class FragmentSellerTask extends FragmentTask {
 
     private SwipeRefreshLayout swipeRefreshLayout;
     private View mView;
@@ -102,7 +102,8 @@ public class FragmentSellerTask extends Fragment {
         mType = args.getInt("type");
     }
 
-    private void getNewData() {
+    @Override
+    public void getNewData() {
         if(mType == Common.SELLER_NEW) {
             ParseUtils.getCatchedTasks();
         }

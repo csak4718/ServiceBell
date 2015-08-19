@@ -10,17 +10,12 @@
         android:background="@android:color/white"
         android:paddingLeft="10dp">
 
-        <EditText
-            android:id="@+id/txtRecipient"
+        <TextView
+            android:id="@+id/recipient_nickname"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Recipient"
             android:background="@android:color/white"
-            android:textColor="@color/purple"
-            android:inputType="textPersonName">
-
-            <requestFocus/>
-        </EditText>
+            android:textColor="@color/purple"/>
     </RelativeLayout>
 
     <ListView

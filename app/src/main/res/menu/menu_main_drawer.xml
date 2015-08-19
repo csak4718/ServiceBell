@@ -12,6 +12,11 @@
             android:icon="@drawable/ic_add_black_24dp"
             android:title="Catched Tasks" />
         <item
+            android:id="@+id/menu_instant_message"
+            android:checked="false"
+            android:title="Instant Message" />
+
+        <item
             android:id="@+id/menu_settings"
             android:checked="false"
             android:title="Settings" />

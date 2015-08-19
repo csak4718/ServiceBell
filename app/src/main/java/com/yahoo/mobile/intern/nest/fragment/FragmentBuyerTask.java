@@ -31,7 +31,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by cmwang on 8/15/15.
  */
-public class FragmentBuyerTask extends Fragment {
+public class FragmentBuyerTask extends FragmentTask {
 
     private int mType;
 
@@ -89,7 +89,8 @@ public class FragmentBuyerTask extends Fragment {
         mType = args.getInt("type");
     }
 
-    private void getNewData() {
+    @Override
+    public void getNewData() {
         if(mType == Common.BUYER_NEW) {
             ParseUtils.getMyNewTasks();
         }

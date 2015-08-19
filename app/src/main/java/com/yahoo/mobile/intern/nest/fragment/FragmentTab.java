@@ -42,6 +42,9 @@ public class FragmentTab extends Fragment {
         }
     }
 
+    public void refreshAllTab() {
+        adapter.refreshAllTabs();
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
