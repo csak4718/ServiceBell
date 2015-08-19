@@ -99,6 +99,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if(fragmentTab != null) {
+            fragmentTab.refreshAllTab();
+        }
+    }
+
+    public void refreshFragmentTab() {
+        fragmentTab.refreshAllTab();
+    }
+
+    @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
