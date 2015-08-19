@@ -13,9 +13,11 @@ import android.widget.Toast;
 
 import com.yahoo.mobile.intern.nest.activity.AddTaskActivity;
 import com.yahoo.mobile.intern.nest.activity.CatchTaskActivity;
+import com.yahoo.mobile.intern.nest.activity.IMListActivity;
 import com.yahoo.mobile.intern.nest.activity.LoginActivity;
 import com.yahoo.mobile.intern.nest.activity.MainActivity;
 import com.yahoo.mobile.intern.nest.activity.MapsActivity;
+import com.yahoo.mobile.intern.nest.activity.MessagingActivity;
 import com.yahoo.mobile.intern.nest.activity.ProfileSettingActivity;
 import com.yahoo.mobile.intern.nest.activity.MyTaskActivity;
 import com.yahoo.mobile.intern.nest.activity.SellerProfileActivity;
@@ -89,6 +91,15 @@ public class Utils {
         Intent it = new Intent(activity, SellerProfileActivity.class);
         it.putExtra(Common.EXTRA_USER_ID, userId);
         it.putExtra(Common.EXTRA_TASK_ID, taskId);
+        activity.startActivity(it);
+    }
+    static public void gotoIMListActivity(Activity activity){
+        Intent it = new Intent(activity, IMListActivity.class);
+        activity.startActivity(it);
+    }
+    static public void gotoMessagingActivity(Activity activity, String recipientObjectId){
+        Intent it = new Intent(activity, MessagingActivity.class);
+        it.putExtra(Common.EXTRA_RECIPIENT_OBJECT_ID, recipientObjectId);
         activity.startActivity(it);
     }
 }

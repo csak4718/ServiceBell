@@ -1,19 +1,23 @@
 package com.yahoo.mobile.intern.nest.activity;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.sinch.android.rtc.SinchError;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.adapter.AcceptedUserAdapter;
 import com.yahoo.mobile.intern.nest.event.AcceptedUserEvent;
@@ -38,6 +42,9 @@ public class MyTaskActivity extends AppCompatActivity {
 
     private AcceptedUserAdapter mAdapter;
     private List<ParseUser> mList;
+
+
+
 
     private void setupTask() {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(Common.OBJECT_QUESTION);
@@ -82,6 +89,7 @@ public class MyTaskActivity extends AppCompatActivity {
         mList.addAll(event.userList);
         mAdapter.notifyDataSetChanged();
     }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,8 +99,11 @@ public class MyTaskActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         taskId = getIntent().getStringExtra(Common.EXTRA_TASK_ID);
+
         setupTask();
+
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -111,4 +122,6 @@ public class MyTaskActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 }

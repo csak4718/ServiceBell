@@ -21,6 +21,7 @@ public class Common {
     public final static String EXTRA_TASK_ID = "task_id";
     public final static String EXTRA_USER_ID = "user_id";
     public final static String EXTRA_ADDRESS = "address";
+    public final static String EXTRA_RECIPIENT_OBJECT_ID = "recipientObjectId";
     /*
      Parse object
      */
@@ -36,7 +37,9 @@ public class Common {
     public final static String OBJECT_USER_MY_DONE_QUESTIONS = "myDoneQuestions";
     public final static String OBJECT_USER_ACCEPTED_QUESTIONS = "acceptedQuestions";
     public final static String OBJECT_USER_CATCH_QUESTIONS = "catchQuestions";
+    public final static String OBJECT_USER_FRIENDS = "friends";
     public final static String OBJECT_USER_DONE_QUESTIONS = "doneQuestions";
+
 
     public final static String OBJECT_QUESTION = "Question";
     public final static String OBJECT_QUESTION_USER = "user";
