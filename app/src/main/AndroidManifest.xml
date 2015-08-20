@@ -119,7 +119,7 @@
         </activity>
         <activity
             android:name=".activity.MyTaskActivity"
-            android:label="@string/title_activity_view_task" >
+            android:label="" >
         </activity>
 
         <service

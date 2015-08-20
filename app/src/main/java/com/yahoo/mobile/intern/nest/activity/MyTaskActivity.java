@@ -55,7 +55,6 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
             public void done(ParseObject task, ParseException e) {
                 if(e == null) {
                     mTask = task;
-                    getSupportActionBar().setTitle(task.getString(Common.OBJECT_QUESTION_TITLE));
 
                     String title = task.getString(Common.OBJECT_QUESTION_TITLE);
                     String content = task.getString(Common.OBJECT_QUESTION_CONTENT);
