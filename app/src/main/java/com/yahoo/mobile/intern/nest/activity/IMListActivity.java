@@ -87,7 +87,6 @@ public class IMListActivity extends BaseActivity implements SinchService.StartFa
     }
 
 
-
     // implements SinchService.StartFailedListener functions
     @Override
     public void onStartFailed(SinchError error) {

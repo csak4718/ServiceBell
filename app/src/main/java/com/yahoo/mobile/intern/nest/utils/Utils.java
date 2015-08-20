@@ -22,6 +22,7 @@ import com.yahoo.mobile.intern.nest.activity.MessagingActivity;
 import com.yahoo.mobile.intern.nest.activity.ProfileSettingActivity;
 import com.yahoo.mobile.intern.nest.activity.MyTaskActivity;
 import com.yahoo.mobile.intern.nest.activity.SellerProfileActivity;
+import com.yahoo.mobile.intern.nest.activity.SpinnerActivity;
 
 /**
  * Created by cmwang on 8/12/15.
@@ -103,5 +104,9 @@ public class Utils {
         it.putExtra(Common.EXTRA_RECIPIENT_OBJECT_ID, recipientObjectId);
         activity.startActivity(it);
     }
-
+    static public void gotoSpinnerActivity(Activity activity, String recipientObjectId){
+        Intent it = new Intent(activity, SpinnerActivity.class);
+        it.putExtra(Common.EXTRA_RECIPIENT_OBJECT_ID, recipientObjectId);
+        activity.startActivity(it);
+    }
 }

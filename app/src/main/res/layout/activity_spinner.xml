@@ -7,11 +7,11 @@
     tools:context="com.yahoo.mobile.intern.nest.activity.SpinnerActivity">
 
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="To Messaging Activity"
-        android:id="@+id/btn_to_Messaging"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="To Messaging Activity"-->
+        <!--android:id="@+id/btn_to_Messaging"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_centerHorizontal="true" />-->
 </RelativeLayout>

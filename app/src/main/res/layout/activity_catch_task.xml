@@ -214,7 +214,7 @@
         android:layout_height="wrap_content"
         android:visibility="gone"/>
     <Button
-        android:id="@+id/btn_toSpinner"
+        android:id="@+id/btn_toMessaging"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="IM to service requester" />
