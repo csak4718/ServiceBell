@@ -26,6 +26,16 @@
     <color name="PrimaryDarkColor">#5AD3D2</color>
     <color name="dark_gray">#ffb3b3b3</color>
 
+    <color name="nest_yellow_1">#FFEA3A</color>
+    <color name="nest_yellow_2">#FFF49C</color>
+    <color name="nest_yellow_3">#FFEA3A</color>
+    <color name="nest_yellow_4">#FABF2C</color>
+
+    <color name="nest_blue_1">#4CCFE0</color>
+    <color name="nest_blue_2">#B1EAF1</color>
+    <color name="nest_blue_3">#4CCFE0</color>
+    <color name="nest_blue_4">#00ABC0</color>
+
     <integer-array name="androidcolors">
         <item>@color/blue</item>
         <item>@color/purple</item>

@@ -26,17 +26,25 @@
     </style>
 
     <style name="toolbarTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
-        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:textColorPrimary">@color/black</item>
     </style>
 
     <!-- ActionBar styles -->
     <style name="MyActionBar"
         parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/action_bar_background</item>
+        <item name="android:titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle</item>
+        <item name="android:background">@color/nest_yellow_1</item>
+        <item name="android:textColorPrimary">@color/black</item>
 
         <!-- Support library compatibility -->
-        <item name="background">@color/action_bar_background</item>
+        <item name="titleTextStyle">@style/MyTheme.ActionBar.TitleTextStyle</item>
+        <item name="background">@color/nest_yellow_1</item>
         <item name="elevation">0dp</item>
+    </style>
+
+    <style name="MyTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">20sp</item>
     </style>
 
 </resources>

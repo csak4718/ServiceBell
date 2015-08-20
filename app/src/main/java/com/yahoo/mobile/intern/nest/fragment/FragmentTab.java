@@ -32,8 +32,8 @@ public class FragmentTab extends Fragment {
 
     private void setupAdapter(int id) {
         if(id == R.id.menu_my_task) {
-            adapter.addFrag(FragmentBuyerTask.newInstance(Common.BUYER_NEW), "New");
-            adapter.addFrag(FragmentBuyerTask.newInstance(Common.BUYER_DONE), "Done");
+            adapter.addFrag(FragmentBuyerTask.newInstance(Common.BUYER_NEW), "等待中任務");
+            adapter.addFrag(FragmentBuyerTask.newInstance(Common.BUYER_DONE), "已成交任務");
         }
         else if(id == R.id.menu_catch_task) {
             adapter.addFrag(FragmentSellerTask.newInstance(Common.SELLER_NEW), "New");
