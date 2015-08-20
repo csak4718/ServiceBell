@@ -5,6 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 
+import com.yahoo.mobile.intern.nest.fragment.FragmentTask;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +15,14 @@ import java.util.List;
  */
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-    private List<Fragment> mFragmentList;
+    private List<FragmentTask> mFragmentList;
     private List<String> mFragmentTitleList;
+
+    public void refreshAllTabs() {
+        for(FragmentTask fragmentTask : mFragmentList) {
+            fragmentTask.getNewData();
+        }
+    }
 
     public ViewPagerAdapter(FragmentManager manager) {
         super(manager);
@@ -23,7 +31,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     @Override
-    public Fragment getItem(int position) {
+    public FragmentTask getItem(int position) {
         return mFragmentList.get(position);
     }
 
@@ -42,7 +50,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
         return mFragmentList.get(position).hashCode();
     }
 
-    public void addFrag(Fragment fragment, String title) {
+    public void addFrag(FragmentTask fragment, String title) {
         mFragmentList.add(fragment);
         mFragmentTitleList.add(title);
     }
