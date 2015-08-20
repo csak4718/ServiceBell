@@ -1,7 +1,6 @@
 package com.yahoo.mobile.intern.nest.utils;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -96,13 +95,13 @@ public class Utils {
     }
     static public void gotoBSInfoSettingActivity(Activity activity) {
         Intent it = new Intent(activity, BSInfoSettingActivity.class);
-        //activity.startActivity(it);
-        activity.startActivityForResult(it,123456);
+        activity.startActivity(it);
     }
     static public void gotoMyTaskActivity(Activity activity, String taskId) {
         Intent it = new Intent(activity, MyTaskActivity.class);
         it.putExtra(Common.EXTRA_TASK_ID, taskId);
-        activity.startActivity(it);
+        //activity.startActivity(it);
+        activity.startActivityForResult(it,Common.REQUEST_MY_TASK);
     }
     static public void gotoCatchTaskActivity(Activity activity, String taskId) {
         Intent it = new Intent(activity, CatchTaskActivity.class);
