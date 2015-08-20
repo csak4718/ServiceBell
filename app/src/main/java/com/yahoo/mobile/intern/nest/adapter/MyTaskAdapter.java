@@ -17,7 +17,10 @@ import com.parse.ParseRelation;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
+import com.yahoo.mobile.intern.nest.utils.Utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -37,7 +40,8 @@ public class MyTaskAdapter extends BaseAdapter {
     static class ViewHolder {
 
         @Bind(R.id.txt_title) public TextView txtTitle;
-        @Bind(R.id.txt_date) public TextView txtDate;
+        @Bind(R.id.txt_time) public TextView txtTime;
+        @Bind(R.id.txt_remaining) public TextView txtRemaining;
         @Bind(R.id.txt_num_accepted) public TextView txtNumAccepted;
 
         public ViewHolder(View view) {
@@ -81,7 +85,12 @@ public class MyTaskAdapter extends BaseAdapter {
 
         final ParseObject task = mList.get(position);
         holder.txtTitle.setText(task.getString(Common.OBJECT_QUESTION_TITLE));
-//        holder.txtDate.setText(task.getCreatedAt().toString());
+        holder.txtTime.setText(task.getString(Common.OBJECT_QUESTION_TIME));
+
+        Date expireDate = task.getDate(Common.OBJECT_QUESTION_EXPIRE_DATE);
+        Date current = new Date();
+        holder.txtRemaining.setText(Utils.getRemainingTime(current, expireDate));
+
         taskAcceptedCountAsync(task, holder);
         return convertView;
     }
