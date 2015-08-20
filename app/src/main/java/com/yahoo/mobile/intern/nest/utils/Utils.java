@@ -1,6 +1,7 @@
 package com.yahoo.mobile.intern.nest.utils;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -22,6 +23,10 @@ import com.yahoo.mobile.intern.nest.activity.MessagingActivity;
 import com.yahoo.mobile.intern.nest.activity.MyTaskActivity;
 import com.yahoo.mobile.intern.nest.activity.ProfileSettingActivity;
 import com.yahoo.mobile.intern.nest.activity.SellerProfileActivity;
+import com.yahoo.mobile.intern.nest.activity.SpinnerActivity;
+
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by cmwang on 8/12/15.
@@ -36,6 +41,17 @@ public class Utils {
     }
     static public void makeToast(Context ctx, String s) {
         Toast.makeText(ctx, s, Toast.LENGTH_SHORT).show();
+    }
+    static public String getRemainingTime(Date current, Date expireDate) {
+        long duration = expireDate.getTime() - current.getTime();
+        long diffInSeconds = TimeUnit.MILLISECONDS.toSeconds(duration) % 60;
+        long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(duration) % 60;
+        long diffInHours = TimeUnit.MILLISECONDS.toHours(duration);
+
+        diffInHours = diffInHours > 0 ? diffInHours : 0;
+        diffInMinutes = diffInMinutes > 0 ? diffInMinutes : 0;
+
+        return String.format("%d時%d分", diffInHours, diffInMinutes);
     }
     /*
      * Actionbar and statusbar setup
@@ -105,6 +121,11 @@ public class Utils {
     }
     static public void gotoMessagingActivity(Activity activity, String recipientObjectId){
         Intent it = new Intent(activity, MessagingActivity.class);
+        it.putExtra(Common.EXTRA_RECIPIENT_OBJECT_ID, recipientObjectId);
+        activity.startActivity(it);
+    }
+    static public void gotoSpinnerActivity(Activity activity, String recipientObjectId){
+        Intent it = new Intent(activity, SpinnerActivity.class);
         it.putExtra(Common.EXTRA_RECIPIENT_OBJECT_ID, recipientObjectId);
         activity.startActivity(it);
     }

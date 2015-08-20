@@ -115,7 +115,7 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
                     String time = task.getString(Common.OBJECT_QUESTION_TIME);
                     txtTitle.setText(title);
                     txtContent.setText(content);
-                    txtTaskDate.setText(task.getDate(Common.OBJECT_QUESTION_DATE).toString());
+                    txtTaskDate.setText(task.getDate(Common.OBJECT_QUESTION_EXPIRE_DATE).toString());
                     txtTaskTime.setText(time);
                     setupAcceptedSellers();
                     ParseUtils.getTaskAcceptedUser(task);

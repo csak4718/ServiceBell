@@ -1,5 +1,6 @@
 package com.yahoo.mobile.intern.nest.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +20,7 @@ import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.fragment.DialogFragmentSellerProfile;
 import com.yahoo.mobile.intern.nest.utils.Common;
+import com.yahoo.mobile.intern.nest.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +45,6 @@ public class AcceptedUserAdapter extends BaseAdapter {
 
         @Bind(R.id.img_pic) public CircleImageView imgPic;
         @Bind(R.id.txt_name) public TextView txtName;
-        @Bind(R.id.txt_title) public TextView txtTitle;
         @Bind(R.id.radio_select) public RadioButton rdSelect;
         @Bind(R.id.btn_chat) public ImageButton btnChat;
 
@@ -136,13 +137,13 @@ public class AcceptedUserAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        final ParseUser user = mList.get(position);
-        holder.txtName.setText(user.getString(Common.OBJECT_USER_NICK));
-        displayUserParseImage(holder, user);
+        final ParseUser acceptedUser = mList.get(position);
+        holder.txtName.setText(acceptedUser.getString(Common.OBJECT_USER_NICK));
+        displayUserParseImage(holder, acceptedUser);
         holder.imgPic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(user);
+                DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(acceptedUser);
                 dfsp.show(((AppCompatActivity) mContext).getSupportFragmentManager(),"lol");
             }
         });
@@ -150,6 +151,12 @@ public class AcceptedUserAdapter extends BaseAdapter {
         if(!mSelectable) {
             holder.btnChat.setVisibility(View.VISIBLE);
             holder.rdSelect.setVisibility(View.GONE);
+            holder.btnChat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utils.gotoSpinnerActivity((Activity)mContext, acceptedUser.getObjectId()); // acceptedUser is recipient
+                }
+            });
         }
         else {
             holder.btnChat.setVisibility(View.GONE);

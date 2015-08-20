@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.menu_catch_task:
                         if (ParseUtils.isSellerNetSeted()) {
+                            mActionBar.setTitle("找服務");
                             fragmentTab.switchTab(id);
                             btnAddPost.setVisibility(View.GONE);
                         }

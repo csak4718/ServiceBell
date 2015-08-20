@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,33 +14,37 @@ import android.widget.Toast;
 import com.parse.ParseUser;
 import com.sinch.android.rtc.SinchError;
 import com.yahoo.mobile.intern.nest.R;
+import com.yahoo.mobile.intern.nest.utils.Common;
+import com.yahoo.mobile.intern.nest.utils.Utils;
+
+import de.greenrobot.event.EventBus;
 
 public class SpinnerActivity extends BaseActivity implements SinchService.StartFailedListener {
-    private Button btnToMessaging;
     private ProgressDialog mSpinner;
-
+    private String recipientObjectId;
+    private ParseUser currentUser;
+    private String userName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
         setContentView(R.layout.activity_spinner);
 
-        btnToMessaging = (Button) findViewById(R.id.btn_to_Messaging);
-        btnToMessaging.setEnabled(false);
-        btnToMessaging.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnToMessagingClicked();
-            }
-        });
+        recipientObjectId = getIntent().getStringExtra(Common.EXTRA_RECIPIENT_OBJECT_ID);
+        currentUser = ParseUser.getCurrentUser();
+        userName = currentUser.getObjectId();
     }
-
-
-
 
     @Override
     protected void onServiceConnected() {
-        btnToMessaging.setEnabled(true);
         getSinchServiceInterface().setStartListener(this);
+
+        if (!getSinchServiceInterface().isStarted()) {
+            getSinchServiceInterface().startClient(userName);
+            showSpinner();
+        } else {
+            Utils.gotoMessagingActivity(this, recipientObjectId);
+        }
     }
 
     @Override
@@ -49,7 +54,6 @@ public class SpinnerActivity extends BaseActivity implements SinchService.StartF
         }
         super.onPause();
     }
-
 
 
     // implements SinchService.StartFailedListener functions
@@ -63,28 +67,7 @@ public class SpinnerActivity extends BaseActivity implements SinchService.StartF
 
     @Override
     public void onStarted() {
-        openMessagingActivity();
-    }
-
-
-
-
-    private void btnToMessagingClicked() {
-        ParseUser currentUser = ParseUser.getCurrentUser();
-
-        String userName = currentUser.getObjectId();
-
-        if (!getSinchServiceInterface().isStarted()) {
-            getSinchServiceInterface().startClient(userName);
-            showSpinner();
-        } else {
-            openMessagingActivity();
-        }
-    }
-
-    private void openMessagingActivity() {
-        Intent messagingActivity = new Intent(this, MessagingActivity.class);
-        startActivity(messagingActivity);
+        Utils.gotoMessagingActivity(this, recipientObjectId);
     }
 
     private void showSpinner() {
@@ -94,30 +77,4 @@ public class SpinnerActivity extends BaseActivity implements SinchService.StartF
         mSpinner.show();
     }
 
-
-
-
-
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_spinner, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 }

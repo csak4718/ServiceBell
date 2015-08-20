@@ -3,6 +3,7 @@ package com.yahoo.mobile.intern.nest.utils;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -136,14 +137,14 @@ public class ParseUtils {
         acceptedUser.getQuery().findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> list, ParseException e) {
-                if(e == null) {
+                if (e == null) {
                     EventBus.getDefault().post(new AcceptedUserEvent(list));
                 }
             }
         });
     }
     /*
-     Task transcation
+     Task transaction
      */
     static public void doneTask(ParseObject task, ParseUser buyer, ParseUser seller) {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -151,6 +152,14 @@ public class ParseUtils {
         params.put("buyerId", buyer.getObjectId());
         params.put("sellerId", seller.getObjectId());
         ParseCloud.callFunctionInBackground("doneTask", params);
+    }
+
+    static public void createChatConnection(ParseUser sender, ParseUser recipient){
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("senderId", sender.getObjectId());
+        params.put("recipientId", recipient.getObjectId());
+        ParseCloud.callFunctionInBackground("createChatConnection", params);
+
     }
 
 //    TODO: lastest friend at first row
@@ -165,9 +174,6 @@ public class ParseUtils {
             }
         });
     }
-
-
-
 
     static public void getRecipient(String recipientObjectId){
         ParseQuery<ParseUser> query = ParseUser.getQuery();
@@ -209,10 +215,18 @@ public class ParseUtils {
         imgFile.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
-                if (profile.containsKey(Common.OBJECT_USER_NICK)) {user.put(Common.OBJECT_USER_NICK, profile.get(Common.OBJECT_USER_NICK));}
-                if (profile.containsKey(Common.OBJECT_USER_ADDRESS)){user.put(Common.OBJECT_USER_ADDRESS, profile.get(Common.OBJECT_USER_ADDRESS));}
-                if (profile.containsKey(Common.OBJECT_USER_PHONE)){user.put(Common.OBJECT_USER_PHONE, profile.get(Common.OBJECT_USER_PHONE));}
-                if (profile.containsKey(Common.OBJECT_USER_OTHERS)){user.put(Common.OBJECT_USER_OTHERS, profile.get(Common.OBJECT_USER_OTHERS));}
+                if (profile.containsKey(Common.OBJECT_USER_NICK)) {
+                    user.put(Common.OBJECT_USER_NICK, profile.get(Common.OBJECT_USER_NICK));
+                }
+                if (profile.containsKey(Common.OBJECT_USER_ADDRESS)) {
+                    user.put(Common.OBJECT_USER_ADDRESS, profile.get(Common.OBJECT_USER_ADDRESS));
+                }
+                if (profile.containsKey(Common.OBJECT_USER_PHONE)) {
+                    user.put(Common.OBJECT_USER_PHONE, profile.get(Common.OBJECT_USER_PHONE));
+                }
+                if (profile.containsKey(Common.OBJECT_USER_OTHERS)) {
+                    user.put(Common.OBJECT_USER_OTHERS, profile.get(Common.OBJECT_USER_OTHERS));
+                }
                 user.put(Common.OBJECT_USER_PROFILE_PIC, imgFile);
                 user.saveInBackground();
             }
@@ -235,4 +249,42 @@ public class ParseUtils {
             }
         });
     }
+
+    static public void updateUserMap(final Bitmap profilePic) {
+        final ParseUser user = ParseUser.getCurrentUser();
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        profilePic.compress(Bitmap.CompressFormat.JPEG, 80, stream);
+        byte[] bytearray= stream.toByteArray();
+        final ParseFile imgFile = new ParseFile(user.getUsername() + "_map.jpg", bytearray);
+        imgFile.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                user.put(Common.OBJECT_USER_MAP_PIC, imgFile);
+                user.saveInBackground();
+            }
+        });
+    }
+
+    static public void displayUserMap(ParseFile imgFile,  final ImageView mapImg) {
+        final ParseUser user = ParseUser.getCurrentUser();
+        imgFile.getDataInBackground(new GetDataCallback() {
+            @Override
+            public void done(byte[] bytes, ParseException e) {
+                if (e == null) {
+                    Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    if (bmp != null) {
+                        mapImg.setImageBitmap(bmp);
+                        mapImg.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    }
+                }
+            }
+        });
+    }
+
+    static public void setUserAcceptTask(boolean accept){
+        final ParseUser user = ParseUser.getCurrentUser();
+        user.put(Common.OBJECT_USER_ACCEPT, accept);
+        user.saveInBackground();
+    }
+
 }

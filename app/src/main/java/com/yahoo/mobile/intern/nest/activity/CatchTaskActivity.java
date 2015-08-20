@@ -1,17 +1,17 @@
 package com.yahoo.mobile.intern.nest.activity;
 
 
-import android.content.Intent;
+import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,8 +30,10 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.sinch.android.rtc.SinchError;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
+import com.yahoo.mobile.intern.nest.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -40,13 +42,15 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class CatchTaskActivity extends AppCompatActivity{
+public class CatchTaskActivity extends BaseActivity implements SinchService.StartFailedListener {
 
     private ParseObject mTask;
     private String taskId;
     private GoogleMap mMap;
+    private ParseUser buyer;
+    private ProgressDialog mSpinner;
 
-    @Bind(R.id.btn_toSpinner) Button btnToSpinner;
+    @Bind(R.id.btn_toMessaging) Button btnToMessaging;
     @Bind(R.id.txt_title) TextView txtTitle;
     @Bind(R.id.txt_content) TextView txtContent;
     @Bind(R.id.txt_num_people_accepted) TextView txtAcceptedUser;
@@ -83,13 +87,13 @@ public class CatchTaskActivity extends AppCompatActivity{
             @Override
             public void done(final ParseObject task, ParseException e) {
                 mTask = task;
-                ParseUser user = (ParseUser)task.get(Common.OBJECT_QUESTION_USER);
+                buyer = (ParseUser)task.get(Common.OBJECT_QUESTION_USER);
                 String title = task.getString(Common.OBJECT_QUESTION_TITLE);
                 String content = task.getString(Common.OBJECT_QUESTION_CONTENT);
                 ParseGeoPoint geoPoint = (ParseGeoPoint) task.get(Common.OBJECT_QUESTION_LOCATION);
 
-                txtUserName.setText((String) user.get(Common.OBJECT_USER_FB_NAME));
-                ParseFile imgFile = user.getParseFile(Common.OBJECT_USER_PROFILE_PIC);
+                txtUserName.setText((String) buyer.get(Common.OBJECT_USER_FB_NAME));
+                ParseFile imgFile = buyer.getParseFile(Common.OBJECT_USER_PROFILE_PIC);
                 imgFile.getDataInBackground(new GetDataCallback() {
                     @Override
                     public void done(byte[] bytes, ParseException e) {
@@ -102,10 +106,8 @@ public class CatchTaskActivity extends AppCompatActivity{
                         }
                     }
                 });
-                txtTaskDate.setText(task.getDate(Common.OBJECT_QUESTION_DATE).toString());
+                txtTaskDate.setText(task.getDate(Common.OBJECT_QUESTION_EXPIRE_DATE).toString());
                 txtTaskTime.setText(task.getString(Common.OBJECT_QUESTION_TIME));
-
-
 
                 LatLng latLng = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
@@ -135,7 +137,7 @@ public class CatchTaskActivity extends AppCompatActivity{
                 acceptedUser.getQuery().countInBackground(new CountCallback() {
                     @Override
                     public void done(int count, ParseException e) {
-                        txtAcceptedUser.setText("現在共有"+Integer.toString(count)+"人接受此任務");
+                        txtAcceptedUser.setText("現在共有" + Integer.toString(count) + "人接受此任務");
                     }
                 });
 
@@ -156,31 +158,75 @@ public class CatchTaskActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catch_task);
         ButterKnife.bind(this);
+        btnToMessaging.setEnabled(false);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         taskId = getIntent().getStringExtra(Common.EXTRA_TASK_ID);
         setupTask();
 
+        setUpMapIfNeeded();
 
-        btnToSpinner.setOnClickListener(new View.OnClickListener() {
+        btnToMessaging.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ParseUser currentUser = ParseUser.getCurrentUser();
-                if (currentUser != null) {
-                    //start sinch service
-                    //start next activity
-
-                    final Intent intent = new Intent(CatchTaskActivity.this, SpinnerActivity.class);
-                    final Intent serviceIntent = new Intent(CatchTaskActivity.this, SinchService.class);
-                    CatchTaskActivity.this.startService(serviceIntent);
-                    startActivity(intent);
-                }
+                btnToMessagingClicked();
             }
         });
-
-        setUpMapIfNeeded();
     }
+
+
+    @Override
+    protected void onServiceConnected() {
+        btnToMessaging.setEnabled(true);
+        getSinchServiceInterface().setStartListener(this);
+    }
+
+    @Override
+    protected void onPause() {
+        if (mSpinner != null) {
+            mSpinner.dismiss();
+        }
+        super.onPause();
+    }
+
+
+
+    // implements SinchService.StartFailedListener functions
+    @Override
+    public void onStartFailed(SinchError error) {
+        Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show();
+        if (mSpinner != null) {
+            mSpinner.dismiss();
+        }
+    }
+
+    @Override
+    public void onStarted() {
+        Utils.gotoMessagingActivity(CatchTaskActivity.this, buyer.getObjectId());
+    }
+
+
+    private void btnToMessagingClicked() {
+        ParseUser currentUser = ParseUser.getCurrentUser();
+
+        String userName = currentUser.getObjectId();
+
+        if (!getSinchServiceInterface().isStarted()) {
+            getSinchServiceInterface().startClient(userName);
+            showSpinner();
+        } else {
+            Utils.gotoMessagingActivity(CatchTaskActivity.this, buyer.getObjectId());
+        }
+    }
+
+    private void showSpinner() {
+        mSpinner = new ProgressDialog(this);
+        mSpinner.setTitle("Logging in");
+        mSpinner.setMessage("Please wait...");
+        mSpinner.show();
+    }
+
 
     @Override
     protected void onResume() {
