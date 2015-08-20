@@ -1,6 +1,7 @@
 package com.yahoo.mobile.intern.nest.activity;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -31,6 +32,8 @@ import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -127,23 +130,36 @@ public class MapsActivity extends FragmentActivity
     void btnOk() {
         //LatLng position = new LatLng(mCurLocation.getLatitude(),mCurLocation.getLongitude());//mMap.getCameraPosition().target;
         if(mShowRange){
+
             mMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
                 @Override
                 public void onSnapshotReady(Bitmap bitmap) {
+
                     int h =bitmap.getHeight();
                     int w =bitmap.getWidth();
                     Bitmap cropBmp = Bitmap.createBitmap(bitmap, 0, (h-w)/2, w, w);
                     ParseUtils.updateUserMap(cropBmp);
+
+                    String path = saveToInternalStorage(cropBmp);
+
+                    LatLng position = mMap.getCameraPosition().target;
+                    Intent it = new Intent();
+                    it.putExtra(Common.EXTRA_MAP_PATH, path);
+                    it.putExtra(Common.EXTRA_LOCATION, position);
+                    it.putExtra(Common.EXTRA_ADDRESS, mSearchView.getQuery().toString());
+                    setResult(RESULT_OK, it);
+                    MapsActivity.this.finish();
                 }
             });
         }
-
-        LatLng position = mMap.getCameraPosition().target;
-        Intent it = new Intent();
-        it.putExtra(Common.EXTRA_LOCATION, position);
-        it.putExtra(Common.EXTRA_ADDRESS, mSearchView.getQuery().toString());
-        setResult(RESULT_OK, it);
-        finish();
+        else {
+            LatLng position = mMap.getCameraPosition().target;
+            Intent it = new Intent();
+            it.putExtra(Common.EXTRA_LOCATION, position);
+            it.putExtra(Common.EXTRA_ADDRESS, mSearchView.getQuery().toString());
+            setResult(RESULT_OK, it);
+            finish();
+        }
     }
 
     @Override
@@ -291,13 +307,11 @@ public class MapsActivity extends FragmentActivity
                 }
 
                 address = results.get(0);
-                Log.d("Search result", "" + address.getLatitude() + " " + address.getLongitude());
                 Location location = new Location("dummyprovider");
                 location.setLatitude(address.getLatitude());
                 location.setLongitude(address.getLongitude());
                 mCurLocation = location;
-
-
+                
             } catch (Exception e) {
                 Log.e("", "Something went wrong: ", e);
                 return false;
@@ -312,6 +326,27 @@ public class MapsActivity extends FragmentActivity
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
             }
         }
+    }
+
+    private String saveToInternalStorage(Bitmap bitmapImage){
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath=new File(directory,Common.PATH_MAP);
+
+        FileOutputStream fos = null;
+        try {
+
+            fos = new FileOutputStream(mypath);
+
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return directory.getAbsolutePath();
     }
 
 }

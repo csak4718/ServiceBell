@@ -1,6 +1,8 @@
 package com.yahoo.mobile.intern.nest.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -18,6 +20,10 @@ import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 import com.yahoo.mobile.intern.nest.utils.Utils;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -61,14 +67,14 @@ public class ProfileSettingActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-        loadedMapImg();
+        //loadedMapImg();
 
         Boolean acc = false;
         ParseUser user = ParseUser.getCurrentUser();
         if( user.get(Common.OBJECT_USER_ACCEPT) != null)
              acc = (Boolean)user.get(Common.OBJECT_USER_ACCEPT);
 
-        setSwitch(mSwitch,acc);
+        setSwitch(mSwitch, acc);
     }
 
 
@@ -77,6 +83,8 @@ public class ProfileSettingActivity extends AppCompatActivity {
         if(requestCode == Common.REQUEST_LOCATION) {
             if(resultCode == RESULT_OK) {
                 position = data.getParcelableExtra(Common.EXTRA_LOCATION);
+                String path= data.getStringExtra(Common.EXTRA_MAP_PATH);
+                loadMapFromStorage(path);
             }
         }
     }
@@ -113,5 +121,16 @@ public class ProfileSettingActivity extends AppCompatActivity {
     public void loadedMapImg(){
         ParseFile imgFile = ParseUser.getCurrentUser().getParseFile(Common.OBJECT_USER_MAP_PIC);
         ParseUtils.displayUserMap(imgFile, mImgMap);
+    }
+
+    private void loadMapFromStorage(String path) {
+        try {
+            File f=new File(path, Common.PATH_MAP);
+            Bitmap b = BitmapFactory.decodeStream(new FileInputStream(f));
+            mImgMap.setImageBitmap(b);
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

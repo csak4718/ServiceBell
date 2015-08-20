@@ -16,6 +16,7 @@ public class Common {
     public final static int SELLER_ACCEPTED = 3;
     public final static int SELLER_DONE = 4;
 
+    public final static String EXTRA_MAP_PATH = "map_path";
     public final static String EXTRA_LOCATION = "location";
     public final static String EXTRA_SEEKBAR = "seekbar";
     public final static String EXTRA_TASK_ID = "task_id";
@@ -57,12 +58,12 @@ public class Common {
     public final static String OBJECT_QUESTION_DONE_USER = "doneUser";
 
 
-
-
     /*
      Cloud code function
      */
     public final static String CLOUD_NOTIFY_ACCEPT = "notifySellerAccept";
     public final static String CLOUD_NOTIFY_ACCEPT_BUYERID = "buyerId";
+
+    public final static String PATH_MAP = "map.jpg";
 
 }
