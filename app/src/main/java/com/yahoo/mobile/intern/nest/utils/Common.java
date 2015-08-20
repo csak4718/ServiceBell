@@ -42,7 +42,8 @@ public class Common {
     public final static String OBJECT_USER_PHONE = "phone";
     public final static String OBJECT_USER_ADDRESS = "address";
     public final static String OBJECT_USER_OTHERS = "others";
-
+    public final static String OBJECT_USER_MAP_PIC = "map_pic";
+    public final static String OBJECT_USER_ACCEPT="acceptTask";
 
     public final static String OBJECT_QUESTION = "Question";
     public final static String OBJECT_QUESTION_USER = "user";
@@ -54,6 +55,8 @@ public class Common {
     public final static String OBJECT_QUESTION_LOCATION = "pin";
     public final static String OBJECT_QUESTION_ACCEPTED_USER = "acceptedUser";
     public final static String OBJECT_QUESTION_DONE_USER = "doneUser";
+
+
 
 
     /*
