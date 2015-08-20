@@ -1,7 +1,6 @@
 package com.yahoo.mobile.intern.nest.activity;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -9,19 +8,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.DeleteCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -35,6 +26,7 @@ import com.yahoo.mobile.intern.nest.utils.Utils;
 import com.yahoo.mobile.intern.nest.view.ExpandableHeightListView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -49,8 +41,8 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
     @Bind(R.id.txt_title) TextView txtTitle;
     @Bind(R.id.txt_content) TextView txtContent;
     @Bind(R.id.list_view_accepted_seller)ExpandableHeightListView mListView;
-    @Bind(R.id.txt_task_date) TextView txtTaskDate;
     @Bind(R.id.txt_task_time) TextView txtTaskTime;
+    @Bind(R.id.txt_remaining) TextView txtRemaining;
     @Bind(R.id.txt_status) TextView txtStatus;
 
     private AcceptedUserAdapter mAdapter;
@@ -70,8 +62,11 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
                     String time = task.getString(Common.OBJECT_QUESTION_TIME);
                     txtTitle.setText(title);
                     txtContent.setText(content);
-                    txtTaskDate.setText(task.getDate(Common.OBJECT_QUESTION_EXPIRE_DATE).toString());
                     txtTaskTime.setText(time);
+
+                    Date expire = task.getDate(Common.OBJECT_QUESTION_EXPIRE_DATE);
+                    Date current = new Date();
+                    txtRemaining.setText(Utils.getRemainingTime(current, expire));
 
                     setupAcceptedSellers();
                     // task is not done
