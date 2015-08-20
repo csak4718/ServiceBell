@@ -17,6 +17,7 @@ import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -30,6 +31,16 @@ public class DialogFragmentSellerProfile extends DialogFragment {
     @Bind(R.id.txt_address)TextView txtAdd;
     @Bind(R.id.txt_others)TextView txtOthers;
     @Bind(R.id.txt_phone)TextView txtPhone;
+
+    @OnClick(R.id.btn_confirm) void confirm(){
+        ProfileDialogListener activity = (ProfileDialogListener) getActivity();
+        activity.onFinishProfileDialog("Confirm", user);
+        this.dismiss();
+    }
+
+    public interface ProfileDialogListener {
+        void onFinishProfileDialog(String inputText, ParseUser seller);
+    }
 
     public static DialogFragmentSellerProfile newInstance(ParseUser user){
         DialogFragmentSellerProfile dfsp = new DialogFragmentSellerProfile();
