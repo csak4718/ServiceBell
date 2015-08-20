@@ -2,11 +2,9 @@ package com.yahoo.mobile.intern.nest.activity;
 
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -110,8 +108,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
                 });
                 txtTaskDate.setText(task.getDate(Common.OBJECT_QUESTION_DATE).toString());
                 txtTaskTime.setText(task.getString(Common.OBJECT_QUESTION_TIME));
-
-
+                
                 LatLng latLng = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                 mMap.addMarker(new MarkerOptions()

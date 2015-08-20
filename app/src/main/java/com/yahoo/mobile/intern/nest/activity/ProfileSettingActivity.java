@@ -5,25 +5,34 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageView;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.parse.ParseFile;
+import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
+import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 import com.yahoo.mobile.intern.nest.utils.Utils;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
 
 public class ProfileSettingActivity extends AppCompatActivity {
 
     private LatLng position;
 
+    @Bind(R.id.img_map) ImageView mImgMap;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_setting);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ButterKnife.bind(this);
+
+        loadedMapImg();
     }
 
     @OnClick(R.id.setting_edit) void setServiceLocation() {
@@ -32,6 +41,13 @@ public class ProfileSettingActivity extends AppCompatActivity {
     @OnClick(R.id.setting_profile) void setProfile(){
         Utils.gotoBSInfoSettingActivity(this);
     }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        loadedMapImg();
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -69,5 +85,11 @@ public class ProfileSettingActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    public void loadedMapImg(){
+        ParseFile imgFile = ParseUser.getCurrentUser().getParseFile(Common.OBJECT_USER_MAP_PIC);
+        ParseUtils.displayUserMap(imgFile, mImgMap);
     }
 }
