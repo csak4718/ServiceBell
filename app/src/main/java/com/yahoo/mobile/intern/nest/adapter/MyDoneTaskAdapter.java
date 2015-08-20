@@ -1,37 +1,32 @@
 package com.yahoo.mobile.intern.nest.adapter;
 
 import android.content.Context;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.parse.CountCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.ParseRelation;
+import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
-import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 import com.yahoo.mobile.intern.nest.utils.Utils;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Created by cmwang on 8/12/15.
+ * Created by cmwang on 8/20/15.
  */
-public class MyTaskAdapter extends BaseAdapter {
-
+public class MyDoneTaskAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mInflater;
 
@@ -41,15 +36,14 @@ public class MyTaskAdapter extends BaseAdapter {
 
         @Bind(R.id.txt_title) public TextView txtTitle;
         @Bind(R.id.txt_time) public TextView txtTime;
-        @Bind(R.id.txt_remaining) public TextView txtRemaining;
-        @Bind(R.id.txt_num_accepted) public TextView txtNumAccepted;
+        @Bind(R.id.txt_seller_name) public TextView txtSellerName;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
     }
 
-    public MyTaskAdapter(Context context, List<ParseObject> list) {
+    public MyDoneTaskAdapter(Context context, List<ParseObject> list) {
         mContext = context;
         mInflater = LayoutInflater.from(mContext);
 
@@ -75,7 +69,7 @@ public class MyTaskAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
         if(convertView == null) {
-            convertView = mInflater.inflate(R.layout.card_my_task, parent, false);
+            convertView = mInflater.inflate(R.layout.card_my_done_task, parent, false);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         }
@@ -86,22 +80,21 @@ public class MyTaskAdapter extends BaseAdapter {
         final ParseObject task = mList.get(position);
         holder.txtTitle.setText(task.getString(Common.OBJECT_QUESTION_TITLE));
         holder.txtTime.setText(task.getString(Common.OBJECT_QUESTION_TIME));
+        setupSellerName(holder, task);
 
-        Date expireDate = task.getDate(Common.OBJECT_QUESTION_EXPIRE_DATE);
-        Date current = new Date();
-        holder.txtRemaining.setText(Utils.getRemainingTime(current, expireDate));
-
-        taskAcceptedCountAsync(task, holder);
         return convertView;
     }
-
-    private void taskAcceptedCountAsync(ParseObject task, final ViewHolder holder) {
-        ParseRelation<ParseObject> relation = task.getRelation(Common.OBJECT_QUESTION_ACCEPTED_USER);
-        relation.getQuery().countInBackground(new CountCallback() {
-            @Override
-            public void done(int count, ParseException e) {
-                holder.txtNumAccepted.setText(Integer.toString(count));
-            }
-        });
+    private void setupSellerName(final ViewHolder holder, final ParseObject task) {
+        ParseUser seller = task.getParseUser(Common.OBJECT_QUESTION_DONE_USER);
+        if(seller != null) {
+            seller.fetchInBackground(new GetCallback<ParseObject>() {
+                @Override
+                public void done(ParseObject seller, ParseException e) {
+                    if (e == null) {
+                        holder.txtSellerName.setText(seller.getString(Common.OBJECT_USER_NICK));
+                    }
+                }
+            });
+        }
     }
 }
