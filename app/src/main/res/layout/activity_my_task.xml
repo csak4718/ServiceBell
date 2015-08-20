@@ -152,7 +152,8 @@
         android:background="@color/gray"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
-        android:text="@string/my_task_who_take_it"
+        android:text="誰接受了我的任務"
+        android:textStyle="bold"
         android:textSize="20dp"/>
 
     <com.yahoo.mobile.intern.nest.view.ExpandableHeightListView

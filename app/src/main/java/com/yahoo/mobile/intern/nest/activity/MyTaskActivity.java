@@ -9,9 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -20,6 +18,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.DeleteCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -32,6 +31,7 @@ import com.yahoo.mobile.intern.nest.event.AcceptedUserEvent;
 import com.yahoo.mobile.intern.nest.fragment.DialogFragmentSellerProfile;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
+import com.yahoo.mobile.intern.nest.utils.Utils;
 import com.yahoo.mobile.intern.nest.view.ExpandableHeightListView;
 
 import java.util.ArrayList;
@@ -39,7 +39,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 public class MyTaskActivity extends AppCompatActivity implements DialogFragmentSellerProfile.ProfileDialogListener {
@@ -173,7 +172,7 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_view_task, menu);
+        getMenuInflater().inflate(R.menu.menu_my_task, menu);
         return true;
     }
 
@@ -183,6 +182,15 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
 
         if(id == android.R.id.home) {
             finish();
+        }
+        if(id == R.id.action_delete) {
+            mTask.deleteInBackground(new DeleteCallback() {
+                @Override
+                public void done(ParseException e) {
+                    Utils.showLoadingDialog(MyTaskActivity.this);
+                    finish();
+                }
+            });
         }
 
         return super.onOptionsItemSelected(item);

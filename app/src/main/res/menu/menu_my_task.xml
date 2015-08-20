@@ -1,0 +1,9 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.yahoo.mobile.intern.nest.activity.MyTaskActivity">
+    <item android:id="@+id/action_edit" android:title="編輯服務"
+        android:orderInCategory="100" app:showAsAction="never" />
+    <item android:id="@+id/action_delete" android:title="刪除"
+        android:orderInCategory="101" app:showAsAction="never" />
+</menu>
