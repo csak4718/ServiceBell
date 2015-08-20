@@ -5,7 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.Switch;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseFile;
@@ -17,14 +21,17 @@ import com.yahoo.mobile.intern.nest.utils.Utils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 
 public class ProfileSettingActivity extends AppCompatActivity {
 
     private LatLng position;
-
+    @Bind(R.id.swtich_task) Switch mSwitch;
     @Bind(R.id.img_map) ImageView mImgMap;
+    @Bind(R.id.lt_map_setting) LinearLayout mSettingLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +40,14 @@ public class ProfileSettingActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         loadedMapImg();
+    }
+    @OnCheckedChanged(R.id.swtich_task) void setSwitch(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+            mSettingLayout.setVisibility(View.VISIBLE);
+        } else {
+            mSettingLayout.setVisibility(View.GONE);
+        }
+        ParseUtils.setUserAcceptTask(isChecked);
     }
 
     @OnClick(R.id.setting_edit) void setServiceLocation() {
@@ -46,6 +61,13 @@ public class ProfileSettingActivity extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
         loadedMapImg();
+
+        Boolean acc = false;
+        ParseUser user = ParseUser.getCurrentUser();
+        if( user.get(Common.OBJECT_USER_ACCEPT) != null)
+             acc = (Boolean)user.get(Common.OBJECT_USER_ACCEPT);
+
+        setSwitch(mSwitch,acc);
     }
 
 

@@ -274,10 +274,17 @@ public class ParseUtils {
                     Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                     if (bmp != null) {
                         mapImg.setImageBitmap(bmp);
-                        mapImg.setScaleType(ImageView.ScaleType.CENTER_CROP );
+                        mapImg.setScaleType(ImageView.ScaleType.CENTER_CROP);
                     }
                 }
             }
         });
     }
+
+    static public void setUserAcceptTask(boolean accept){
+        final ParseUser user = ParseUser.getCurrentUser();
+        user.put(Common.OBJECT_USER_ACCEPT, accept);
+        user.saveInBackground();
+    }
+
 }
