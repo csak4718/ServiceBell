@@ -53,6 +53,11 @@ public class Utils {
 
         return String.format("%d時%d分", diffInHours, diffInMinutes);
     }
+    static public void showLoadingDialog(Context context) {
+        ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+    }
     /*
      * Actionbar and statusbar setup
      */

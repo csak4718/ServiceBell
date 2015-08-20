@@ -30,6 +30,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.sinch.android.rtc.SinchError;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
@@ -40,6 +41,7 @@ import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CatchTaskActivity extends BaseActivity implements SinchService.StartFailedListener {
@@ -60,6 +62,24 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     @Bind(R.id.txt_task_date) TextView txtTaskDate;
     @Bind(R.id.txt_task_time) TextView txtTaskTime;
     @Bind(R.id.img_map) ImageView imgMap;
+
+
+    @OnClick(R.id.btn_reject_task) void rejectTask() {
+
+        Utils.showLoadingDialog(this);
+
+        ParseUser user = ParseUser.getCurrentUser();
+        ParseRelation<ParseObject> catchQuestions = user.getRelation(Common.OBJECT_USER_CATCH_QUESTIONS);
+        catchQuestions.remove(mTask);
+        ParseRelation<ParseObject> acceptedQuestions = user.getRelation(Common.OBJECT_USER_ACCEPTED_QUESTIONS);
+        acceptedQuestions.remove(mTask);
+        user.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                finish();
+            }
+        });
+    }
 
     private void acceptTask(ParseObject task) {
         ParseUser user = ParseUser.getCurrentUser();
