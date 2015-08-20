@@ -3,12 +3,11 @@ package com.yahoo.mobile.intern.nest.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -16,9 +15,9 @@ import android.widget.TextView;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
+import com.yahoo.mobile.intern.nest.fragment.DialogFragmentSellerProfile;
 import com.yahoo.mobile.intern.nest.utils.Common;
 
 import java.util.ArrayList;
@@ -47,6 +46,7 @@ public class AcceptedUserAdapter extends BaseAdapter {
         @Bind(R.id.txt_title) public TextView txtTitle;
         @Bind(R.id.radio_select) public RadioButton rdSelect;
         @Bind(R.id.btn_chat) public ImageButton btnChat;
+
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);
@@ -139,6 +139,13 @@ public class AcceptedUserAdapter extends BaseAdapter {
         final ParseUser user = mList.get(position);
         holder.txtName.setText(user.getString(Common.OBJECT_USER_NICK));
         displayUserParseImage(holder, user);
+        holder.imgPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(user);
+                dfsp.show(((AppCompatActivity) mContext).getSupportFragmentManager(),"lol");
+            }
+        });
 
         if(!mSelectable) {
             holder.btnChat.setVisibility(View.VISIBLE);
