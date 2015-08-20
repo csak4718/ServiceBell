@@ -33,6 +33,7 @@
     <string name="setting_providermode">接受任務</string>
     <string name="setting_mapedit">Edit</string>
     <string name="setting_provide_area">服務據點</string>
+    <string name="my_task_who_take_it">Who take it?</string>
     <string name="catch_task_who_post_it">Who post it?</string>
     <string name="catch_task_accept">Accept task</string>
     <string name="catch_task_reject">Reject task</string>

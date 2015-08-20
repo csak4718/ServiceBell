@@ -1,25 +1,163 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.yahoo.mobile.intern.nest.activity.MyTaskActivity">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/mapview_task_location"
+            tools:context="com.yahoo.mobile.intern.nest.activity.CatchTaskActivity"
+            android:name="com.google.android.gms.maps.SupportMapFragment" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/img_map"/>
+
+    </FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+        <LinearLayout
+            android:layout_gravity="top|left"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_like"/>
+        </LinearLayout>
+
+        <TextView
+            android:textSize="20dp"
+            android:id="@+id/txt_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:background="@android:color/transparent"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+        <LinearLayout
+            android:layout_gravity="top|left"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/ic_like"/>
+        </LinearLayout>
+        <TextView
+            android:textSize="20dp"
+            android:id="@+id/txt_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:background="@android:color/transparent"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <LinearLayout
+        android:id="@+id/btn_set_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+        <LinearLayout
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/pin"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_task_date"
+            android:background="@android:color/transparent"
+            android:textSize="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <LinearLayout
+        android:background="?android:attr/selectableItemBackground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+        <LinearLayout
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:gravity="center">
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:src="@drawable/pin"/>
+        </LinearLayout>
+
+        <TextView
+            android:textColor="@color/black"
+            android:id="@+id/txt_task_time"
+            android:textSize="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
 
     <TextView
-        android:id="@+id/txt_title"
-        android:text="@string/hello_world"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/txt_content"
-        android:text="@string/hello_world"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/cyan"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text="@string/my_task_who_take_it"
+        android:textSize="20dp"/>
+
+    <com.yahoo.mobile.intern.nest.view.ExpandableHeightListView
         android:id="@+id/list_view_accepted_seller"
         android:choiceMode="singleChoice"
         android:layout_width="match_parent"
-        android:layout_height="300dp"/>
+        android:layout_height="wrap_content"
+        android:cacheColorHint="#00000000"
+        android:fadingEdge="none"
+        android:focusable="false"
+        android:scrollbars="none"/>
     <Button
         android:id="@+id/btn_deal"
         android:text="我要成交"
@@ -43,3 +181,4 @@
     </LinearLayout>
 
 </LinearLayout>
+</ScrollView>
