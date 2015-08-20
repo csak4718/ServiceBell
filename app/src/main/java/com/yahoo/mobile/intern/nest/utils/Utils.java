@@ -1,6 +1,7 @@
 package com.yahoo.mobile.intern.nest.utils;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -51,6 +52,11 @@ public class Utils {
         diffInMinutes = diffInMinutes > 0 ? diffInMinutes : 0;
 
         return String.format("%d時%d分", diffInHours, diffInMinutes);
+    }
+    static public void showLoadingDialog(Context context) {
+        ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
     }
     /*
      * Actionbar and statusbar setup
