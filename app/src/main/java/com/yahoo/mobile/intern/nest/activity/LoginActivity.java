@@ -27,7 +27,9 @@ import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 import com.yahoo.mobile.intern.nest.utils.Utils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -107,7 +109,9 @@ public class LoginActivity extends AppCompatActivity {
     }
     public void onEvent(final FbPictureEvent event) {
         ParseUser.getCurrentUser().put(Common.OBJECT_USER_FB_NAME, mNickName);
-        ParseUtils.updateUserProfile(mNickName, mFbId, event.mPic);
+        Map<String,String> profile = new HashMap<String,String>();
+        profile.put(Common.OBJECT_USER_NICK, mNickName);
+        ParseUtils.updateUserProfile(profile, mFbId, event.mPic);
         Utils.gotoMainActivity(this);
         finish();
     }

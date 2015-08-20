@@ -18,7 +18,9 @@ import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.CountCallback;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
@@ -55,13 +57,11 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     @Bind(R.id.txt_content) TextView txtContent;
     @Bind(R.id.txt_num_people_accepted) TextView txtAcceptedUser;
     @Bind(R.id.btn_accept_task) Button btnAcceptTask;
-    @Bind(R.id.txt_msg_accepted) TextView txtMsgAccepted;
     @Bind(R.id.img_user_pic)CircleImageView imgUserPic;
     @Bind(R.id.txt_user_name) TextView txtUserName;
     @Bind(R.id.txt_task_date) TextView txtTaskDate;
     @Bind(R.id.txt_task_time) TextView txtTaskTime;
     @Bind(R.id.img_map) ImageView imgMap;
-
 
     private void acceptTask(ParseObject task) {
         ParseUser user = ParseUser.getCurrentUser();
@@ -114,6 +114,9 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
 
                 LatLng latLng = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                mMap.addMarker(new MarkerOptions()
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_community_pin))
+                        .position(latLng));
                 mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                     @Override
                     public void onMapLoaded() {
@@ -148,7 +151,6 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
                     public void onClick(View v) {
                         acceptTask(task);
                         btnAcceptTask.setVisibility(View.GONE);
-                        txtMsgAccepted.setVisibility(View.VISIBLE);
                     }
                 });
             }

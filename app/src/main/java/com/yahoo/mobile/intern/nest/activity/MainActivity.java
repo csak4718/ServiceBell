@@ -2,6 +2,7 @@ package com.yahoo.mobile.intern.nest.activity;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
                 int id = menuItem.getItemId();
                 switch (id) {
                     case R.id.menu_my_task:
+                        mActionBar.setTitle("找服務");
                         fragmentTab.switchTab(id);
                         btnAddPost.setVisibility(View.VISIBLE);
                         break;
@@ -99,6 +101,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if(fragmentTab != null) {
+            fragmentTab.refreshAllTab();
+        }
+    }
+
+    @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
@@ -121,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
         mActionBar = getSupportActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setHomeButtonEnabled(true);
+        mActionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.nest_yellow_1)));
+        mActionBar.setTitle("找服務");
     }
 
     @Override
