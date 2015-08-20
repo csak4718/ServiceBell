@@ -45,14 +45,12 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
 
     private String taskId;
     private ParseObject mTask;
-    private GoogleMap mMap;
 
     @Bind(R.id.txt_title) TextView txtTitle;
     @Bind(R.id.txt_content) TextView txtContent;
     @Bind(R.id.list_view_accepted_seller)ExpandableHeightListView mListView;
     @Bind(R.id.txt_task_date) TextView txtTaskDate;
     @Bind(R.id.txt_task_time) TextView txtTaskTime;
-    @Bind(R.id.img_map) ImageView imgMap;
     @Bind(R.id.txt_status) TextView txtStatus;
 
     private AcceptedUserAdapter mAdapter;
@@ -67,28 +65,6 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
                     mTask = task;
                     getSupportActionBar().setTitle(task.getString(Common.OBJECT_QUESTION_TITLE));
 
-                    ParseGeoPoint geoPoint = (ParseGeoPoint) task.get(Common.OBJECT_QUESTION_LOCATION);
-                    LatLng latLng = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                    mMap.addMarker(new MarkerOptions()
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_community_pin))
-                            .position(latLng));
-                    mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-                        @Override
-                        public void onMapLoaded() {
-                            mMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
-                                @Override
-                                public void onSnapshotReady(Bitmap bitmap) {
-                                    if (imgMap == null)
-                                        imgMap = (ImageView) findViewById(R.id.img_map);
-                                    imgMap.setImageBitmap(bitmap);
-
-                                    SupportMapFragment mapFragment =  ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapview_task_location));
-                                    getSupportFragmentManager().beginTransaction().remove(mapFragment).commit();
-                                }
-                            });
-                        }
-                    });
                     String title = task.getString(Common.OBJECT_QUESTION_TITLE);
                     String content = task.getString(Common.OBJECT_QUESTION_CONTENT);
                     String time = task.getString(Common.OBJECT_QUESTION_TIME);
@@ -160,13 +136,11 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
         taskId = getIntent().getStringExtra(Common.EXTRA_TASK_ID);
 
         setupTask();
-        setUpMapIfNeeded();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        setUpMapIfNeeded();
     }
 
     @Override
@@ -194,14 +168,6 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
         }
 
         return super.onOptionsItemSelected(item);
-    }
-    private void setUpMapIfNeeded() {
-        // Do a null check to confirm that we have not already instantiated the map.
-        if (mMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapview_task_location))
-                    .getMap();
-        }
     }
 
     @Override
