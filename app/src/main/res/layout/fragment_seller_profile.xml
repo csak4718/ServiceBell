@@ -75,6 +75,11 @@
             android:text="水電達人、各式水電到府服務\n各種完善售後服務"
             android:textSize="20dp"/>
     </LinearLayout>
+    <Button
+        android:id="@+id/btn_confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="交給此賣家"/>
 
 
 </LinearLayout>

@@ -80,7 +80,8 @@ public class Utils {
     }
     static public void gotoBSInfoSettingActivity(Activity activity) {
         Intent it = new Intent(activity, BSInfoSettingActivity.class);
-        activity.startActivity(it);
+        //activity.startActivity(it);
+        activity.startActivityForResult(it,123456);
     }
     static public void gotoMyTaskActivity(Activity activity, String taskId) {
         Intent it = new Intent(activity, MyTaskActivity.class);

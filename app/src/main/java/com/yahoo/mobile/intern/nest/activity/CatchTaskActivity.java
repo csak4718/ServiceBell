@@ -106,6 +106,7 @@ public class CatchTaskActivity extends AppCompatActivity{
                 txtTaskTime.setText(task.getString(Common.OBJECT_QUESTION_TIME));
 
 
+
                 LatLng latLng = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
                 mMap.addMarker(new MarkerOptions()
@@ -127,7 +128,6 @@ public class CatchTaskActivity extends AppCompatActivity{
                         });
                     }
                 });
-
                 txtTitle.setText(title);
                 txtContent.setText(content);
 
