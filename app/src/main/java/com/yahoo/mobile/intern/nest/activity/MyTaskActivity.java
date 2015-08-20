@@ -66,6 +66,8 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
             public void done(ParseObject task, ParseException e) {
                 if(e == null) {
                     mTask = task;
+                    getSupportActionBar().setTitle(task.getString(Common.OBJECT_QUESTION_TITLE));
+
                     ParseGeoPoint geoPoint = (ParseGeoPoint) task.get(Common.OBJECT_QUESTION_LOCATION);
                     LatLng latLng = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
                     mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
@@ -149,6 +151,7 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_my_task);
         ButterKnife.bind(this);
         mListView.setExpanded(true);
