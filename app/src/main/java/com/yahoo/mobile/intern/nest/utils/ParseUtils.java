@@ -28,6 +28,7 @@ import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -136,14 +137,14 @@ public class ParseUtils {
         acceptedUser.getQuery().findInBackground(new FindCallback<ParseUser>() {
             @Override
             public void done(List<ParseUser> list, ParseException e) {
-                if(e == null) {
+                if (e == null) {
                     EventBus.getDefault().post(new AcceptedUserEvent(list));
                 }
             }
         });
     }
     /*
-     Task transcation
+     Task transaction
      */
     static public void doneTask(ParseObject task, ParseUser buyer, ParseUser seller) {
         Map<String, Object> params = new HashMap<String, Object>();
@@ -151,6 +152,14 @@ public class ParseUtils {
         params.put("buyerId", buyer.getObjectId());
         params.put("sellerId", seller.getObjectId());
         ParseCloud.callFunctionInBackground("doneTask", params);
+    }
+
+    static public void createChatConnection(ParseUser sender, ParseUser recipient){
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("senderId", sender.getObjectId());
+        params.put("recipientId", recipient.getObjectId());
+        ParseCloud.callFunctionInBackground("createChatConnection", params);
+
     }
 
 //    TODO: lastest friend at first row
@@ -165,9 +174,6 @@ public class ParseUtils {
             }
         });
     }
-
-
-
 
     static public void getRecipient(String recipientObjectId){
         ParseQuery<ParseUser> query = ParseUser.getQuery();

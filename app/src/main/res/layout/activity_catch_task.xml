@@ -183,7 +183,7 @@
                 android:layout_height="wrap_content" />
 
             <Button
-                android:id="@+id/btn_toSpinner"
+                android:id="@+id/btn_toMessaging"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="IM to service requester" />
@@ -225,7 +225,6 @@
             android:text=""/>
 
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
