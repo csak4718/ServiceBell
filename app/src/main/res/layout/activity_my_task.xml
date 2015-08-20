@@ -50,11 +50,6 @@
             android:background="@android:color/transparent"/>
     </LinearLayout>
 
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -79,11 +74,6 @@
             android:background="@android:color/transparent"/>
     </LinearLayout>
 
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
-
     <LinearLayout
         android:id="@+id/btn_set_date"
         android:layout_width="match_parent"
@@ -106,11 +96,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>
-
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
 
     <LinearLayout
         android:background="?android:attr/selectableItemBackground"
@@ -140,10 +125,31 @@
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center">
+        <TextView
+            android:text="狀態 : "
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/txt_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+
+    </LinearLayout>
+
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/cyan"
+        android:background="@color/gray"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
         android:text="@string/my_task_who_take_it"
@@ -158,27 +164,7 @@
         android:fadingEdge="none"
         android:focusable="false"
         android:scrollbars="none"/>
-    <Button
-        android:id="@+id/btn_deal"
-        android:text="我要成交"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <LinearLayout
-        android:id="@+id/select_seller"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone">
-        <Button
-            android:id="@+id/btn_confirm"
-            android:text="Confirm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/btn_cancel"
-            android:text="Cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+
 
 </LinearLayout>
 </ScrollView>

@@ -40,6 +40,7 @@
 
 
     <string name="map_search_hint">Search Here</string>
+    <string name="title_activity_my_done_task">MyDoneTaskActivity</string>
 
 
 </resources>

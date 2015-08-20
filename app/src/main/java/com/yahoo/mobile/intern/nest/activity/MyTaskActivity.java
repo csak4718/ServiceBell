@@ -51,35 +51,13 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
     @Bind(R.id.txt_title) TextView txtTitle;
     @Bind(R.id.txt_content) TextView txtContent;
     @Bind(R.id.list_view_accepted_seller)ExpandableHeightListView mListView;
-    @Bind(R.id.btn_deal) Button btnDeal;
-    @Bind(R.id.select_seller) LinearLayout selectSeller;
-    @Bind(R.id.btn_confirm) Button btnConfirm;
-    @Bind(R.id.btn_cancel) Button btnCancel;
     @Bind(R.id.txt_task_date) TextView txtTaskDate;
     @Bind(R.id.txt_task_time) TextView txtTaskTime;
-    @Bind(R.id.img_map)ImageView imgMap;
+    @Bind(R.id.img_map) ImageView imgMap;
+    @Bind(R.id.txt_status) TextView txtStatus;
 
     private AcceptedUserAdapter mAdapter;
     private List<ParseUser> mList;
-
-
-    @OnClick(R.id.btn_deal) void dealOnClick() {
-        mAdapter.setSelectable(true);
-        btnDeal.setVisibility(View.GONE);
-        selectSeller.setVisibility(View.VISIBLE);
-    }
-    @OnClick(R.id.btn_cancel) void cancelOnClick() {
-        mAdapter.setSelectable(false);
-        btnDeal.setVisibility(View.VISIBLE);
-        selectSeller.setVisibility(View.GONE);
-    }
-    @OnClick(R.id.btn_confirm) void confirmOnClick() {
-        ParseUser seller = mAdapter.getCheckedUser();
-        if(seller != null) {
-            //ParseUtils.doneTask(mTask, ParseUser.getCurrentUser(), seller);
-            closeAuction(seller);
-        }
-    }
 
     private void setupTask() {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(Common.OBJECT_QUESTION);
@@ -117,8 +95,24 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
                     txtContent.setText(content);
                     txtTaskDate.setText(task.getDate(Common.OBJECT_QUESTION_EXPIRE_DATE).toString());
                     txtTaskTime.setText(time);
+
                     setupAcceptedSellers();
-                    ParseUtils.getTaskAcceptedUser(task);
+                    // task is not done
+                    if(task.getParseUser(Common.OBJECT_QUESTION_DONE_USER) == null) {
+                        txtStatus.setText("等待中");
+                        ParseUtils.getTaskAcceptedUser(task);
+                    }
+                    else {
+                        txtStatus.setText("已成交");
+                        ParseUser seller = task.getParseUser(Common.OBJECT_QUESTION_DONE_USER);
+                        try {
+                            seller = seller.fetch();
+                            mList.add(seller);
+                            mAdapter.notifyDataSetChanged();
+                        } catch (ParseException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
                 }
             }
         });
@@ -149,7 +143,7 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
 
     public void onEvent(AcceptedUserEvent event) {
         mList.addAll(event.userList);
-        mAdapter.receivedAcceptedUser();
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override

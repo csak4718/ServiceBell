@@ -266,6 +266,10 @@ public class ParseUtils {
     }
 
     static public void displayUserMap(ParseFile imgFile,  final ImageView mapImg) {
+        if(imgFile == null) {
+            return;
+        }
+
         final ParseUser user = ParseUser.getCurrentUser();
         imgFile.getDataInBackground(new GetDataCallback() {
             @Override

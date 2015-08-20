@@ -145,15 +145,18 @@
             android:label="@string/title_activity_seller_profile" >
         </activity>
         <activity
-
             android:name=".activity.BSInfoSettingActivity"
-            android:label="@string/title_activity_bsinfo_setting"
             android:configChanges="keyboardHidden|orientation"
+            android:label="@string/title_activity_bsinfo_setting"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name=".activity.IMListActivity"
             android:label="@string/title_activity_imlist" >
+        </activity>
+        <activity
+            android:name=".activity.MyDoneTaskActivity"
+            android:label="@string/title_activity_my_done_task" >
         </activity>
     </application>
 

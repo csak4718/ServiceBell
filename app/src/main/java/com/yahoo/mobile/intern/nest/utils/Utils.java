@@ -53,6 +53,11 @@ public class Utils {
 
         return String.format("%d時%d分", diffInHours, diffInMinutes);
     }
+    static public void showLoadingDialog(Context context) {
+        ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+    }
     /*
      * Actionbar and statusbar setup
      */
@@ -96,8 +101,8 @@ public class Utils {
     }
     static public void gotoBSInfoSettingActivity(Activity activity) {
         Intent it = new Intent(activity, BSInfoSettingActivity.class);
-        //activity.startActivity(it);
-        activity.startActivityForResult(it,123456);
+        activity.startActivity(it);
+        //activity.startActivityForResult(it, 123456);
     }
     static public void gotoMyTaskActivity(Activity activity, String taskId) {
         Intent it = new Intent(activity, MyTaskActivity.class);
