@@ -181,6 +181,7 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
         int id = item.getItemId();
 
         if(id == android.R.id.home) {
+            //closeActivity();
             finish();
         }
         if(id == R.id.action_delete) {
@@ -212,6 +213,10 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
 
     public void closeAuction(ParseUser seller){
         ParseUtils.doneTask(mTask, ParseUser.getCurrentUser(), seller);
+        closeActivity();
+    }
+
+    public void closeActivity(){
         Intent returnIntent = new Intent();
         returnIntent.putExtra("result",true);
         setResult(RESULT_OK,returnIntent);

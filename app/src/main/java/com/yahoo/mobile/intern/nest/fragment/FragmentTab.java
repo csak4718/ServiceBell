@@ -78,4 +78,8 @@ public class FragmentTab extends Fragment {
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
     }
+
+    public void setCurrentPage(int i ){
+        viewPager.setCurrentItem(i);
+    }
 }
