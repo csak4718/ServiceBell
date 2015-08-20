@@ -19,6 +19,7 @@ import com.yahoo.mobile.intern.nest.utils.Utils;
 
 import de.greenrobot.event.EventBus;
 
+// SpinnerActivity is used to connect buttons in Adapter to MessagingActivity
 public class SpinnerActivity extends BaseActivity implements SinchService.StartFailedListener {
     private ProgressDialog mSpinner;
     private String recipientObjectId;
@@ -44,6 +45,7 @@ public class SpinnerActivity extends BaseActivity implements SinchService.StartF
             showSpinner();
         } else {
             Utils.gotoMessagingActivity(this, recipientObjectId);
+            finish();
         }
     }
 
@@ -68,6 +70,7 @@ public class SpinnerActivity extends BaseActivity implements SinchService.StartF
     @Override
     public void onStarted() {
         Utils.gotoMessagingActivity(this, recipientObjectId);
+        finish();
     }
 
     private void showSpinner() {
