@@ -19,8 +19,8 @@ import com.yahoo.mobile.intern.nest.activity.LoginActivity;
 import com.yahoo.mobile.intern.nest.activity.MainActivity;
 import com.yahoo.mobile.intern.nest.activity.MapsActivity;
 import com.yahoo.mobile.intern.nest.activity.MessagingActivity;
-import com.yahoo.mobile.intern.nest.activity.ProfileSettingActivity;
 import com.yahoo.mobile.intern.nest.activity.MyTaskActivity;
+import com.yahoo.mobile.intern.nest.activity.ProfileSettingActivity;
 import com.yahoo.mobile.intern.nest.activity.SellerProfileActivity;
 
 /**
@@ -75,6 +75,10 @@ public class Utils {
         activity.startActivityForResult(it, Common.REQUEST_LOCATION);
     }
     static public void gotoProfileSettingActivity(Activity activity) {
+        Intent it = new Intent(activity, ProfileSettingActivity.class);
+        activity.startActivity(it);
+    }
+    static public void gotoBSInfoSettingActivity(Activity activity) {
         Intent it = new Intent(activity, BSInfoSettingActivity.class);
         activity.startActivity(it);
     }

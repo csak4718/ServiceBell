@@ -5,23 +5,18 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.SeekBar;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.parse.ParseGeoPoint;
-import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.Utils;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class ProfileSettingActivity extends AppCompatActivity {
 
     private LatLng position;
-    @Bind(R.id.seekBar_radius) SeekBar seekBarRadius;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +26,11 @@ public class ProfileSettingActivity extends AppCompatActivity {
         ButterKnife.bind(this);
     }
 
-    @OnClick(R.id.btn_logout) void logout() {
-        ParseUser.getCurrentUser().logOut();
-        Utils.gotoLoginActivity(this);
-        finish();
-    }
-    @OnClick(R.id.btn_set_service_location) void setServiceLocation() {
+    @OnClick(R.id.setting_edit) void setServiceLocation() {
         Utils.gotoMapsActivityForResult(this);
+    }
+    @OnClick(R.id.setting_profile) void setProfile(){
+        Utils.gotoBSInfoSettingActivity(this);
     }
 
     @Override
@@ -60,7 +53,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_done) {
-
+            /*
             ParseUser user = ParseUser.getCurrentUser();
             if(position != null) {
                 ParseGeoPoint pin = new ParseGeoPoint(position.latitude, position.longitude);
@@ -69,7 +62,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
             user.put(Common.OBJECT_USER_RADIUS, seekBarRadius.getProgress());
             user.saveInBackground();
             finish();
-            return true;
+            return true;*/
         }
         if (id == android.R.id.home) {
             finish();
