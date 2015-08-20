@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -136,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d("1234", "22344");
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
@@ -171,9 +172,16 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == 1) {
-            String result=data.getStringExtra("result");
+        Log.d("test",String.valueOf(requestCode));
+        if (requestCode == Common.REQUEST_MY_TASK) {
+            if (data!=null){
+                Boolean result=data.getBooleanExtra("result",false);
+                Log.d("test",result.toString());
+                if (result == true){
+                    fragmentTab.setCurrentPage(1);
+                    fragmentTab.refreshAllTab();
+                }
+            }
         }
     }
 }
