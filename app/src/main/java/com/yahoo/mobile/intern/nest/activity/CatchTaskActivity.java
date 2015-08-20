@@ -106,7 +106,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
                         }
                     }
                 });
-                txtTaskDate.setText(task.getDate(Common.OBJECT_QUESTION_DATE).toString());
+                txtTaskDate.setText(task.getDate(Common.OBJECT_QUESTION_EXPIRE_DATE).toString());
                 txtTaskTime.setText(task.getString(Common.OBJECT_QUESTION_TIME));
                 
                 LatLng latLng = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
