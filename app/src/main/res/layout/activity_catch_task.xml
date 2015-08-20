@@ -144,6 +144,15 @@
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/cyan"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text="@string/catch_task_who_post_it"
+        android:textSize="20dp"/>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -172,6 +181,13 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+
+            <Button
+                android:id="@+id/btn_toSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="IM to service requester" />
+
         </LinearLayout>
     </RelativeLayout>
 
@@ -181,12 +197,15 @@
         android:layout_height="1dp"
         android:background="@android:color/darker_gray"/>
 
+
+    <!-- showing how many poople accept this task -->
     <LinearLayout
         android:background="?android:attr/selectableItemBackground"
         android:id="@+id/btn_set_expiretime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:visibility="gone">
         <LinearLayout
             android:layout_width="56dp"
             android:layout_height="56dp"
@@ -204,30 +223,41 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""/>
+
     </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/txt_msg_accepted"
-        android:text="You have accepted this task"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"/>
-    <Button
-        android:id="@+id/btn_toSpinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="IM to service requester" />
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btn_accept_task"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        <Button
+            android:id="@+id/btn_accept_task"
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
 
-        android:gravity="center"
-        android:text="Accept task"
-        android:layout_marginBottom="10dp"
-        android:layout_gravity="center_horizontal"/>
+            android:gravity="center"
+            android:text="@string/catch_task_accept"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center_horizontal"/>
+
+        <Button
+            android:id="@+id/btn_reject_task"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+
+            android:gravity="center"
+            android:text="@string/catch_task_reject"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center_horizontal"/>
+
+
+
+
+    </LinearLayout>
 
 </LinearLayout>
 </ScrollView>

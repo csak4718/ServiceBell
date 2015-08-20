@@ -7,12 +7,13 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.SearchView;
 import android.widget.SeekBar;
-import android.widget.TextView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -44,13 +45,14 @@ public class MapsActivity extends FragmentActivity
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private LocationManager locationManager;
     private LocationRequest mLocationRequest;
-    private GoogleApiClient mGoogleApiClient;
+    public GoogleApiClient mGoogleApiClient;
     private Geocoder mGeocoder;
     private Circle mRadiusCircle;
     private int mRadius;
 
+
     @Bind(R.id.seekBar_radius) SeekBar mRadiusSeekBar;
-    @Bind(R.id.txt_address) TextView mTextAddress;
+    @Bind(R.id.map_search_view) SearchView mSearchView;
 
     private Location mCurLocation;
 
@@ -101,7 +103,23 @@ public class MapsActivity extends FragmentActivity
         });
 
 
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                new SearchClicked(query).execute();
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
     }
+
+
 
     @OnClick(R.id.btn_ok)
     void btnOk() {
@@ -111,7 +129,7 @@ public class MapsActivity extends FragmentActivity
         LatLng position = mMap.getCameraPosition().target;
         Intent it = new Intent();
         it.putExtra(Common.EXTRA_LOCATION, position);
-        it.putExtra(Common.EXTRA_ADDRESS, mTextAddress.getText());
+        it.putExtra(Common.EXTRA_ADDRESS, mSearchView.getQuery());
         setResult(RESULT_OK, it);
         finish();
     }
@@ -216,7 +234,7 @@ public class MapsActivity extends FragmentActivity
             e.printStackTrace();
         }
         if (addresses != null && addresses.size() > 0) {
-            mTextAddress.setText(addresses.get(0).getAddressLine(0));
+            mSearchView.setQuery(addresses.get(0).getAddressLine(0), false);
         }
 
     }
@@ -227,11 +245,61 @@ public class MapsActivity extends FragmentActivity
 
         if(mRadiusCircle != null)
             mRadiusCircle.remove();
+
         mRadiusCircle = mMap.addCircle(new CircleOptions()
                 .center(mMap.getCameraPosition().target)
                 .radius(mRadius)
                 .strokeColor(Color.BLUE)
-                .fillColor(0x445BDACE));
+                .fillColor(Color.argb(127, 0, 0, 255)));
+
+
+        ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getView().invalidate();
+
+    }
+
+
+
+    private class SearchClicked extends AsyncTask<Void, Void, Boolean> {
+        private String toSearch;
+        private Address address;
+
+        public SearchClicked(String toSearch) {
+            this.toSearch = toSearch;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            try {
+                Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault() );
+                List<Address> results = geocoder.getFromLocationName(toSearch, 1);
+
+                if (results.size() == 0) {
+                    return false;
+                }
+
+                address = results.get(0);
+                Log.d("Search result", "" + address.getLatitude() + " " + address.getLongitude());
+                Location location = new Location("dummyprovider");
+                location.setLatitude(address.getLatitude());
+                location.setLongitude(address.getLongitude());
+                mCurLocation = location;
+
+
+            } catch (Exception e) {
+                Log.e("", "Something went wrong: ", e);
+                return false;
+            }
+            return true;
+        }
+
+
+        protected void onPostExecute(Boolean found) {
+            if (found) {
+                LatLng latLng = new LatLng(mCurLocation.getLatitude(), mCurLocation.getLongitude());
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+            }
+        }
     }
 
 }
