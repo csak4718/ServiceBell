@@ -123,7 +123,7 @@ public class FragmentSellerTask extends FragmentTask {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ParseObject task = (ParseObject) mAdapter.getItem(position);
-                Utils.gotoCatchTaskActivity(getActivity(), task.getObjectId());
+                Utils.gotoCatchTaskActivity(getActivity(), task.getObjectId(), mType);
             }
         });
 

@@ -2,38 +2,39 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:animateLayoutChanges="true"
+    android:background="@android:color/white"
     tools:context="com.yahoo.mobile.intern.nest.activity.CatchTaskActivity">
 
     <include layout="@layout/task_info" />
 
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/gray"
+        android:background="#fff3f3f3"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
+        android:textColor="@android:color/black"
+        android:textStyle="bold"
         android:text="誰需要這項服務"
         android:textSize="20dp"/>
 
     <RelativeLayout
+        android:id="@+id/rlayout_buyer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_user_pic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/ic_account_circle_black_48dp" />
         <LinearLayout
             android:layout_marginLeft="10dp"
@@ -45,11 +46,6 @@
             <TextView
                 android:id="@+id/txt_user_name"
                 android:text=""
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:text="Title"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -67,66 +63,39 @@
     <View
         android:layout_width="wrap_content"
         android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
-
-
-    <!-- showing how many poople accept this task -->
-    <LinearLayout
-        android:background="?android:attr/selectableItemBackground"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:visibility="gone">
-        <LinearLayout
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:gravity="center">
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@drawable/pin"/>
-        </LinearLayout>
-
-        <TextView
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:id="@+id/txt_num_people_accepted"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""/>
-
-    </LinearLayout>
+        android:background="@android:color/darker_gray"
+        android:layout_marginBottom="15dp"/>
 
     <LinearLayout
+        android:id="@+id/task_op_banner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_accept_task"
             android:layout_width="0dp"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-
             android:gravity="center"
-            android:text="@string/catch_task_accept"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="center_horizontal"/>
+            android:text="我要提供服務"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/nest_blue_1"
+            android:textColor="@android:color/white"
+            android:layout_margin="5dp"/>
 
         <Button
             android:id="@+id/btn_reject_task"
             android:layout_width="0dp"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
-
             android:gravity="center"
-            android:text="@string/catch_task_reject"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="center_horizontal"/>
-
-
-
-
+            android:text="無法提供服務"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/nest_blue_1"
+            android:textColor="@android:color/white"
+            android:layout_margin="5dp"/>
     </LinearLayout>
 
 </LinearLayout>
