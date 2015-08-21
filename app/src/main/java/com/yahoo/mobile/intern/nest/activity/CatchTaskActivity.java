@@ -48,6 +48,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     private ParseUser buyer;
     private ProgressDialog mSpinner;
     @Bind(R.id.btn_toMessaging) Button btnToMessaging;
+    @Bind(R.id.txt_status) TextView txtStatus;
     @Bind(R.id.txt_title) TextView txtTitle;
     @Bind(R.id.txt_content) TextView txtContent;
     @Bind(R.id.task_op_banner) LinearLayout taskOpBanner;
@@ -151,11 +152,24 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         });
     }
 
+    private void setupLayoutForType() {
+        switch (mType) {
+            case Common.SELLER_NEW:
+                taskOpBanner.setVisibility(View.VISIBLE);
+                txtStatus.setText("等待中");
+                break;
+            case Common.SELLER_ACCEPTED:
+                txtStatus.setText("洽談中");
+                break;
+            case Common.SELLER_DONE:
+                txtStatus.setText("已成交");
+                break;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
 
         setContentView(R.layout.activity_catch_task);
         ButterKnife.bind(this);
@@ -167,9 +181,8 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         taskId = getIntent().getStringExtra(Common.EXTRA_TASK_ID);
         mType = getIntent().getIntExtra(Common.EXTRA_STATE, Common.SELLER_NEW);
 
-        if(mType == Common.SELLER_NEW) {
-            taskOpBanner.setVisibility(View.VISIBLE);
-        }
+        setupLayoutForType();
+
 
         setupTask();
 

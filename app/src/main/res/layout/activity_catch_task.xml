@@ -2,13 +2,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:animateLayoutChanges="true"
+    android:background="@android:color/white"
     tools:context="com.yahoo.mobile.intern.nest.activity.CatchTaskActivity">
 
     <include layout="@layout/task_info" />
@@ -16,7 +18,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/gray"
+        android:background="#fff3f3f3"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
         android:textColor="@android:color/black"

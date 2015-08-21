@@ -8,8 +8,8 @@
         <item name="actionBarStyle">@style/MyActionBar</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:fitsSystemWindows">true</item>
-        <item name="android:colorPrimary">@color/nest_yellow_1</item>
-        <item name="android:colorPrimaryDark">@color/nest_yellow_1</item>
+        <item name="android:colorPrimary">@color/nest_blue_3</item>
+        <item name="android:colorPrimaryDark">@color/nest_blue_3</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
@@ -25,24 +25,24 @@
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:fitsSystemWindows">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:colorPrimary">@color/nest_yellow_1</item>
-        <item name="android:colorPrimaryDark">@color/nest_yellow_1</item>
+        <item name="android:colorPrimary">@color/nest_blue_3</item>
+        <item name="android:colorPrimaryDark">@color/nest_blue_3</item>
         <item name="drawerArrowStyle">@style/DrawerArrowStyle</item>
     </style>
 
     <style name="toolbarTheme" parent="@style/Theme.AppCompat.Light.NoActionBar">
-        <item name="android:colorPrimary">@color/nest_yellow_1</item>
+        <item name="android:colorPrimary">@color/nest_blue_3</item>
         <item name="android:textColorPrimary">@color/black</item>
     </style>
 
     <!-- ActionBar styles -->
     <style name="MyActionBar"
         parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="android:background">@color/nest_yellow_1</item>
+        <item name="android:background">@color/nest_blue_3</item>
         <item name="android:textColorPrimary">@color/black</item>
 
         <!-- Support library compatibility -->
-        <item name="background">@color/nest_yellow_1</item>
+        <item name="background">@color/nest_blue_3</item>
         <item name="elevation">0dp</item>
     </style>
 
