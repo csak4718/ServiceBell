@@ -100,6 +100,23 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         ParseCloud.callFunctionInBackground(Common.CLOUD_NOTIFY_ACCEPT, params);
     }
 
+    private void setupBuyerProfile(ParseUser buyer) {
+        txtUserName.setText((String) buyer.get(Common.OBJECT_USER_FB_NAME));
+        ParseFile imgFile = buyer.getParseFile(Common.OBJECT_USER_PROFILE_PIC);
+        imgFile.getDataInBackground(new GetDataCallback() {
+            @Override
+            public void done(byte[] bytes, ParseException e) {
+                if (e == null) {
+                    Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0,
+                            bytes.length);
+                    if (bmp != null) {
+                        imgUserPic.setImageBitmap(bmp);
+                    }
+                }
+            }
+        });
+    }
+
     private void setupTask() {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(Common.OBJECT_QUESTION);
         query.getInBackground(taskId, new GetCallback<ParseObject>() {
@@ -107,10 +124,16 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
             public void done(final ParseObject task, ParseException e) {
                 mTask = task;
                 buyer = (ParseUser) task.get(Common.OBJECT_QUESTION_USER);
+                buyer.fetchInBackground(new GetCallback<ParseUser>() {
+                    @Override
+                    public void done(ParseUser buyer, ParseException e) {
+                        if(e == null) {
+                            setupBuyerProfile(buyer);
+                        }
+                    }
+                });
                 String title = task.getString(Common.OBJECT_QUESTION_TITLE);
                 String content = task.getString(Common.OBJECT_QUESTION_CONTENT);
-
-                txtUserName.setText((String) buyer.get(Common.OBJECT_USER_FB_NAME));
 
                 txtTaskTime.setText(task.getString(Common.OBJECT_QUESTION_TIME));
 
@@ -120,20 +143,6 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
                 Date expire = task.getDate(Common.OBJECT_QUESTION_EXPIRE_DATE);
                 Date current = new Date();
                 txtRemaining.setText(Utils.getRemainingTime(current, expire));
-
-                ParseFile imgFile = buyer.getParseFile(Common.OBJECT_USER_PROFILE_PIC);
-                imgFile.getDataInBackground(new GetDataCallback() {
-                    @Override
-                    public void done(byte[] bytes, ParseException e) {
-                        if (e == null) {
-                            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0,
-                                    bytes.length);
-                            if (bmp != null) {
-                                imgUserPic.setImageBitmap(bmp);
-                            }
-                        }
-                    }
-                });
 
                 btnAcceptTask.setOnClickListener(new View.OnClickListener() {
                     @Override
