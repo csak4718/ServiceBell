@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -137,11 +136,9 @@ public class ProfileSettingActivity extends AppCompatActivity {
                 user.put(Common.OBJECT_USER_PIN, pin);
             }
             if(mRadius != -1) {
-                Log.d("home", ""+mRadius);
                 user.put(Common.OBJECT_USER_RADIUS, mRadius);
             }
             if(mAddress != null) {
-                Log.d("home", mAddress);
                 user.put(Common.OBJECT_USER_ADDRESS, mAddress);
             }
 

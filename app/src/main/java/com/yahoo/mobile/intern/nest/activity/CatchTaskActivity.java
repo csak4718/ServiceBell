@@ -9,23 +9,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.parse.CountCallback;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
@@ -52,13 +43,12 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     private ParseUser buyer;
     private ProgressDialog mSpinner;
 
-    @Bind(R.id.btn_toMessaging) Button btnToMessaging;
     @Bind(R.id.txt_title) TextView txtTitle;
     @Bind(R.id.txt_content) TextView txtContent;
-    @Bind(R.id.txt_num_people_accepted) TextView txtAcceptedUser;
+
     @Bind(R.id.btn_accept_task) Button btnAcceptTask;
     @Bind(R.id.img_user_pic)CircleImageView imgUserPic;
-    @Bind(R.id.txt_user_name) TextView txtUserName;
+    @Bind(R.id.txt_name) TextView txtUserName;
     @Bind(R.id.txt_task_time) TextView txtTaskTime;
     @Bind(R.id.txt_remaining) TextView txtRemaining;
 
@@ -99,6 +89,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         params.put(Common.CLOUD_NOTIFY_ACCEPT_BUYERID, mTask.getParseUser(Common.OBJECT_QUESTION_USER).getObjectId());
         ParseCloud.callFunctionInBackground(Common.CLOUD_NOTIFY_ACCEPT, params);
     }
+
 
     private void setupBuyerProfile(ParseUser buyer) {
         txtUserName.setText((String) buyer.get(Common.OBJECT_USER_FB_NAME));
@@ -160,25 +151,19 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catch_task);
         ButterKnife.bind(this);
-        btnToMessaging.setEnabled(false);
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         taskId = getIntent().getStringExtra(Common.EXTRA_TASK_ID);
         setupTask();
 
-        btnToMessaging.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnToMessagingClicked();
-            }
-        });
+
     }
 
 
     @Override
     protected void onServiceConnected() {
-        btnToMessaging.setEnabled(true);
         getSinchServiceInterface().setStartListener(this);
     }
 

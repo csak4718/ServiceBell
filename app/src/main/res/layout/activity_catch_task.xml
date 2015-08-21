@@ -26,14 +26,16 @@
         android:text="誰需要這項服務"
         android:textSize="20dp"/>
 
+
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_user_pic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/ic_account_circle_black_48dp" />
         <LinearLayout
             android:layout_marginLeft="10dp"
@@ -41,26 +43,24 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center_vertical"
-            android:layout_toRightOf="@+id/img_user_pic">
+            android:layout_toRightOf="@+id/img_user_pic"
+            android:id="@+id/linearLayout">
             <TextView
-                android:id="@+id/txt_user_name"
-                android:text=""
+                android:id="@+id/txt_name"
+                android:text="Name"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
-            <TextView
-                android:text="Title"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <Button
-                android:id="@+id/btn_toMessaging"
+            <RatingBar
+                android:id="@+id/ratingBar"
+                style="?android:attr/ratingBarStyleSmall"
+                android:rating="5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="IM to service requester" />
+                />
 
         </LinearLayout>
+
     </RelativeLayout>
 
 
@@ -70,32 +70,6 @@
         android:background="@android:color/darker_gray"/>
 
 
-    <!-- showing how many poople accept this task -->
-    <LinearLayout
-        android:background="?android:attr/selectableItemBackground"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:visibility="gone">
-        <LinearLayout
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:gravity="center">
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@drawable/pin"/>
-        </LinearLayout>
-
-        <TextView
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:id="@+id/txt_num_people_accepted"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""/>
-
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
