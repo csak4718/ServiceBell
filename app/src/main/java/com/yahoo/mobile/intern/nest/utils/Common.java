@@ -18,6 +18,7 @@ public class Common {
 
     public final static int REQUEST_MY_TASK = 4444;
 
+    public final static String EXTRA_STATE = "state";
     public final static String EXTRA_LOCATION = "location";
     public final static String EXTRA_SEEKBAR = "seekbar";
     public final static String EXTRA_TASK_ID = "task_id";
