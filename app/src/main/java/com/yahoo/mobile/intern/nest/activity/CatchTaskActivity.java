@@ -10,24 +10,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.parse.CountCallback;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
@@ -35,6 +26,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.sinch.android.rtc.SinchError;
 import com.yahoo.mobile.intern.nest.R;
+import com.yahoo.mobile.intern.nest.fragment.DialogFragmentSellerProfile;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.Utils;
 
@@ -55,7 +47,6 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     private String taskId;
     private ParseUser buyer;
     private ProgressDialog mSpinner;
-
     @Bind(R.id.btn_toMessaging) Button btnToMessaging;
     @Bind(R.id.txt_title) TextView txtTitle;
     @Bind(R.id.txt_content) TextView txtContent;
@@ -67,7 +58,10 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     @Bind(R.id.txt_task_time) TextView txtTaskTime;
     @Bind(R.id.txt_remaining) TextView txtRemaining;
 
-
+    @OnClick(R.id.rlayout_buyer) void buyerProfile(){
+        DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(buyer,false,true);
+        dfsp.show(getSupportFragmentManager(),"buyerInfo");
+    }
     @OnClick(R.id.btn_reject_task) void rejectTask() {
 
         Utils.showLoadingDialog(this);
@@ -166,6 +160,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         setContentView(R.layout.activity_catch_task);
         ButterKnife.bind(this);
         btnToMessaging.setEnabled(false);
+        btnToMessaging.setVisibility(View.GONE);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
