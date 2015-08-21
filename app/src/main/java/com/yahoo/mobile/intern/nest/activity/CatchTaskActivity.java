@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -82,6 +83,10 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     }
 
     @OnClick(R.id.btn_accept_task) void acceptTask() {
+
+        taskOpBanner.setVisibility(View.GONE);
+        Snackbar.make(findViewById(android.R.id.content), "你接了一個任務", Snackbar.LENGTH_LONG)
+                .show();
         ParseUser user = ParseUser.getCurrentUser();
         ParseRelation<ParseObject> catchRelation = user.getRelation(Common.OBJECT_USER_CATCH_QUESTIONS);
         ParseRelation<ParseObject> acceptedRelation = user.getRelation(Common.OBJECT_USER_ACCEPTED_QUESTIONS);
@@ -100,7 +105,6 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         params.put(Common.CLOUD_NOTIFY_ACCEPT_BUYERID, mTask.getParseUser(Common.OBJECT_QUESTION_USER).getObjectId());
         ParseCloud.callFunctionInBackground(Common.CLOUD_NOTIFY_ACCEPT, params);
 
-        finish();
     }
 
 
