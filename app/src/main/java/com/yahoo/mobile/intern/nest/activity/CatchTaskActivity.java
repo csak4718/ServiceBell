@@ -5,10 +5,12 @@ import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,6 +41,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CatchTaskActivity extends BaseActivity implements SinchService.StartFailedListener {
 
+    private int mType;
+
     private ParseObject mTask;
     private String taskId;
     private ParseUser buyer;
@@ -46,8 +50,9 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     @Bind(R.id.btn_toMessaging) Button btnToMessaging;
     @Bind(R.id.txt_title) TextView txtTitle;
     @Bind(R.id.txt_content) TextView txtContent;
-    @Bind(R.id.txt_num_people_accepted) TextView txtAcceptedUser;
+    @Bind(R.id.task_op_banner) LinearLayout taskOpBanner;
     @Bind(R.id.btn_accept_task) Button btnAcceptTask;
+    @Bind(R.id.btn_reject_task) Button btnRejectTask;
     @Bind(R.id.img_user_pic)CircleImageView imgUserPic;
     @Bind(R.id.txt_user_name) TextView txtUserName;
     @Bind(R.id.txt_task_time) TextView txtTaskTime;
@@ -74,17 +79,21 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         });
     }
 
-    private void acceptTask(ParseObject task) {
+    @OnClick(R.id.btn_accept_task) void acceptTask() {
+
+        taskOpBanner.setVisibility(View.GONE);
+        Snackbar.make(findViewById(android.R.id.content), "你接了一個任務", Snackbar.LENGTH_LONG)
+                .show();
         ParseUser user = ParseUser.getCurrentUser();
         ParseRelation<ParseObject> catchRelation = user.getRelation(Common.OBJECT_USER_CATCH_QUESTIONS);
         ParseRelation<ParseObject> acceptedRelation = user.getRelation(Common.OBJECT_USER_ACCEPTED_QUESTIONS);
-        catchRelation.remove(task);
-        acceptedRelation.add(task);
+        catchRelation.remove(mTask);
+        acceptedRelation.add(mTask);
         user.saveInBackground();
 
-        ParseRelation<ParseUser> acceptedUser = task.getRelation(Common.OBJECT_QUESTION_ACCEPTED_USER);
+        ParseRelation<ParseUser> acceptedUser = mTask.getRelation(Common.OBJECT_QUESTION_ACCEPTED_USER);
         acceptedUser.add(user);
-        task.saveInBackground();
+        mTask.saveInBackground();
 
         /*
          Use cloud code to notify buyer
@@ -92,6 +101,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(Common.CLOUD_NOTIFY_ACCEPT_BUYERID, mTask.getParseUser(Common.OBJECT_QUESTION_USER).getObjectId());
         ParseCloud.callFunctionInBackground(Common.CLOUD_NOTIFY_ACCEPT, params);
+
     }
 
     private void setupBuyerProfile(ParseUser buyer) {
@@ -137,14 +147,6 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
                 Date expire = task.getDate(Common.OBJECT_QUESTION_EXPIRE_DATE);
                 Date current = new Date();
                 txtRemaining.setText(Utils.getRemainingTime(current, expire));
-
-                btnAcceptTask.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        acceptTask(task);
-                        btnAcceptTask.setVisibility(View.GONE);
-                    }
-                });
             }
         });
     }
@@ -152,13 +154,23 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
         setContentView(R.layout.activity_catch_task);
         ButterKnife.bind(this);
         btnToMessaging.setEnabled(false);
+        btnToMessaging.setVisibility(View.GONE);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         taskId = getIntent().getStringExtra(Common.EXTRA_TASK_ID);
+        mType = getIntent().getIntExtra(Common.EXTRA_STATE, Common.SELLER_NEW);
+
+        if(mType == Common.SELLER_NEW) {
+            taskOpBanner.setVisibility(View.VISIBLE);
+        }
+
         setupTask();
 
         btnToMessaging.setOnClickListener(new View.OnClickListener() {

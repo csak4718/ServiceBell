@@ -119,9 +119,10 @@ public class Utils {
         //activity.startActivity(it);
         activity.startActivityForResult(it,Common.REQUEST_MY_TASK);
     }
-    static public void gotoCatchTaskActivity(Activity activity, String taskId) {
+    static public void gotoCatchTaskActivity(Activity activity, String taskId, int state) {
         Intent it = new Intent(activity, CatchTaskActivity.class);
         it.putExtra(Common.EXTRA_TASK_ID, taskId);
+        it.putExtra(Common.EXTRA_STATE, state);
         activity.startActivity(it);
     }
     static public void gotoSellerProfileActivity(Activity activity, String userId, String taskId) {
