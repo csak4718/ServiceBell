@@ -12,6 +12,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private int mHour, mMinute;
     private String mDateTime;
     LatLng mLocation;
+<<<<<<< HEAD
 //    @Bind(R.id.edt_task_title) EditText edtTaskTitle;
 //    @Bind(R.id.edt_task_content) EditText edtTaskContent;
 //    @Bind(R.id.btn_set_location) LinearLayout btnSetLocation;
