@@ -36,6 +36,7 @@ import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.Utils;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,7 +49,6 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
 
     private ParseObject mTask;
     private String taskId;
-    private GoogleMap mMap;
     private ParseUser buyer;
     private ProgressDialog mSpinner;
 
@@ -59,9 +59,8 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     @Bind(R.id.btn_accept_task) Button btnAcceptTask;
     @Bind(R.id.img_user_pic)CircleImageView imgUserPic;
     @Bind(R.id.txt_user_name) TextView txtUserName;
-    @Bind(R.id.txt_task_date) TextView txtTaskDate;
     @Bind(R.id.txt_task_time) TextView txtTaskTime;
-    @Bind(R.id.img_map) ImageView imgMap;
+    @Bind(R.id.txt_remaining) TextView txtRemaining;
 
 
     @OnClick(R.id.btn_reject_task) void rejectTask() {
@@ -101,66 +100,49 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         ParseCloud.callFunctionInBackground(Common.CLOUD_NOTIFY_ACCEPT, params);
     }
 
+    private void setupBuyerProfile(ParseUser buyer) {
+        txtUserName.setText((String) buyer.get(Common.OBJECT_USER_FB_NAME));
+        ParseFile imgFile = buyer.getParseFile(Common.OBJECT_USER_PROFILE_PIC);
+        imgFile.getDataInBackground(new GetDataCallback() {
+            @Override
+            public void done(byte[] bytes, ParseException e) {
+                if (e == null) {
+                    Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0,
+                            bytes.length);
+                    if (bmp != null) {
+                        imgUserPic.setImageBitmap(bmp);
+                    }
+                }
+            }
+        });
+    }
+
     private void setupTask() {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(Common.OBJECT_QUESTION);
         query.getInBackground(taskId, new GetCallback<ParseObject>() {
             @Override
             public void done(final ParseObject task, ParseException e) {
                 mTask = task;
-                buyer = (ParseUser)task.get(Common.OBJECT_QUESTION_USER);
-                String title = task.getString(Common.OBJECT_QUESTION_TITLE);
-                String content = task.getString(Common.OBJECT_QUESTION_CONTENT);
-                ParseGeoPoint geoPoint = (ParseGeoPoint) task.get(Common.OBJECT_QUESTION_LOCATION);
-
-                txtUserName.setText((String) buyer.get(Common.OBJECT_USER_FB_NAME));
-                ParseFile imgFile = buyer.getParseFile(Common.OBJECT_USER_PROFILE_PIC);
-                imgFile.getDataInBackground(new GetDataCallback() {
+                buyer = (ParseUser) task.get(Common.OBJECT_QUESTION_USER);
+                buyer.fetchInBackground(new GetCallback<ParseUser>() {
                     @Override
-                    public void done(byte[] bytes, ParseException e) {
-                        if (e == null) {
-                            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0,
-                                    bytes.length);
-                            if (bmp != null) {
-                                imgUserPic.setImageBitmap(bmp);
-                            }
+                    public void done(ParseUser buyer, ParseException e) {
+                        if(e == null) {
+                            setupBuyerProfile(buyer);
                         }
                     }
                 });
-                txtTaskDate.setText(task.getDate(Common.OBJECT_QUESTION_EXPIRE_DATE).toString());
+                String title = task.getString(Common.OBJECT_QUESTION_TITLE);
+                String content = task.getString(Common.OBJECT_QUESTION_CONTENT);
+
                 txtTaskTime.setText(task.getString(Common.OBJECT_QUESTION_TIME));
 
-                LatLng latLng = new LatLng(geoPoint.getLatitude(), geoPoint.getLongitude());
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-                mMap.addMarker(new MarkerOptions()
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_community_pin))
-                        .position(latLng));
-                mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-                    @Override
-                    public void onMapLoaded() {
-                        mMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
-                            @Override
-                            public void onSnapshotReady(Bitmap bitmap) {
-                                if (imgMap == null)
-                                    imgMap = (ImageView) findViewById(R.id.img_map);
-                                imgMap.setImageBitmap(bitmap);
-
-                                SupportMapFragment mapFragment =  ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapview_task_location));
-                                getSupportFragmentManager().beginTransaction().remove(mapFragment).commit();
-                            }
-                        });
-                    }
-                });
                 txtTitle.setText(title);
                 txtContent.setText(content);
 
-                ParseRelation<ParseUser> acceptedUser = task.getRelation(Common.OBJECT_QUESTION_ACCEPTED_USER);
-                acceptedUser.getQuery().countInBackground(new CountCallback() {
-                    @Override
-                    public void done(int count, ParseException e) {
-                        txtAcceptedUser.setText("現在共有" + Integer.toString(count) + "人接受此任務");
-                    }
-                });
-
+                Date expire = task.getDate(Common.OBJECT_QUESTION_EXPIRE_DATE);
+                Date current = new Date();
+                txtRemaining.setText(Utils.getRemainingTime(current, expire));
 
                 btnAcceptTask.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -184,8 +166,6 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
 
         taskId = getIntent().getStringExtra(Common.EXTRA_TASK_ID);
         setupTask();
-
-        setUpMapIfNeeded();
 
         btnToMessaging.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -247,13 +227,6 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         mSpinner.show();
     }
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        setUpMapIfNeeded();
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_catch_task, menu);
@@ -269,16 +242,6 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-
-    private void setUpMapIfNeeded() {
-        // Do a null check to confirm that we have not already instantiated the map.
-        if (mMap == null) {
-            // Try to obtain the map from the SupportMapFragment.
-            mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapview_task_location))
-                    .getMap();
-        }
     }
 
 }
