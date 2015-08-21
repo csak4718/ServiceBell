@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,10 +13,14 @@ import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
@@ -33,10 +38,14 @@ import butterknife.OnClick;
 
 public class ProfileSettingActivity extends AppCompatActivity {
 
+    private int mRadius;
     private LatLng position;
+    private String mAddress;
+
     @Bind(R.id.swtich_task) Switch mSwitch;
     @Bind(R.id.img_map) ImageView mImgMap;
     @Bind(R.id.lt_map_setting) LinearLayout mSettingLayout;
+    @Bind(R.id.txt_setting_address) TextView mAddressTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +55,20 @@ public class ProfileSettingActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         loadedMapImg();
+
+        Boolean acc = false;
+        ParseUser user = ParseUser.getCurrentUser();
+        if( user.get(Common.OBJECT_USER_ACCEPT) != null)
+            acc = (Boolean)user.get(Common.OBJECT_USER_ACCEPT);
+        setSwitch(mSwitch, acc);
+
+        if( user.get(Common.OBJECT_USER_RADIUS) != null)
+            mRadius = user.getInt(Common.OBJECT_USER_RADIUS);
+
+        mAddress = user.getString(Common.OBJECT_USER_ADDRESS);
+        if(mAddress != null)
+            mAddressTextView.setText(mAddress+mRadius);
+
     }
     @OnCheckedChanged(R.id.swtich_task) void setSwitch(CompoundButton buttonView, boolean isChecked) {
         if (isChecked) {
@@ -68,21 +91,17 @@ public class ProfileSettingActivity extends AppCompatActivity {
     protected void onResume(){
         super.onResume();
         //loadedMapImg();
-
-        Boolean acc = false;
-        ParseUser user = ParseUser.getCurrentUser();
-        if( user.get(Common.OBJECT_USER_ACCEPT) != null)
-             acc = (Boolean)user.get(Common.OBJECT_USER_ACCEPT);
-
-        setSwitch(mSwitch, acc);
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == Common.REQUEST_LOCATION) {
             if(resultCode == RESULT_OK) {
                 position = data.getParcelableExtra(Common.EXTRA_LOCATION);
+                mRadius  = data.getIntExtra(Common.EXTRA_RADIUS, 0);
+                mAddress = data.getStringExtra(Common.EXTRA_ADDRESS);
+                mAddressTextView.setText(mAddress);
+
                 String path= data.getStringExtra(Common.EXTRA_MAP_PATH);
                 loadMapFromStorage(path);
             }
@@ -112,7 +131,26 @@ public class ProfileSettingActivity extends AppCompatActivity {
             return true;*/
         }
         if (id == android.R.id.home) {
-            finish();
+            ParseUser user = ParseUser.getCurrentUser();
+            if(position != null) {
+                ParseGeoPoint pin = new ParseGeoPoint(position.latitude, position.longitude);
+                user.put(Common.OBJECT_USER_PIN, pin);
+            }
+            if(mRadius != -1) {
+                Log.d("home", ""+mRadius);
+                user.put(Common.OBJECT_USER_RADIUS, mRadius);
+            }
+            if(mAddress != null) {
+                Log.d("home", mAddress);
+                user.put(Common.OBJECT_USER_ADDRESS, mAddress);
+            }
+
+            user.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    finish();
+                }
+            });
         }
 
         return super.onOptionsItemSelected(item);

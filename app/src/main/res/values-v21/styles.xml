@@ -2,7 +2,7 @@
 <resources>
 
     <style name="AppTheme"
-        parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        parent="@style/Theme.AppCompat.Light">
         <item name="android:windowContentOverlay">@null</item>
         <item name="elevation">0dp</item>
         <item name="actionBarStyle">@style/MyActionBar</item>

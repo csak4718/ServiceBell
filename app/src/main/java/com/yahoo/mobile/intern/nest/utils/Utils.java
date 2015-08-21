@@ -46,12 +46,22 @@ public class Utils {
         long duration = expireDate.getTime() - current.getTime();
         long diffInSeconds = TimeUnit.MILLISECONDS.toSeconds(duration) % 60;
         long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(duration) % 60;
-        long diffInHours = TimeUnit.MILLISECONDS.toHours(duration);
+        long diffInHours = TimeUnit.MILLISECONDS.toHours(duration) % 24;
+        long diffInDays = TimeUnit.MILLISECONDS.toDays(duration);
 
+        diffInDays = diffInDays > 0 ? diffInDays : 0;
         diffInHours = diffInHours > 0 ? diffInHours : 0;
         diffInMinutes = diffInMinutes > 0 ? diffInMinutes : 0;
 
-        return String.format("%d時%d分", diffInHours, diffInMinutes);
+        String ret = "";
+        if(diffInDays == 0) {
+            ret = String.format("%d小時%d分", diffInHours, diffInMinutes);
+        }
+        else {
+            ret = String.format("%d日%d小時%d分", diffInDays, diffInHours, diffInMinutes);
+        }
+
+        return ret;
     }
     static public void showLoadingDialog(Context context) {
         ProgressDialog progressDialog = new ProgressDialog(context);
@@ -102,12 +112,12 @@ public class Utils {
     static public void gotoBSInfoSettingActivity(Activity activity) {
         Intent it = new Intent(activity, BSInfoSettingActivity.class);
         activity.startActivity(it);
-        //activity.startActivityForResult(it, 123456);
     }
     static public void gotoMyTaskActivity(Activity activity, String taskId) {
         Intent it = new Intent(activity, MyTaskActivity.class);
         it.putExtra(Common.EXTRA_TASK_ID, taskId);
-        activity.startActivity(it);
+        //activity.startActivity(it);
+        activity.startActivityForResult(it,Common.REQUEST_MY_TASK);
     }
     static public void gotoCatchTaskActivity(Activity activity, String taskId) {
         Intent it = new Intent(activity, CatchTaskActivity.class);

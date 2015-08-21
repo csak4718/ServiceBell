@@ -16,6 +16,10 @@ public class Common {
     public final static int SELLER_ACCEPTED = 3;
     public final static int SELLER_DONE = 4;
 
+    public final static int REQUEST_MY_TASK = 4444;
+
+
+    public final static String EXTRA_RADIUS = "map_radius";
     public final static String EXTRA_MAP_PATH = "map_path";
     public final static String EXTRA_LOCATION = "location";
     public final static String EXTRA_SEEKBAR = "seekbar";
@@ -56,7 +60,6 @@ public class Common {
     public final static String OBJECT_QUESTION_LOCATION = "pin";
     public final static String OBJECT_QUESTION_ACCEPTED_USER = "acceptedUser";
     public final static String OBJECT_QUESTION_DONE_USER = "doneUser";
-
 
     /*
      Cloud code function

@@ -146,9 +146,10 @@ public class MapsActivity extends FragmentActivity
                     Intent it = new Intent();
                     it.putExtra(Common.EXTRA_MAP_PATH, path);
                     it.putExtra(Common.EXTRA_LOCATION, position);
+                    it.putExtra(Common.EXTRA_RADIUS, mRadius/MIN_RADIUS);
                     it.putExtra(Common.EXTRA_ADDRESS, mSearchView.getQuery().toString());
                     setResult(RESULT_OK, it);
-                    MapsActivity.this.finish();
+                    finish();
                 }
             });
         }
@@ -311,7 +312,7 @@ public class MapsActivity extends FragmentActivity
                 location.setLatitude(address.getLatitude());
                 location.setLongitude(address.getLongitude());
                 mCurLocation = location;
-                
+
             } catch (Exception e) {
                 Log.e("", "Something went wrong: ", e);
                 return false;
