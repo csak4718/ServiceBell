@@ -45,6 +45,8 @@ import butterknife.OnClick;
 public class MapsActivity extends FragmentActivity
                         implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleMap.OnCameraChangeListener {
 
+    private double mLat, mLong;
+    private boolean mGivenPinLocation;
     private boolean mShowRange;
     static final int MIN_RADIUS = 500;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
@@ -70,6 +72,12 @@ public class MapsActivity extends FragmentActivity
         setContentView(R.layout.activity_maps);
 
         mShowRange = getIntent().getBooleanExtra(Common.EXTRA_SEEKBAR,false);
+        mGivenPinLocation = getIntent().getBooleanExtra(Common.EXTRA_HAS_PIN,false);
+        if(mGivenPinLocation){
+            mLat = getIntent().getDoubleExtra(Common.EXTRA_LAT, 0);
+            mLong = getIntent().getDoubleExtra(Common.EXTRA_LONG, 0);
+        }
+
 
         ButterKnife.bind(this);
         if(!mShowRange)
@@ -236,11 +244,16 @@ public class MapsActivity extends FragmentActivity
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(1000); // Update location every second
 
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-        mCurLocation  = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        LatLng latLng = new LatLng(mCurLocation.getLatitude(), mCurLocation.getLongitude());
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
-
+        if(mGivenPinLocation) {
+            LatLng latLng = new LatLng(mLat, mLong);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        }
+        else {
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            mCurLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            LatLng latLng = new LatLng(mCurLocation.getLatitude(), mCurLocation.getLongitude());
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        }
     }
 
     @Override

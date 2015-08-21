@@ -35,7 +35,7 @@
             android:src="@drawable/ic_like"
             android:layout_marginRight="10dp"/>
         <TextView
-            android:text="fffd"
+            android:text=""
             android:textSize="20dp"
             android:id="@+id/txt_content"
             android:layout_width="match_parent"
@@ -44,10 +44,13 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/lt_addres"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
         <ImageView
             android:scaleType="fitCenter"
             android:layout_width="18dp"
@@ -62,6 +65,7 @@
             android:textSize="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
     </LinearLayout>
 
     <LinearLayout

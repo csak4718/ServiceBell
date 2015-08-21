@@ -38,6 +38,7 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
     private String taskId;
     private ParseObject mTask;
 
+    @Bind(R.id.txt_location) TextView txtAddress;
     @Bind(R.id.txt_title) TextView txtTitle;
     @Bind(R.id.txt_content) TextView txtContent;
     @Bind(R.id.list_view_accepted_seller)ExpandableHeightListView mListView;
@@ -66,6 +67,8 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
                     Date expire = task.getDate(Common.OBJECT_QUESTION_EXPIRE_DATE);
                     Date current = new Date();
                     txtRemaining.setText(Utils.getRemainingTime(current, expire));
+
+                    txtAddress.setText(task.getString(Common.OBJECT_QUESTION_ADDRESS));
 
                     setupAcceptedSellers();
                     // task is not done

@@ -98,6 +98,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
             if(resultCode == RESULT_OK) {
                 position = data.getParcelableExtra(Common.EXTRA_LOCATION);
                 mRadius  = data.getIntExtra(Common.EXTRA_RADIUS, 0);
+
                 mAddress = data.getStringExtra(Common.EXTRA_ADDRESS);
                 mAddressTextView.setText(mAddress);
 

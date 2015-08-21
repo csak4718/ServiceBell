@@ -9,14 +9,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
@@ -38,20 +41,28 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class CatchTaskActivity extends BaseActivity implements SinchService.StartFailedListener {
 
+    private int mType;
+
     private ParseObject mTask;
     private String taskId;
     private ParseUser buyer;
     private ProgressDialog mSpinner;
+    private ParseGeoPoint mGeoPoint;
 
     @Bind(R.id.txt_title) TextView txtTitle;
     @Bind(R.id.txt_content) TextView txtContent;
-
+    @Bind(R.id.txt_location) TextView txtAddress;
+    @Bind(R.id.task_op_banner) LinearLayout taskOpBanner;
     @Bind(R.id.btn_accept_task) Button btnAcceptTask;
+    @Bind(R.id.btn_reject_task) Button btnRejectTask;
     @Bind(R.id.img_user_pic)CircleImageView imgUserPic;
     @Bind(R.id.txt_name) TextView txtUserName;
     @Bind(R.id.txt_task_time) TextView txtTaskTime;
     @Bind(R.id.txt_remaining) TextView txtRemaining;
 
+    @OnClick(R.id.lt_addres) void viewMap(){
+        Utils.gotoMapsActivityCurLocation(this, new LatLng(mGeoPoint.getLatitude(), mGeoPoint.getLongitude()));
+    }
 
     @OnClick(R.id.btn_reject_task) void rejectTask() {
 
@@ -70,17 +81,17 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         });
     }
 
-    private void acceptTask(ParseObject task) {
+    @OnClick(R.id.btn_accept_task) void acceptTask() {
         ParseUser user = ParseUser.getCurrentUser();
         ParseRelation<ParseObject> catchRelation = user.getRelation(Common.OBJECT_USER_CATCH_QUESTIONS);
         ParseRelation<ParseObject> acceptedRelation = user.getRelation(Common.OBJECT_USER_ACCEPTED_QUESTIONS);
-        catchRelation.remove(task);
-        acceptedRelation.add(task);
+        catchRelation.remove(mTask);
+        acceptedRelation.add(mTask);
         user.saveInBackground();
 
-        ParseRelation<ParseUser> acceptedUser = task.getRelation(Common.OBJECT_QUESTION_ACCEPTED_USER);
+        ParseRelation<ParseUser> acceptedUser = mTask.getRelation(Common.OBJECT_QUESTION_ACCEPTED_USER);
         acceptedUser.add(user);
-        task.saveInBackground();
+        mTask.saveInBackground();
 
         /*
          Use cloud code to notify buyer
@@ -88,6 +99,8 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(Common.CLOUD_NOTIFY_ACCEPT_BUYERID, mTask.getParseUser(Common.OBJECT_QUESTION_USER).getObjectId());
         ParseCloud.callFunctionInBackground(Common.CLOUD_NOTIFY_ACCEPT, params);
+
+        finish();
     }
 
 
@@ -134,14 +147,9 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
                 Date expire = task.getDate(Common.OBJECT_QUESTION_EXPIRE_DATE);
                 Date current = new Date();
                 txtRemaining.setText(Utils.getRemainingTime(current, expire));
+                txtAddress.setText(task.getString(Common.OBJECT_QUESTION_ADDRESS));
 
-                btnAcceptTask.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        acceptTask(task);
-                        btnAcceptTask.setVisibility(View.GONE);
-                    }
-                });
+                mGeoPoint = task.getParseGeoPoint(Common.OBJECT_QUESTION_PIN);
             }
         });
     }
@@ -149,6 +157,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_catch_task);
         ButterKnife.bind(this);
 
@@ -156,6 +165,12 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         taskId = getIntent().getStringExtra(Common.EXTRA_TASK_ID);
+        mType = getIntent().getIntExtra(Common.EXTRA_STATE, Common.SELLER_NEW);
+
+        if(mType == Common.SELLER_NEW) {
+            taskOpBanner.setVisibility(View.VISIBLE);
+        }
+
         setupTask();
 
 
