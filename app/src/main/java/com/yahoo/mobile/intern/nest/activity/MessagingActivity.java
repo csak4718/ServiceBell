@@ -45,6 +45,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
     private ParseUser currentUser;
     private ParseUser recipient;
     private String recipientObjectId;
+    private boolean afterLoadMessageHistory;
 
 
     @Override
@@ -52,6 +53,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.messaging);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        afterLoadMessageHistory = false;
         recipientNickname = (TextView) findViewById(R.id.recipient_nickname);
 
         currentUser = ParseUser.getCurrentUser();
@@ -76,27 +78,27 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
 
 
 
-
-//        String[] userIds = {currentUser.getObjectId(), recipientObjectId};
-//        ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
-//        query.whereContainedIn("senderId", Arrays.asList(userIds));
-//        query.whereContainedIn("recipientId", Arrays.asList(userIds));
-//        query.orderByAscending("createdAt");
-//        query.findInBackground(new FindCallback<ParseObject>() {
-//            @Override
-//            public void done(List<ParseObject> messageList, com.parse.ParseException e) {
-//                if (e == null) {
-//                    for (int i = 0; i < messageList.size(); i++) {
-//                        WritableMessage message = new WritableMessage(messageList.get(i).get("recipientId").toString(), messageList.get(i).get("messageText").toString());
-//                        if (messageList.get(i).get("senderId").toString().equals(currentUserId)) {
-//                            mMessageAdapter.addMessage(messageList.get(i), MessageAdapter.DIRECTION_OUTGOING);
-//                        } else {
-//                            mMessageAdapter.addMessage(messageList.get(i), MessageAdapter.DIRECTION_INCOMING);
-//                        }
-//                    }
-//                }
-//            }
-//        });
+        String[] userIds = {currentUser.getObjectId(), recipientObjectId};
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
+        query.whereContainedIn("senderId", Arrays.asList(userIds));
+        query.whereContainedIn("recipientId", Arrays.asList(userIds));
+        query.orderByAscending("createdAt");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> messageList, com.parse.ParseException e) {
+                if (e == null) {
+                    for (int i = 0; i < messageList.size(); i++) {
+                        WritableMessage writableMessage = new WritableMessage(messageList.get(i).get("recipientId").toString(), messageList.get(i).get("messageText").toString());
+                        if (messageList.get(i).get("senderId").toString().equals(currentUser.getObjectId())) {
+                            mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_OUTGOING, messageList.get(i).getDate("msgTimeStamp"), messageList.get(i).get("senderId").toString());
+                        } else {
+                            mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_INCOMING, messageList.get(i).getDate("msgTimeStamp"), messageList.get(i).get("senderId").toString());
+                        }
+                    }
+                    afterLoadMessageHistory = true;
+                }
+            }
+        });
     }
 
     @Override
@@ -158,14 +160,17 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
 
     @Override
     public void onIncomingMessage(MessageClient client, Message message) {
-//        mMessageAdapter.addMessage(message, MessageAdapter.DIRECTION_INCOMING);
 
-        // TODO: Filter out others: only when match, do: mMessageAdapter.addMessage(message, MessageAdapter.DIRECTION_INCOMING);
-        if ( message.getSenderId().equals(recipientObjectId) ) mMessageAdapter.addMessage(message, MessageAdapter.DIRECTION_INCOMING);
+        if (message.getSenderId().equals(recipientObjectId) && afterLoadMessageHistory) {
+            WritableMessage writableMessage = new WritableMessage(message.getRecipientIds().get(0), message.getTextBody());
+            mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_INCOMING, message.getTimestamp(), message.getSenderId());
+        }
+
     }
 
     @Override
     public void onMessageSent(MessageClient client, final Message message, String recipientId) {
+        final WritableMessage writableMessage = new WritableMessage(message.getRecipientIds().get(0), message.getTextBody());
 
         //only add message to parse database if it doesn't already exist there
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
@@ -177,11 +182,12 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
                     if (messageList.size() == 0) {
                         ParseObject msg = new ParseObject("Message");
                         msg.put("senderId", currentUser.getObjectId());
-                        msg.put("recipientId", message.getRecipientIds().get(0));
-                        msg.put("messageText", message.getTextBody());
-                        msg.put("messageId", message.getMessageId());
+                        msg.put("recipientId", writableMessage.getRecipientIds().get(0));
+                        msg.put("messageText", writableMessage.getTextBody());
+                        msg.put("messageId", writableMessage.getMessageId());
+                        msg.put("msgTimeStamp", message.getTimestamp());
                         msg.saveInBackground();
-                        mMessageAdapter.addMessage(message, MessageAdapter.DIRECTION_OUTGOING);
+                        mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_OUTGOING, message.getTimestamp(), currentUser.getObjectId());
                     }
                 }
             }

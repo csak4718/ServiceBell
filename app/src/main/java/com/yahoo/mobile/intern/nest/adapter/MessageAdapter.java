@@ -9,10 +9,12 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.sinch.android.rtc.messaging.Message;
+import com.sinch.android.rtc.messaging.WritableMessage;
 import com.yahoo.mobile.intern.nest.R;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,7 +26,9 @@ public class MessageAdapter extends BaseAdapter {
 
     public static final int DIRECTION_OUTGOING = 1;
 
-    private List<Pair<Message, Integer>> mMessages;
+    private List<Pair<WritableMessage, Integer>> mWritableMessages;
+    private List<Date> mDateTime;
+    private List<String> mSenderId;
 
     private SimpleDateFormat mFormatter;
 
@@ -32,23 +36,27 @@ public class MessageAdapter extends BaseAdapter {
 
     public MessageAdapter(Activity activity) {
         mInflater = activity.getLayoutInflater();
-        mMessages = new ArrayList<Pair<Message, Integer>>();
+        mWritableMessages = new ArrayList<Pair<WritableMessage, Integer>>();
+        mDateTime = new ArrayList<>();
+        mSenderId = new ArrayList<>();
         mFormatter = new SimpleDateFormat("HH:mm");
     }
 
-    public void addMessage(Message message, int direction) {
-        mMessages.add(new Pair(message, direction));
+    public void addMessage(WritableMessage writableMessage, int direction, Date dateTime, String senderId) {
+        mWritableMessages.add(new Pair(writableMessage, direction));
+        mDateTime.add(dateTime);
+        mSenderId.add(senderId);
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return mMessages.size();
+        return mWritableMessages.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return mMessages.get(i);
+        return mWritableMessages.get(i);
     }
 
     @Override
@@ -63,7 +71,7 @@ public class MessageAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int i) {
-        return mMessages.get(i).second;
+        return mWritableMessages.get(i).second;
     }
 
     @Override
@@ -80,16 +88,16 @@ public class MessageAdapter extends BaseAdapter {
             convertView = mInflater.inflate(res, viewGroup, false);
         }
 
-        Message message = mMessages.get(i).first;
-        String name = message.getSenderId();
+        WritableMessage writableMessage = mWritableMessages.get(i).first;
+        String name = mSenderId.get(i);
 
         TextView txtSender = (TextView) convertView.findViewById(R.id.txtSender);
         TextView txtMessage = (TextView) convertView.findViewById(R.id.txtMessage);
         TextView txtDate = (TextView) convertView.findViewById(R.id.txtDate);
 
         txtSender.setText(name);
-        txtMessage.setText(message.getTextBody());
-        txtDate.setText(mFormatter.format(message.getTimestamp()));
+        txtMessage.setText(writableMessage.getTextBody());
+        txtDate.setText(mFormatter.format(mDateTime.get(i)));
 
         return convertView;
     }
