@@ -279,6 +279,7 @@ public class ParseUtils {
                     if (bmp != null) {
                         mapImg.setImageBitmap(bmp);
                         mapImg.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                        mapImg.getRootView().invalidate();
                     }
                 }
             }

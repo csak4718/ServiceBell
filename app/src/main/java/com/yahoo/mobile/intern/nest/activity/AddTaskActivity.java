@@ -36,6 +36,7 @@ public class AddTaskActivity extends AppCompatActivity {
     private int mHour, mMinute;
     private String mDateTime;
     LatLng mLocation;
+    String mAddress;
     @Bind(R.id.edt_task_title) EditText edtTaskTitle;
     @Bind(R.id.edt_task_content) EditText edtTaskContent;
     @Bind(R.id.btn_set_location) LinearLayout btnSetLocation;
@@ -101,17 +102,15 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
 
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == Common.REQUEST_LOCATION) {
             if(resultCode == RESULT_OK) {
                 LatLng position = data.getParcelableExtra(Common.EXTRA_LOCATION);
                 mLocation = position;
+
                 String address = data.getStringExtra(Common.EXTRA_ADDRESS);
-                //txtLat.setText(lat.toString());
-                //txtLng.setText(lng.toString());
+                mAddress = address;
                 textViewLocation.setText(address);
             }
         }
@@ -132,6 +131,7 @@ public class AddTaskActivity extends AppCompatActivity {
             task.put(Common.OBJECT_QUESTION_PIN, new ParseGeoPoint(mLocation.latitude, mLocation.longitude));
             task.put(Common.OBJECT_QUESTION_TIME, time);
             task.put(Common.OBJECT_QUESTION_EXPIRE_DATE, date);
+            task.put(Common.OBJECT_QUESTION_ADDRESS, mAddress);
 
             task.saveInBackground(new SaveCallback() {
                 @Override
