@@ -28,6 +28,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.sinch.android.rtc.SinchError;
 import com.yahoo.mobile.intern.nest.R;
+import com.yahoo.mobile.intern.nest.fragment.DialogFragmentSellerProfile;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.Utils;
 
@@ -40,6 +41,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+
 public class CatchTaskActivity extends BaseActivity implements SinchService.StartFailedListener {
 
     private int mType;
@@ -49,6 +51,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     private ParseUser buyer;
     private ProgressDialog mSpinner;
     private ParseGeoPoint mGeoPoint;
+
 
     @Bind(R.id.txt_title) TextView txtTitle;
     @Bind(R.id.txt_content) TextView txtContent;
@@ -61,8 +64,15 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     @Bind(R.id.txt_task_time) TextView txtTaskTime;
     @Bind(R.id.txt_remaining) TextView txtRemaining;
 
+
     @OnClick(R.id.lt_addres) void viewMap(){
         Utils.gotoMapsActivityCurLocation(this, new LatLng(mGeoPoint.getLatitude(), mGeoPoint.getLongitude()));
+    }
+
+
+    @OnClick(R.id.rlayout_buyer) void buyerProfile(){
+        DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(buyer,false,true);
+        dfsp.show(getSupportFragmentManager(),"buyerInfo");
     }
 
     @OnClick(R.id.btn_reject_task) void rejectTask() {
@@ -164,7 +174,6 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
 
         setContentView(R.layout.activity_catch_task);
         ButterKnife.bind(this);
-
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
