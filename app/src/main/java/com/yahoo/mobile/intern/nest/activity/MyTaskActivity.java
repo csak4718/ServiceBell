@@ -126,7 +126,8 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+                DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(mList.get(position));
+                dfsp.show(getSupportFragmentManager(),"Profile");
             }
         });
     }
