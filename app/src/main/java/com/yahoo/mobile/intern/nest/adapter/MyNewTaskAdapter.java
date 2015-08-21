@@ -1,39 +1,30 @@
 package com.yahoo.mobile.intern.nest.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.parse.CountCallback;
-import com.parse.GetCallback;
-import com.parse.GetDataCallback;
 import com.parse.ParseException;
-import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseRelation;
-import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.Utils;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
- * Created by cmwang on 8/17/15.
+ * Created by cmwang on 8/12/15.
  */
-public class CatchTaskAdapter extends BaseAdapter {
+public class MyNewTaskAdapter extends BaseAdapter {
 
     private Context mContext;
     private LayoutInflater mInflater;
@@ -52,7 +43,7 @@ public class CatchTaskAdapter extends BaseAdapter {
         }
     }
 
-    public CatchTaskAdapter(Context context, List<ParseObject> list) {
+    public MyNewTaskAdapter(Context context, List<ParseObject> list) {
         mContext = context;
         mInflater = LayoutInflater.from(mContext);
 

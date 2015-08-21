@@ -16,6 +16,8 @@ public class Common {
     public final static int SELLER_ACCEPTED = 3;
     public final static int SELLER_DONE = 4;
 
+    public final static int REQUEST_MY_TASK = 4444;
+
     public final static String EXTRA_LOCATION = "location";
     public final static String EXTRA_SEEKBAR = "seekbar";
     public final static String EXTRA_TASK_ID = "task_id";
@@ -42,18 +44,21 @@ public class Common {
     public final static String OBJECT_USER_PHONE = "phone";
     public final static String OBJECT_USER_ADDRESS = "address";
     public final static String OBJECT_USER_OTHERS = "others";
-
+    public final static String OBJECT_USER_MAP_PIC = "map_pic";
+    public final static String OBJECT_USER_ACCEPT="acceptTask";
 
     public final static String OBJECT_QUESTION = "Question";
     public final static String OBJECT_QUESTION_USER = "user";
     public final static String OBJECT_QUESTION_TITLE = "title";
     public final static String OBJECT_QUESTION_CONTENT = "content";
     public final static String OBJECT_QUESTION_PIN = "pin";
-    public final static String OBJECT_QUESTION_DATE = "date";
+    public final static String OBJECT_QUESTION_EXPIRE_DATE = "date";
     public final static String OBJECT_QUESTION_TIME = "time";
     public final static String OBJECT_QUESTION_LOCATION = "pin";
     public final static String OBJECT_QUESTION_ACCEPTED_USER = "acceptedUser";
     public final static String OBJECT_QUESTION_DONE_USER = "doneUser";
+
+
 
 
     /*

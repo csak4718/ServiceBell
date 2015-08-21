@@ -131,7 +131,7 @@ public class AddTaskActivity extends AppCompatActivity {
             task.put(Common.OBJECT_QUESTION_CONTENT, content);
             task.put(Common.OBJECT_QUESTION_PIN, new ParseGeoPoint(mLocation.latitude, mLocation.longitude));
             task.put(Common.OBJECT_QUESTION_TIME, time);
-            task.put(Common.OBJECT_QUESTION_DATE, date);
+            task.put(Common.OBJECT_QUESTION_EXPIRE_DATE, date);
 
             task.saveInBackground(new SaveCallback() {
                 @Override

@@ -1,73 +1,52 @@
 package com.yahoo.mobile.intern.nest.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.parse.DeleteCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
-import com.sinch.android.rtc.SinchError;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.adapter.AcceptedUserAdapter;
 import com.yahoo.mobile.intern.nest.event.AcceptedUserEvent;
+import com.yahoo.mobile.intern.nest.fragment.DialogFragmentSellerProfile;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 import com.yahoo.mobile.intern.nest.utils.Utils;
+import com.yahoo.mobile.intern.nest.view.ExpandableHeightListView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
-public class MyTaskActivity extends AppCompatActivity {
+public class MyTaskActivity extends AppCompatActivity implements DialogFragmentSellerProfile.ProfileDialogListener {
 
     private String taskId;
     private ParseObject mTask;
 
     @Bind(R.id.txt_title) TextView txtTitle;
     @Bind(R.id.txt_content) TextView txtContent;
-    @Bind(R.id.list_view_accepted_seller) ListView mListView;
-    @Bind(R.id.btn_deal) Button btnDeal;
-    @Bind(R.id.select_seller) LinearLayout selectSeller;
-    @Bind(R.id.btn_confirm) Button btnConfirm;
-    @Bind(R.id.btn_cancel) Button btnCancel;
+    @Bind(R.id.list_view_accepted_seller)ExpandableHeightListView mListView;
+    @Bind(R.id.txt_task_time) TextView txtTaskTime;
+    @Bind(R.id.txt_remaining) TextView txtRemaining;
+    @Bind(R.id.txt_status) TextView txtStatus;
 
     private AcceptedUserAdapter mAdapter;
     private List<ParseUser> mList;
-
-
-    @OnClick(R.id.btn_deal) void dealOnClick() {
-        mAdapter.setSelectable(true);
-        btnDeal.setVisibility(View.GONE);
-        selectSeller.setVisibility(View.VISIBLE);
-    }
-    @OnClick(R.id.btn_cancel) void cancelOnClick() {
-        mAdapter.setSelectable(false);
-        btnDeal.setVisibility(View.VISIBLE);
-        selectSeller.setVisibility(View.GONE);
-    }
-    @OnClick(R.id.btn_confirm) void confirmOnClick() {
-        ParseUser seller = mAdapter.getCheckedUser();
-        if(seller != null) {
-            ParseUtils.doneTask(mTask, ParseUser.getCurrentUser(), seller);
-        }
-    }
 
     private void setupTask() {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(Common.OBJECT_QUESTION);
@@ -76,12 +55,35 @@ public class MyTaskActivity extends AppCompatActivity {
             public void done(ParseObject task, ParseException e) {
                 if(e == null) {
                     mTask = task;
+
                     String title = task.getString(Common.OBJECT_QUESTION_TITLE);
                     String content = task.getString(Common.OBJECT_QUESTION_CONTENT);
+                    String time = task.getString(Common.OBJECT_QUESTION_TIME);
                     txtTitle.setText(title);
                     txtContent.setText(content);
+                    txtTaskTime.setText(time);
+
+                    Date expire = task.getDate(Common.OBJECT_QUESTION_EXPIRE_DATE);
+                    Date current = new Date();
+                    txtRemaining.setText(Utils.getRemainingTime(current, expire));
+
                     setupAcceptedSellers();
-                    ParseUtils.getTaskAcceptedUser(task);
+                    // task is not done
+                    if(task.getParseUser(Common.OBJECT_QUESTION_DONE_USER) == null) {
+                        txtStatus.setText("等待中");
+                        ParseUtils.getTaskAcceptedUser(task);
+                    }
+                    else {
+                        txtStatus.setText("已成交");
+                        ParseUser seller = task.getParseUser(Common.OBJECT_QUESTION_DONE_USER);
+                        try {
+                            seller = seller.fetch();
+                            mList.add(seller);
+                            mAdapter.notifyDataSetChanged();
+                        } catch (ParseException e1) {
+                            e1.printStackTrace();
+                        }
+                    }
                 }
             }
         });
@@ -112,28 +114,33 @@ public class MyTaskActivity extends AppCompatActivity {
 
     public void onEvent(AcceptedUserEvent event) {
         mList.addAll(event.userList);
-        mAdapter.receivedAcceptedUser();
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_my_task);
         ButterKnife.bind(this);
+        mListView.setExpanded(true);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         taskId = getIntent().getStringExtra(Common.EXTRA_TASK_ID);
 
         setupTask();
-
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_view_task, menu);
+        getMenuInflater().inflate(R.menu.menu_my_task, menu);
         return true;
     }
 
@@ -142,11 +149,37 @@ public class MyTaskActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if(id == android.R.id.home) {
+            //closeActivity();
             finish();
+        }
+        if(id == R.id.action_delete) {
+            mTask.deleteInBackground(new DeleteCallback() {
+                @Override
+                public void done(ParseException e) {
+                    Utils.showLoadingDialog(MyTaskActivity.this);
+                    finish();
+                }
+            });
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onFinishProfileDialog(String inputText, ParseUser seller) {
+        Log.d("asd",inputText);
+        closeAuction(seller);
+    }
 
+    public void closeAuction(ParseUser seller){
+        ParseUtils.doneTask(mTask, ParseUser.getCurrentUser(), seller);
+        closeActivity();
+    }
+
+    public void closeActivity(){
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("result",true);
+        setResult(RESULT_OK,returnIntent);
+        finish();
+    }
 }

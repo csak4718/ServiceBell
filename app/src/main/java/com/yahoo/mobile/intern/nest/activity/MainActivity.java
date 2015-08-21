@@ -3,24 +3,21 @@ package com.yahoo.mobile.intern.nest.activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.melnykov.fab.FloatingActionButton;
 import com.parse.ParseFile;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.fragment.FragmentTab;
@@ -70,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.menu_catch_task:
                         if (ParseUtils.isSellerNetSeted()) {
+                            mActionBar.setTitle("找服務");
                             fragmentTab.switchTab(id);
                             btnAddPost.setVisibility(View.GONE);
                         }
@@ -131,14 +129,15 @@ public class MainActivity extends AppCompatActivity {
         mActionBar = getSupportActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setHomeButtonEnabled(true);
-        mActionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.nest_yellow_1)));
+        mActionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color
+                .nest_yellow_1)));
         mActionBar.setTitle("找服務");
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Log.d("1234", "22344");
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
@@ -169,5 +168,20 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d("test",String.valueOf(requestCode));
+        if (requestCode == Common.REQUEST_MY_TASK) {
+            if (data!=null){
+                Boolean result=data.getBooleanExtra("result",false);
+                Log.d("test",result.toString());
+                if (result == true){
+                    fragmentTab.setCurrentPage(1);
+                    fragmentTab.refreshAllTab();
+                }
+            }
+        }
     }
 }

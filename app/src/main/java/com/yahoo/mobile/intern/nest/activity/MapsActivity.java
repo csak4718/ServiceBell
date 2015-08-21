@@ -2,6 +2,7 @@ package com.yahoo.mobile.intern.nest.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
@@ -28,6 +29,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
+import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,7 +42,7 @@ import butterknife.OnClick;
 public class MapsActivity extends FragmentActivity
                         implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleMap.OnCameraChangeListener {
 
-    private boolean mUserChooseLocation;
+    private boolean mShowRange;
     static final int MIN_RADIUS = 500;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private LocationManager locationManager;
@@ -64,10 +66,10 @@ public class MapsActivity extends FragmentActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        mUserChooseLocation = getIntent().getBooleanExtra(Common.EXTRA_SEEKBAR,false);
+        mShowRange = getIntent().getBooleanExtra(Common.EXTRA_SEEKBAR,false);
 
         ButterKnife.bind(this);
-        if(!mUserChooseLocation)
+        if(!mShowRange)
             mRadiusSeekBar.setVisibility(View.GONE);
 
         setUpMapIfNeeded();
@@ -123,13 +125,23 @@ public class MapsActivity extends FragmentActivity
 
     @OnClick(R.id.btn_ok)
     void btnOk() {
-
         //LatLng position = new LatLng(mCurLocation.getLatitude(),mCurLocation.getLongitude());//mMap.getCameraPosition().target;
+        if(mShowRange){
+            mMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+                @Override
+                public void onSnapshotReady(Bitmap bitmap) {
+                    int h =bitmap.getHeight();
+                    int w =bitmap.getWidth();
+                    Bitmap cropBmp = Bitmap.createBitmap(bitmap, 0, (h-w)/2, w, w);
+                    ParseUtils.updateUserMap(cropBmp);
+                }
+            });
+        }
 
         LatLng position = mMap.getCameraPosition().target;
         Intent it = new Intent();
         it.putExtra(Common.EXTRA_LOCATION, position);
-        it.putExtra(Common.EXTRA_ADDRESS, mSearchView.getQuery());
+        it.putExtra(Common.EXTRA_ADDRESS, mSearchView.getQuery().toString());
         setResult(RESULT_OK, it);
         finish();
     }
@@ -240,7 +252,7 @@ public class MapsActivity extends FragmentActivity
     }
 
     public void drawCircleOnMap(){
-        if(!mUserChooseLocation)
+        if(!mShowRange)
             return;
 
         if(mRadiusCircle != null)
@@ -250,7 +262,7 @@ public class MapsActivity extends FragmentActivity
                 .center(mMap.getCameraPosition().target)
                 .radius(mRadius)
                 .strokeColor(Color.BLUE)
-                .fillColor(Color.argb(127, 0, 0, 255)));
+                .fillColor(Color.argb(63, 0, 0, 255)));
 
 
         ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getView().invalidate();

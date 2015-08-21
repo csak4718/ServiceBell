@@ -1,45 +1,63 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.yahoo.mobile.intern.nest.activity.MyTaskActivity">
 
-    <TextView
-        android:id="@+id/txt_title"
-        android:text="@string/hello_world"
+    <include layout="@layout/task_info" />
+
+    <View
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:gravity="center">
+        <TextView
+            android:text="狀態 : "
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/txt_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="18sp"/>
+
+    </LinearLayout>
+
+
     <TextView
-        android:id="@+id/txt_content"
-        android:text="@string/hello_world"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/gray"
+        android:gravity="center_vertical"
+        android:paddingLeft="10dp"
+        android:text="誰接受了我的任務"
+        android:textStyle="bold"
+        android:textSize="20dp"/>
+
+    <com.yahoo.mobile.intern.nest.view.ExpandableHeightListView
         android:id="@+id/list_view_accepted_seller"
         android:choiceMode="singleChoice"
         android:layout_width="match_parent"
-        android:layout_height="300dp"/>
-    <Button
-        android:id="@+id/btn_deal"
-        android:text="我要成交"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <LinearLayout
-        android:id="@+id/select_seller"
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone">
-        <Button
-            android:id="@+id/btn_confirm"
-            android:text="Confirm"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <Button
-            android:id="@+id/btn_cancel"
-            android:text="Cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+        android:cacheColorHint="#00000000"
+        android:fadingEdge="none"
+        android:focusable="false"
+        android:scrollbars="none"/>
+
 
 </LinearLayout>
+</ScrollView>

@@ -36,9 +36,9 @@ public class FragmentTab extends Fragment {
             adapter.addFrag(FragmentBuyerTask.newInstance(Common.BUYER_DONE), "已成交任務");
         }
         else if(id == R.id.menu_catch_task) {
-            adapter.addFrag(FragmentSellerTask.newInstance(Common.SELLER_NEW), "New");
-            adapter.addFrag(FragmentSellerTask.newInstance(Common.SELLER_ACCEPTED), "Accepted");
-            adapter.addFrag(FragmentSellerTask.newInstance(Common.SELLER_DONE), "Done");
+            adapter.addFrag(FragmentSellerTask.newInstance(Common.SELLER_NEW), "新服務");
+            adapter.addFrag(FragmentSellerTask.newInstance(Common.SELLER_ACCEPTED), "洽談中");
+            adapter.addFrag(FragmentSellerTask.newInstance(Common.SELLER_DONE), "已成交");
         }
     }
 
@@ -77,5 +77,9 @@ public class FragmentTab extends Fragment {
         viewPager.setAdapter(adapter);
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    public void setCurrentPage(int i ){
+        viewPager.setCurrentItem(i);
     }
 }

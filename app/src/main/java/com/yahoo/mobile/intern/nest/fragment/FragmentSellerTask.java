@@ -12,20 +12,7 @@ import android.widget.ListView;
 
 import com.parse.ParseObject;
 import com.yahoo.mobile.intern.nest.R;
-
-
-
-//import com.yahoo.mobile.intern.nest.activity.SinchService;
-//import com.yahoo.mobile.intern.nest.adapter.QuestionCardAdapter;
-
-
-
-
-
 import com.yahoo.mobile.intern.nest.adapter.CatchTaskAdapter;
-//import com.yahoo.mobile.intern.nest.adapter.MyTaskAdapter;
-
-
 import com.yahoo.mobile.intern.nest.event.AcceptTaskEvent;
 import com.yahoo.mobile.intern.nest.event.CatchTaskEvent;
 import com.yahoo.mobile.intern.nest.event.DoneTaskEvent;

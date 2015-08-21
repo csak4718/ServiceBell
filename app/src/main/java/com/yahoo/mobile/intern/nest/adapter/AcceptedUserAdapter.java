@@ -37,50 +37,21 @@ public class AcceptedUserAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mInflater;
     private List<ParseUser> mList;
-    private List<Boolean> checkStatus;
-    private int mCheck;
-    private boolean mSelectable;
 
     static class ViewHolder {
 
         @Bind(R.id.img_pic) public CircleImageView imgPic;
         @Bind(R.id.txt_name) public TextView txtName;
-        @Bind(R.id.txt_title) public TextView txtTitle;
-        @Bind(R.id.radio_select) public RadioButton rdSelect;
-        @Bind(R.id.btn_chat) public ImageButton btnChat;
-
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
     }
 
-    public void receivedAcceptedUser() {
-        checkStatus = new ArrayList<>();
-        for(int i = 0; i < mList.size(); i++) {
-            checkStatus.add(false);
-        }
-        notifyDataSetChanged();
-    }
-
     public AcceptedUserAdapter(Context context, List<ParseUser> list) {
         mContext = context;
         mInflater = LayoutInflater.from(mContext);
         mList = list;
-        mCheck = -1;
-        mSelectable = false;
-    }
-
-    public ParseUser getCheckedUser() {
-        if(mCheck != -1) {
-            return mList.get(mCheck);
-        }
-        return null;
-    }
-
-    public void setSelectable(boolean state) {
-        mSelectable = state;
-        notifyDataSetChanged();
     }
 
     @Override
@@ -113,19 +84,6 @@ public class AcceptedUserAdapter extends BaseAdapter {
             }
         });
     }
-
-    private void checkPosition(int position) {
-        checkStatus.set(position, true);
-        mCheck = position;
-        for(int i = 0; i < mList.size(); i++) {
-            if(i == position) {
-                continue;
-            }
-            checkStatus.set(i, false);
-        }
-        notifyDataSetChanged();
-    }
-
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
@@ -148,29 +106,6 @@ public class AcceptedUserAdapter extends BaseAdapter {
                 dfsp.show(((AppCompatActivity) mContext).getSupportFragmentManager(),"lol");
             }
         });
-
-        if(!mSelectable) {
-            holder.btnChat.setVisibility(View.VISIBLE);
-            holder.rdSelect.setVisibility(View.GONE);
-            holder.btnChat.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Utils.gotoSpinnerActivity((Activity)mContext, acceptedUser.getObjectId()); // acceptedUser is recipient
-                }
-            });
-        }
-        else {
-            holder.btnChat.setVisibility(View.GONE);
-            holder.rdSelect.setVisibility(View.VISIBLE);
-            holder.rdSelect.setChecked(checkStatus.get(position));
-
-            holder.rdSelect.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    checkPosition(position);
-                }
-            });
-        }
 
         return convertView;
     }

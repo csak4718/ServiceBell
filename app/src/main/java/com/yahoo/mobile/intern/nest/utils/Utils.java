@@ -25,6 +25,9 @@ import com.yahoo.mobile.intern.nest.activity.ProfileSettingActivity;
 import com.yahoo.mobile.intern.nest.activity.SellerProfileActivity;
 import com.yahoo.mobile.intern.nest.activity.SpinnerActivity;
 
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 /**
  * Created by cmwang on 8/12/15.
  */
@@ -38,6 +41,32 @@ public class Utils {
     }
     static public void makeToast(Context ctx, String s) {
         Toast.makeText(ctx, s, Toast.LENGTH_SHORT).show();
+    }
+    static public String getRemainingTime(Date current, Date expireDate) {
+        long duration = expireDate.getTime() - current.getTime();
+        long diffInSeconds = TimeUnit.MILLISECONDS.toSeconds(duration) % 60;
+        long diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(duration) % 60;
+        long diffInHours = TimeUnit.MILLISECONDS.toHours(duration) % 24;
+        long diffInDays = TimeUnit.MILLISECONDS.toDays(duration);
+
+        diffInDays = diffInDays > 0 ? diffInDays : 0;
+        diffInHours = diffInHours > 0 ? diffInHours : 0;
+        diffInMinutes = diffInMinutes > 0 ? diffInMinutes : 0;
+
+        String ret = "";
+        if(diffInDays == 0) {
+            ret = String.format("%d小時%d分", diffInHours, diffInMinutes);
+        }
+        else {
+            ret = String.format("%d日%d小時%d分", diffInDays, diffInHours, diffInMinutes);
+        }
+
+        return ret;
+    }
+    static public void showLoadingDialog(Context context) {
+        ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
     }
     /*
      * Actionbar and statusbar setup
@@ -87,7 +116,8 @@ public class Utils {
     static public void gotoMyTaskActivity(Activity activity, String taskId) {
         Intent it = new Intent(activity, MyTaskActivity.class);
         it.putExtra(Common.EXTRA_TASK_ID, taskId);
-        activity.startActivity(it);
+        //activity.startActivity(it);
+        activity.startActivityForResult(it,Common.REQUEST_MY_TASK);
     }
     static public void gotoCatchTaskActivity(Activity activity, String taskId) {
         Intent it = new Intent(activity, CatchTaskActivity.class);
