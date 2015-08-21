@@ -3,10 +3,13 @@ package com.yahoo.mobile.intern.nest.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.parse.ParseFile;
@@ -25,12 +28,17 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class DialogFragmentSellerProfile extends DialogFragment {
     ParseUser user;
+    Boolean done,buyer;
     View mView;
     @Bind(R.id.img_pic)CircleImageView mImgProfilePic;
     @Bind(R.id.txt_name)TextView txtName;
     @Bind(R.id.txt_address)TextView txtAdd;
     @Bind(R.id.txt_others)TextView txtOthers;
     @Bind(R.id.txt_phone)TextView txtPhone;
+    @Bind(R.id.btn_im)Button btnIM;
+    @Bind(R.id.btn_divider)View divider;
+    @Bind(R.id.btn_confirm)Button btnConfirm;
+    @Bind(R.id.linear_btn)LinearLayout linearBtn;
 
     @OnClick(R.id.btn_confirm) void confirm(){
         ProfileDialogListener activity = (ProfileDialogListener) getActivity();
@@ -38,13 +46,19 @@ public class DialogFragmentSellerProfile extends DialogFragment {
         this.dismiss();
     }
 
+    @OnClick(R.id.btn_im) void im(){
+
+    }
+
     public interface ProfileDialogListener {
         void onFinishProfileDialog(String inputText, ParseUser seller);
     }
 
-    public static DialogFragmentSellerProfile newInstance(ParseUser user){
+    public static DialogFragmentSellerProfile newInstance(ParseUser user,Boolean done,Boolean buyer){
         DialogFragmentSellerProfile dfsp = new DialogFragmentSellerProfile();
         dfsp.user = user;
+        dfsp.done = done;
+        dfsp.buyer = buyer;
         return dfsp;
     }
 
@@ -60,6 +74,8 @@ public class DialogFragmentSellerProfile extends DialogFragment {
         mView = inflater.inflate(R.layout.fragment_seller_profile, container);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         ButterKnife.bind(this, mView);
+        setupButton();
+        disableButton();
         getProfile();
         return mView;
     }
@@ -73,9 +89,21 @@ public class DialogFragmentSellerProfile extends DialogFragment {
 
         ParseFile imgFile = user.getParseFile(Common.OBJECT_USER_PROFILE_PIC);
         ParseUtils.displayParseImage(imgFile, mImgProfilePic);
-        if (nickName == null || nickName == ""){txtName.setVisibility(View.GONE);}else{txtName.setText(nickName);}
-        if (address == null || address == "") {txtAdd.setVisibility(View.GONE);}else{txtAdd.setText(address);}
-        if (phone == null || phone =="") {txtPhone.setVisibility(View.GONE);}else{txtPhone.setText(phone);}
-        if (others == null || others ==""){txtOthers.setVisibility(View.GONE);}else{txtOthers.setText(others);}
+        if (nickName == null || nickName.equals("")){txtName.setVisibility(View.GONE);}else{txtName.setText(nickName);}
+        if (address == null || address.equals("")) {txtAdd.setVisibility(View.GONE);}else{txtAdd.setText(address);}
+        if (phone == null || phone.equals("")) {txtPhone.setVisibility(View.GONE);}else{txtPhone.setText(phone);}
+        if (others == null || others.equals("")){txtOthers.setVisibility(View.GONE);}else{txtOthers.setText(others);}
+    }
+    public void setupButton(){
+        Log.d("test",String.valueOf(done));
+        if(done == true){
+            btnConfirm.setVisibility(View.GONE);
+            divider.setVisibility(View.GONE);
+        }
+    }
+    public void disableButton(){
+        if(buyer==true){
+            linearBtn.setVisibility(View.GONE);
+        }
     }
 }

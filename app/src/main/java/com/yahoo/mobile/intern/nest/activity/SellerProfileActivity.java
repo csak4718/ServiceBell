@@ -1,7 +1,6 @@
 package com.yahoo.mobile.intern.nest.activity;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -43,7 +42,7 @@ public class SellerProfileActivity extends BaseActivity implements SinchService.
     @Bind(R.id.txt_name) TextView txtName;
 
     @OnClick(R.id.btn_popup) void popUp(){
-        DialogFragmentSellerProfile dialogFragment = DialogFragmentSellerProfile.newInstance(seller);
+        DialogFragmentSellerProfile dialogFragment = DialogFragmentSellerProfile.newInstance(seller,false,false);
         dialogFragment.show(getSupportFragmentManager(),"TTT");
     }
 

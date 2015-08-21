@@ -62,6 +62,7 @@
             android:background="@color/gray"/>
 
         <LinearLayout
+            android:padding="3dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -72,25 +73,53 @@
                 android:id="@+id/txt_others"
                 android:text="水電達人、各式水電到府服務\n各種完善售後服務"
                 android:textSize="18dp"/>
-            <TextView
+            <LinearLayout
                 android:layout_marginTop="15dp"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/txt_phone"
-                android:text="0987654321"
-                android:textSize="18dp"/>
-            <TextView
-                android:layout_marginTop="3dp"
-                android:layout_width="wrap_content"
+                android:gravity="center_vertical">
+                <ImageView
+                    android:layout_marginRight="3dp"
+                    android:alpha="0.3"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_phone_black_24dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txt_phone"
+                    android:text="0987654321"
+                    android:textSize="18dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/txt_address"
-                android:text="三重路21號"
-                android:textSize="18dp"/>
+                android:gravity="center_vertical">
+                <ImageView
+                    android:layout_marginTop="2dp"
+                    android:layout_gravity="top"
+                    android:layout_marginRight="3dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_location_on_black_24dp"
+                    android:alpha="0.3"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txt_address"
+                    android:text="三重路21號\n123"
+                    android:textSize="18dp"/>
+            </LinearLayout>
+
+
 
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/linear_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center">
@@ -99,12 +128,23 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="@color/nest_blue_3"
+            android:textColor="@color/white"
+            android:textSize="18dp"
             android:text="交給此賣家"/>
+        <View
+            android:id="@+id/btn_divider"
+            android:layout_width="2dp"
+            android:layout_height="match_parent"
+            android:background="@color/white"/>
         <Button
             android:id="@+id/btn_im"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="@color/nest_blue_3"
+            android:textColor="@color/white"
+            android:textSize="18dp"
             android:text="洽談細節"/>
     </LinearLayout>
 
