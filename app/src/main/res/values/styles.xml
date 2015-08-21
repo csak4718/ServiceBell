@@ -28,11 +28,11 @@
     <!-- ActionBar styles -->
     <style name="MyActionBar"
         parent="@style/Widget.AppCompat.Light.ActionBar">
-        <item name="android:background">@color/nest_yellow_1</item>
+        <item name="android:background">@color/nest_blue_3</item>
         <item name="android:textColorPrimary">@color/black</item>
 
         <!-- Support library compatibility -->
-        <item name="background">@color/nest_yellow_1</item>
+        <item name="background">@color/nest_blue_3</item>
         <item name="elevation">0dp</item>
     </style>
 

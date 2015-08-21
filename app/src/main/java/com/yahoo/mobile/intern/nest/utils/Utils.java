@@ -100,7 +100,7 @@ public class Utils {
 
     static public void gotoMapsActivityCurLocation(Activity activity, LatLng latlng) {
         Intent it = new Intent(activity, MapsActivity.class);
-        it.putExtra(Common.EXTRA_HAS_PIN,false);
+        it.putExtra(Common.EXTRA_HAS_PIN, true);
         it.putExtra(Common.EXTRA_LAT, latlng.latitude);
         it.putExtra(Common.EXTRA_LONG, latlng.longitude);
         activity.startActivity(it);

@@ -72,6 +72,6 @@ public class Common {
     public final static String CLOUD_NOTIFY_ACCEPT = "notifySellerAccept";
     public final static String CLOUD_NOTIFY_ACCEPT_BUYERID = "buyerId";
 
-    public final static String PATH_MAP = "map.jpg";
+    public final static String PATH_MAP = "map.png";
 
 }

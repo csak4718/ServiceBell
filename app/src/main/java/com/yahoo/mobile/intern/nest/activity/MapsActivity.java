@@ -245,7 +245,9 @@ public class MapsActivity extends FragmentActivity
         mLocationRequest.setInterval(1000); // Update location every second
 
         if(mGivenPinLocation) {
+
             LatLng latLng = new LatLng(mLat, mLong);
+            Log.d("map",""+latLng);
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
         }
         else {
@@ -344,9 +346,7 @@ public class MapsActivity extends FragmentActivity
 
     private String saveToInternalStorage(Bitmap bitmapImage){
         ContextWrapper cw = new ContextWrapper(getApplicationContext());
-        // path to /data/data/yourapp/app_data/imageDir
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        // Create imageDir
         File mypath=new File(directory,Common.PATH_MAP);
 
         FileOutputStream fos = null;

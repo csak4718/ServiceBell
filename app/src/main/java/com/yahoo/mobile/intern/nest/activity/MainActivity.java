@@ -130,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setHomeButtonEnabled(true);
         mActionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color
-                .nest_yellow_1)));
+                .nest_blue_3)));
         mActionBar.setTitle("找服務");
     }
 
