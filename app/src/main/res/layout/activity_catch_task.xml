@@ -10,133 +10,7 @@
     android:orientation="vertical"
     tools:context="com.yahoo.mobile.intern.nest.activity.CatchTaskActivity">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp">
-
-        <fragment
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/mapview_task_location"
-            tools:context="com.yahoo.mobile.intern.nest.activity.CatchTaskActivity"
-            android:name="com.google.android.gms.maps.SupportMapFragment" />
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/img_map"/>
-
-    </FrameLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical">
-        <LinearLayout
-            android:layout_gravity="top|left"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:gravity="center">
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@drawable/ic_like"/>
-        </LinearLayout>
-
-        <TextView
-            android:textSize="20dp"
-            android:id="@+id/txt_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:singleLine="true"
-            android:background="@android:color/transparent"/>
-    </LinearLayout>
-
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical">
-        <LinearLayout
-            android:layout_gravity="top|left"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:gravity="center">
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@drawable/ic_like"/>
-        </LinearLayout>
-        <TextView
-            android:textSize="20dp"
-            android:id="@+id/txt_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
-            android:background="@android:color/transparent"/>
-    </LinearLayout>
-
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
-
-    <LinearLayout
-        android:id="@+id/btn_set_date"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical">
-        <LinearLayout
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:gravity="center">
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@drawable/pin"/>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/txt_task_date"
-            android:background="@android:color/transparent"
-            android:textSize="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
-
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"/>
-
-    <LinearLayout
-        android:background="?android:attr/selectableItemBackground"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical">
-        <LinearLayout
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:gravity="center">
-            <ImageView
-                android:layout_width="18dp"
-                android:layout_height="18dp"
-                android:src="@drawable/pin"/>
-        </LinearLayout>
-
-        <TextView
-            android:textColor="@color/black"
-            android:id="@+id/txt_task_time"
-            android:textSize="20dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+    <include layout="@layout/task_info" />
 
     <View
         android:layout_width="wrap_content"
@@ -146,10 +20,10 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="@color/cyan"
+        android:background="@color/gray"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
-        android:text="@string/catch_task_who_post_it"
+        android:text="誰需要這項服務"
         android:textSize="20dp"/>
 
     <RelativeLayout

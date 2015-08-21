@@ -119,7 +119,7 @@
         </activity>
         <activity
             android:name=".activity.MyTaskActivity"
-            android:label="@string/title_activity_view_task" >
+            android:label="服務資訊" >
         </activity>
 
         <service
@@ -138,7 +138,7 @@
         </activity>
         <activity
             android:name=".activity.CatchTaskActivity"
-            android:label="@string/title_activity_catche_task" >
+            android:label="服務資訊" >
         </activity>
         <activity
             android:name=".activity.SellerProfileActivity"
@@ -153,10 +153,6 @@
         <activity
             android:name=".activity.IMListActivity"
             android:label="@string/title_activity_imlist" >
-        </activity>
-        <activity
-            android:name=".activity.MyDoneTaskActivity"
-            android:label="@string/title_activity_my_done_task" >
         </activity>
     </application>
 
