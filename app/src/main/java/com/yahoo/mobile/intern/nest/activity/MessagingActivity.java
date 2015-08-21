@@ -30,7 +30,9 @@ import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import de.greenrobot.event.EventBus;
 
@@ -45,7 +47,8 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
     private ParseUser currentUser;
     private ParseUser recipient;
     private String recipientObjectId;
-    private boolean afterLoadMessageHistory;
+//    private boolean afterLoadMessageHistory;
+//    private Set<String> messageIdHistory;
 
 
     @Override
@@ -53,7 +56,9 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.messaging);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        afterLoadMessageHistory = false;
+//        afterLoadMessageHistory = false;
+//        messageIdHistory = new HashSet<>();
+
         recipientNickname = (TextView) findViewById(R.id.recipient_nickname);
 
         currentUser = ParseUser.getCurrentUser();
@@ -95,7 +100,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
                             mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_INCOMING, messageList.get(i).getDate("msgTimeStamp"), messageList.get(i).get("senderId").toString());
                         }
                     }
-                    afterLoadMessageHistory = true;
+//                    afterLoadMessageHistory = true;
                 }
             }
         });
@@ -161,7 +166,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
     @Override
     public void onIncomingMessage(MessageClient client, Message message) {
 
-        if (message.getSenderId().equals(recipientObjectId) && afterLoadMessageHistory) {
+        if (message.getSenderId().equals(recipientObjectId)) { // && afterLoadMessageHistory
             WritableMessage writableMessage = new WritableMessage(message.getRecipientIds().get(0), message.getTextBody());
             mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_INCOMING, message.getTimestamp(), message.getSenderId());
         }

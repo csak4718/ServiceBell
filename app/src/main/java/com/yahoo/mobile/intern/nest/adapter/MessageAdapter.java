@@ -15,7 +15,9 @@ import com.yahoo.mobile.intern.nest.R;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by dwkung on 8/17/15.
@@ -30,6 +32,8 @@ public class MessageAdapter extends BaseAdapter {
     private List<Date> mDateTime;
     private List<String> mSenderId;
 
+    private Set<String> messageIdSet;
+
     private SimpleDateFormat mFormatter;
 
     private LayoutInflater mInflater;
@@ -39,14 +43,19 @@ public class MessageAdapter extends BaseAdapter {
         mWritableMessages = new ArrayList<Pair<WritableMessage, Integer>>();
         mDateTime = new ArrayList<>();
         mSenderId = new ArrayList<>();
+        messageIdSet = new HashSet<>();
         mFormatter = new SimpleDateFormat("HH:mm");
     }
 
     public void addMessage(WritableMessage writableMessage, int direction, Date dateTime, String senderId) {
-        mWritableMessages.add(new Pair(writableMessage, direction));
-        mDateTime.add(dateTime);
-        mSenderId.add(senderId);
-        notifyDataSetChanged();
+        if(!messageIdSet.contains(writableMessage.getMessageId())){
+            messageIdSet.add(writableMessage.getMessageId());
+
+            mWritableMessages.add(new Pair(writableMessage, direction));
+            mDateTime.add(dateTime);
+            mSenderId.add(senderId);
+            notifyDataSetChanged();
+        }
     }
 
     @Override
