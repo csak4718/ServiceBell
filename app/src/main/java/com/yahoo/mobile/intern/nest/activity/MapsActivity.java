@@ -293,11 +293,11 @@ public class MapsActivity extends FragmentActivity
         mRadiusCircle = mMap.addCircle(new CircleOptions()
                 .center(mMap.getCameraPosition().target)
                 .radius(mRadius)
-                .strokeColor(Color.BLUE)
+                .strokeWidth(0)
                 .fillColor(Color.argb(63, 0, 0, 255)));
 
 
-        ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getView().invalidate();
+        getSupportFragmentManager().findFragmentById(R.id.map).getView().invalidate();
 
     }
 

@@ -18,13 +18,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:iconifiedByDefault="false"/>
-    
-    <Button
-        android:id="@+id/btn_ok"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:text="OK"
-        android:layout_gravity="bottom"/>
+
+
 
     <ImageView
         android:id="@+id/img_pin"
@@ -33,13 +28,42 @@
         android:layout_gravity="center"
         android:src="@drawable/dialog_community_pin"/>
 
-    <SeekBar
-        android:id="@+id/seekBar_radius"
-        android:max="10"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:layout_marginBottom="70dp"
-        android:indeterminate="false"/>
-    
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:padding="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="100dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/map_range"/>
+
+        <SeekBar
+            android:id="@+id/seekBar_radius"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:max="10"
+            android:indeterminate="false"/>
+
+    </LinearLayout>
+
+
+
+    <Button
+        android:id="@+id/btn_ok"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:text="@string/map_ok"
+        android:layout_gravity="bottom"
+        android:textColor="@color/white"
+        android:background="@color/cyan"
+        android:padding="10dp"
+        android:layout_margin="10dp"/>
 </FrameLayout>

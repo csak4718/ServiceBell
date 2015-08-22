@@ -50,7 +50,7 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
     @Bind(R.id.txt_remaining) TextView txtRemaining;
     @Bind(R.id.txt_status) TextView txtStatus;
 
-    @OnClick(R.id.lt_addres) void viewMap(){
+    @OnClick(R.id.img_addres) void viewMap(){
         Utils.gotoMapsActivityCurLocation(this, new LatLng(mGeoPoint.getLatitude(), mGeoPoint.getLongitude()));
     }
 

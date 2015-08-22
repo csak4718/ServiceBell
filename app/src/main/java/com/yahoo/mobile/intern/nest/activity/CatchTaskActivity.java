@@ -67,14 +67,14 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     @Bind(R.id.txt_remaining) TextView txtRemaining;
 
 
-    @OnClick(R.id.lt_addres) void viewMap(){
+    @OnClick(R.id.img_addres) void viewMap(){
         Utils.gotoMapsActivityCurLocation(this, new LatLng(mGeoPoint.getLatitude(), mGeoPoint.getLongitude()));
     }
 
 
     @OnClick(R.id.rlayout_buyer) void buyerProfile(){
         DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(buyer,false,true);
-        dfsp.show(getSupportFragmentManager(),"buyerInfo");
+        dfsp.show(getSupportFragmentManager(), "buyerInfo");
     }
 
     @OnClick(R.id.btn_reject_task) void rejectTask() {
@@ -147,7 +147,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
                 buyer.fetchInBackground(new GetCallback<ParseUser>() {
                     @Override
                     public void done(ParseUser buyer, ParseException e) {
-                        if(e == null) {
+                        if (e == null) {
                             setupBuyerProfile(buyer);
                         }
                     }

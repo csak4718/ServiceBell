@@ -38,8 +38,10 @@
     <string name="catch_task_accept">Accept task</string>
     <string name="catch_task_reject">Reject task</string>
 
-
+    <string name="map_range">接收範圍</string>
     <string name="map_search_hint">Search Here</string>
+    <string name="map_ok">確認服務範圍</string>
+
     <string name="title_activity_my_done_task">MyDoneTaskActivity</string>
 
 
