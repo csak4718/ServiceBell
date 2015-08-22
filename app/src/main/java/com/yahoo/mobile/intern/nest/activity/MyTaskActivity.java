@@ -21,7 +21,7 @@ import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.adapter.AcceptedUserAdapter;
 import com.yahoo.mobile.intern.nest.event.AcceptedUserEvent;
-import com.yahoo.mobile.intern.nest.fragment.DialogFragmentSellerProfile;
+import com.yahoo.mobile.intern.nest.dialog.DialogFragmentSellerProfile;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 import com.yahoo.mobile.intern.nest.utils.Utils;

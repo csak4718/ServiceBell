@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <TextView
+        android:text="設定服務資訊，完成後就可以發布了囉！"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:paddingLeft="60dp"
+        android:paddingRight="60dp"
+        android:gravity="center"
+        android:background="#EAEAEA"
+        />
+    <LinearLayout
+        android:id="@+id/btn_set_location"
+        android:layout_margin="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:background="?android:attr/selectableItemBackground">
+        <ImageView
+            android:src="@drawable/ic_location"
+            android:layout_marginRight="10dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="?android:attr/selectableItemBackground">
+            <TextView
+                android:text="服務地點"
+                android:textColor="@color/nest_blue_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txt_location_holder"
+                android:text="為你的服務選定地點"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/btn_set_time"
+        android:layout_margin="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:background="?android:attr/selectableItemBackground">
+        <ImageView
+            android:src="@drawable/ic_location"
+            android:layout_marginRight="10dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:text="服務日期與時段"
+                android:textColor="@color/nest_blue_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txt_time_holder"
+                android:text="你的服務內容包含什麼，價格預算"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/btn_set_expiretime"
+        android:layout_margin="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:background="?android:attr/selectableItemBackground">
+        <ImageView
+            android:src="@drawable/ic_location"
+            android:layout_marginRight="10dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:text="服務受理結束日期"
+                android:textColor="@color/nest_blue_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:id="@+id/txt_expire_holder"
+                android:text="在結束時間前，提供者可以與你洽談"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+    <Button
+        android:id="@+id/btn_preview"
+        android:layout_margin="15dp"
+        android:text="預覽服務"
+        android:textColor="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/nest_blue_3"/>
+</LinearLayout>
