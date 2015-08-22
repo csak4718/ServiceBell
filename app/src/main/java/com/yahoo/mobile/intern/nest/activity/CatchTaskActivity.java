@@ -28,7 +28,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.sinch.android.rtc.SinchError;
 import com.yahoo.mobile.intern.nest.R;
-import com.yahoo.mobile.intern.nest.fragment.DialogFragmentSellerProfile;
+import com.yahoo.mobile.intern.nest.dialog.DialogFragmentSellerProfile;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.Utils;
 

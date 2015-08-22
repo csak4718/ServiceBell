@@ -1,18 +1,26 @@
 package com.yahoo.mobile.intern.nest.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.fragment.FragmentAddChooseCategory;
+import com.yahoo.mobile.intern.nest.fragment.FragmentAddLocationDate;
+import com.yahoo.mobile.intern.nest.utils.Common;
+
+import java.util.Date;
 
 public class AddTaskActivity extends AppCompatActivity {
-    private int mYear, mMonth, mDay;
-    private int mHour, mMinute;
-    private String mDateTime;
+
     LatLng mLocation;
-<<<<<<< HEAD
 //    @Bind(R.id.edt_task_title) EditText edtTaskTitle;
 //    @Bind(R.id.edt_task_content) EditText edtTaskContent;
 //    @Bind(R.id.btn_set_location) LinearLayout btnSetLocation;
@@ -21,6 +29,19 @@ public class AddTaskActivity extends AppCompatActivity {
 //    @Bind(R.id.edt_time) EditText edtTaskTime;
 //    @Bind(R.id.text_expiretime) TextView textViewExpireTime;
 //    @Bind(R.id.text_location) TextView textViewLocation;
+
+
+    /*
+       task info
+     */
+    public String title;
+    public String content;
+    public int mYear, mMonth, mDay;
+    public int mHour, mMinute;
+    public Date expire;
+    public String time;
+    public String address;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,96 +59,57 @@ public class AddTaskActivity extends AppCompatActivity {
 //        btnSetLocation
     }
 
-//    @OnClick(R.id.btn_set_location) void setLocaionBtnSetLocation() {
-//        Utils.gotoMapsActivityForResult(this);
-//    }
+
 //
 //    @OnClick(R.id.btn_set_date) void setDateBtnSetLocation() {
 //
 //
 //    }
-//
-//    @OnClick(R.id.btn_set_expiretime) void setExpireTimeBtnSetLocation() {
-//        final Calendar c = Calendar.getInstance();
-//        final String datetime;
-//        mYear = c.get(Calendar.YEAR);
-//        mMonth = c.get(Calendar.MONTH);
-//        mDay = c.get(Calendar.DAY_OF_MONTH);
-//        mHour = c.get(Calendar.HOUR_OF_DAY);
-//        mMinute  = c.get(Calendar.MINUTE);
-//
-//        final TimePickerDialog tpd = TimePickerDialog.newInstance(
-//                new TimePickerDialog.OnTimeSetListener() {
-//                    @Override
-//                    public void onTimeSet(RadialPickerLayout radialPickerLayout, int hourOfDay, int minute) {
-//                        mDateTime = mDateTime +" "+ String.format("%02d:%02d",hourOfDay,minute);
-//                        mHour = hourOfDay;
-//                        mMinute = minute;
-//                        textViewExpireTime.setText(mDateTime);
-//                    }
-//                },mHour, mMinute, false);
-//        DatePickerDialog dpd = DatePickerDialog.newInstance(
-//                new DatePickerDialog.OnDateSetListener() {
-//                    @Override
-//                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int
-//                            dayOfMonth) {
-//                        mDateTime = year + "/" + (monthOfYear + 1) + "/" + dayOfMonth;
-//                        mDay = dayOfMonth;
-//                        mMonth = monthOfYear;
-//                        mYear = year;
-//                        tpd.show(getFragmentManager(), "Timepickerdialog" );
-//                    }
-//                }, mYear, mMonth, mDay);
-//        dpd.show(getFragmentManager(), "Datepickerdialog");
-//    }
 
 
 //
 //
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        if(requestCode == Common.REQUEST_LOCATION) {
-//            if(resultCode == RESULT_OK) {
-//                LatLng position = data.getParcelableExtra(Common.EXTRA_LOCATION);
-//                mLocation = position;
-//                String address = data.getStringExtra(Common.EXTRA_ADDRESS);
-//                //txtLat.setText(lat.toString());
-//                //txtLng.setText(lng.toString());
-//                textViewLocation.setText(address);
-//            }
-//        }
-//    }
-//
-//    private void addTask() {
-//        String title = edtTaskTitle.getText().toString();
-//        String content = edtTaskContent.getText().toString();
-//        String time = edtTaskTime.getText().toString();
-//
-//        if (checkContent()){
-//            Date date = new Date(mYear-1900, mMonth, mDay, mHour, mMinute);//minus 1900 because of deprecate "date" usageg
-//
-//            final ParseObject task = new ParseObject(Common.OBJECT_QUESTION);
-//            task.put(Common.OBJECT_QUESTION_USER, ParseUser.getCurrentUser());
-//            task.put(Common.OBJECT_QUESTION_TITLE, title);
-//            task.put(Common.OBJECT_QUESTION_CONTENT, content);
-//            task.put(Common.OBJECT_QUESTION_PIN, new ParseGeoPoint(mLocation.latitude, mLocation.longitude));
-//            task.put(Common.OBJECT_QUESTION_TIME, time);
-//            task.put(Common.OBJECT_QUESTION_EXPIRE_DATE, date);
-//
-//            task.saveInBackground(new SaveCallback() {
-//                @Override
-//                public void done(ParseException e) {
-//                    if(e == null) {
-//                        ParseUser user = ParseUser.getCurrentUser();
-//                        ParseRelation<ParseObject> myNewQuestions = user.getRelation(Common.OBJECT_USER_MY_NEW_QUESTIONS);
-//                        myNewQuestions.add(task);
-//                        user.saveInBackground();
-//                    }
-//                }
-//            });
-//            finish();
-//        }
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == Common.REQUEST_LOCATION) {
+            if(resultCode == RESULT_OK) {
+                LatLng position = data.getParcelableExtra(Common.EXTRA_LOCATION);
+                mLocation = position;
+                address = data.getStringExtra(Common.EXTRA_ADDRESS);
+
+                FragmentAddLocationDate fragment = (FragmentAddLocationDate)
+                        getSupportFragmentManager().findFragmentById(R.id.frame_content);
+                fragment.txtLocationHolder.setText(address);
+            }
+        }
+    }
+
+    public void addTask() {
+
+        Date date = new Date(mYear-1900, mMonth, mDay, mHour, mMinute);//minus 1900 because of deprecate "date" usageg
+
+        final ParseObject task = new ParseObject(Common.OBJECT_QUESTION);
+        task.put(Common.OBJECT_QUESTION_USER, ParseUser.getCurrentUser());
+        task.put(Common.OBJECT_QUESTION_TITLE, title);
+        task.put(Common.OBJECT_QUESTION_CONTENT, content);
+        task.put(Common.OBJECT_QUESTION_PIN, new ParseGeoPoint(mLocation.latitude, mLocation.longitude));
+        task.put(Common.OBJECT_QUESTION_TIME, time);
+        task.put(Common.OBJECT_QUESTION_EXPIRE_DATE, date);
+        task.put(Common.OBJECT_QUESTION_ADDRESS, address);
+
+        task.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e == null) {
+                    ParseUser user = ParseUser.getCurrentUser();
+                    ParseRelation<ParseObject> myNewQuestions = user.getRelation(Common.OBJECT_USER_MY_NEW_QUESTIONS);
+                    myNewQuestions.add(task);
+                    user.saveInBackground();
+                }
+            }
+        });
+        finish();
+    }
 //
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
