@@ -1,6 +1,7 @@
 package com.yahoo.mobile.intern.nest.activity;
 
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -31,6 +32,8 @@ import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
@@ -42,6 +45,8 @@ import butterknife.OnClick;
 public class MapsActivity extends FragmentActivity
                         implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleMap.OnCameraChangeListener {
 
+    private double mLat, mLong;
+    private boolean mGivenPinLocation;
     private boolean mShowRange;
     static final int MIN_RADIUS = 500;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
@@ -67,6 +72,12 @@ public class MapsActivity extends FragmentActivity
         setContentView(R.layout.activity_maps);
 
         mShowRange = getIntent().getBooleanExtra(Common.EXTRA_SEEKBAR,false);
+        mGivenPinLocation = getIntent().getBooleanExtra(Common.EXTRA_HAS_PIN,false);
+        if(mGivenPinLocation){
+            mLat = getIntent().getDoubleExtra(Common.EXTRA_LAT, 0);
+            mLong = getIntent().getDoubleExtra(Common.EXTRA_LONG, 0);
+        }
+
 
         ButterKnife.bind(this);
         if(!mShowRange)
@@ -127,23 +138,37 @@ public class MapsActivity extends FragmentActivity
     void btnOk() {
         //LatLng position = new LatLng(mCurLocation.getLatitude(),mCurLocation.getLongitude());//mMap.getCameraPosition().target;
         if(mShowRange){
+
             mMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
                 @Override
                 public void onSnapshotReady(Bitmap bitmap) {
+
                     int h =bitmap.getHeight();
                     int w =bitmap.getWidth();
                     Bitmap cropBmp = Bitmap.createBitmap(bitmap, 0, (h-w)/2, w, w);
                     ParseUtils.updateUserMap(cropBmp);
+
+                    String path = saveToInternalStorage(cropBmp);
+
+                    LatLng position = mMap.getCameraPosition().target;
+                    Intent it = new Intent();
+                    it.putExtra(Common.EXTRA_MAP_PATH, path);
+                    it.putExtra(Common.EXTRA_LOCATION, position);
+                    it.putExtra(Common.EXTRA_RADIUS, mRadius/MIN_RADIUS);
+                    it.putExtra(Common.EXTRA_ADDRESS, mSearchView.getQuery().toString());
+                    setResult(RESULT_OK, it);
+                    finish();
                 }
             });
         }
-
-        LatLng position = mMap.getCameraPosition().target;
-        Intent it = new Intent();
-        it.putExtra(Common.EXTRA_LOCATION, position);
-        it.putExtra(Common.EXTRA_ADDRESS, mSearchView.getQuery().toString());
-        setResult(RESULT_OK, it);
-        finish();
+        else {
+            LatLng position = mMap.getCameraPosition().target;
+            Intent it = new Intent();
+            it.putExtra(Common.EXTRA_LOCATION, position);
+            it.putExtra(Common.EXTRA_ADDRESS, mSearchView.getQuery().toString());
+            setResult(RESULT_OK, it);
+            finish();
+        }
     }
 
     @Override
@@ -219,11 +244,18 @@ public class MapsActivity extends FragmentActivity
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(1000); // Update location every second
 
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-        mCurLocation  = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        LatLng latLng = new LatLng(mCurLocation.getLatitude(), mCurLocation.getLongitude());
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        if(mGivenPinLocation) {
 
+            LatLng latLng = new LatLng(mLat, mLong);
+            Log.d("map",""+latLng);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        }
+        else {
+            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+            mCurLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+            LatLng latLng = new LatLng(mCurLocation.getLatitude(), mCurLocation.getLongitude());
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+        }
     }
 
     @Override
@@ -291,12 +323,10 @@ public class MapsActivity extends FragmentActivity
                 }
 
                 address = results.get(0);
-                Log.d("Search result", "" + address.getLatitude() + " " + address.getLongitude());
                 Location location = new Location("dummyprovider");
                 location.setLatitude(address.getLatitude());
                 location.setLongitude(address.getLongitude());
                 mCurLocation = location;
-
 
             } catch (Exception e) {
                 Log.e("", "Something went wrong: ", e);
@@ -312,6 +342,25 @@ public class MapsActivity extends FragmentActivity
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
             }
         }
+    }
+
+    private String saveToInternalStorage(Bitmap bitmapImage){
+        ContextWrapper cw = new ContextWrapper(getApplicationContext());
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        File mypath=new File(directory,Common.PATH_MAP);
+
+        FileOutputStream fos = null;
+        try {
+
+            fos = new FileOutputStream(mypath);
+
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return directory.getAbsolutePath();
     }
 
 }

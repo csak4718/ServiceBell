@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.yahoo.mobile.intern.nest.activity.AddTaskActivity;
 import com.yahoo.mobile.intern.nest.activity.BSInfoSettingActivity;
 import com.yahoo.mobile.intern.nest.activity.CatchTaskActivity;
@@ -96,6 +97,15 @@ public class Utils {
         Intent it = new Intent(context, AddTaskActivity.class);
         context.startActivity(it);
     }
+
+    static public void gotoMapsActivityCurLocation(Activity activity, LatLng latlng) {
+        Intent it = new Intent(activity, MapsActivity.class);
+        it.putExtra(Common.EXTRA_HAS_PIN, true);
+        it.putExtra(Common.EXTRA_LAT, latlng.latitude);
+        it.putExtra(Common.EXTRA_LONG, latlng.longitude);
+        activity.startActivity(it);
+    }
+
     static public void gotoMapsActivityForResult(Activity activity) {
         Intent it = new Intent(activity, MapsActivity.class);
         if(activity instanceof ProfileSettingActivity)
@@ -103,6 +113,7 @@ public class Utils {
         else
             it.putExtra(Common.EXTRA_SEEKBAR,false);
 
+        it.putExtra(Common.EXTRA_HAS_PIN,false);
         activity.startActivityForResult(it, Common.REQUEST_LOCATION);
     }
     static public void gotoProfileSettingActivity(Activity activity) {

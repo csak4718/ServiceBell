@@ -14,11 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRelation;
@@ -26,7 +28,7 @@ import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.sinch.android.rtc.SinchError;
 import com.yahoo.mobile.intern.nest.R;
-import com.yahoo.mobile.intern.nest.fragment.DialogFragmentSellerProfile;
+import com.yahoo.mobile.intern.nest.dialog.DialogFragmentSellerProfile;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.Utils;
 
@@ -39,6 +41,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+
 public class CatchTaskActivity extends BaseActivity implements SinchService.StartFailedListener {
 
     private int mType;
@@ -47,22 +50,33 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     private String taskId;
     private ParseUser buyer;
     private ProgressDialog mSpinner;
-    @Bind(R.id.btn_toMessaging) Button btnToMessaging;
+    private ParseGeoPoint mGeoPoint;
+
+    //@Bind(R.id.btn_toMessaging) Button btnToMessaging;
     @Bind(R.id.txt_status) TextView txtStatus;
+
     @Bind(R.id.txt_title) TextView txtTitle;
     @Bind(R.id.txt_content) TextView txtContent;
+    @Bind(R.id.txt_location) TextView txtAddress;
     @Bind(R.id.task_op_banner) LinearLayout taskOpBanner;
     @Bind(R.id.btn_accept_task) Button btnAcceptTask;
     @Bind(R.id.btn_reject_task) Button btnRejectTask;
     @Bind(R.id.img_user_pic)CircleImageView imgUserPic;
-    @Bind(R.id.txt_user_name) TextView txtUserName;
+    @Bind(R.id.txt_name) TextView txtUserName;
     @Bind(R.id.txt_task_time) TextView txtTaskTime;
     @Bind(R.id.txt_remaining) TextView txtRemaining;
+
+
+    @OnClick(R.id.lt_addres) void viewMap(){
+        Utils.gotoMapsActivityCurLocation(this, new LatLng(mGeoPoint.getLatitude(), mGeoPoint.getLongitude()));
+    }
+
 
     @OnClick(R.id.rlayout_buyer) void buyerProfile(){
         DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(buyer,false,true);
         dfsp.show(getSupportFragmentManager(),"buyerInfo");
     }
+
     @OnClick(R.id.btn_reject_task) void rejectTask() {
 
         Utils.showLoadingDialog(this);
@@ -104,6 +118,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         ParseCloud.callFunctionInBackground(Common.CLOUD_NOTIFY_ACCEPT, params);
 
     }
+
 
     private void setupBuyerProfile(ParseUser buyer) {
         txtUserName.setText((String) buyer.get(Common.OBJECT_USER_FB_NAME));
@@ -148,6 +163,9 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
                 Date expire = task.getDate(Common.OBJECT_QUESTION_EXPIRE_DATE);
                 Date current = new Date();
                 txtRemaining.setText(Utils.getRemainingTime(current, expire));
+                txtAddress.setText(task.getString(Common.OBJECT_QUESTION_ADDRESS));
+
+                mGeoPoint = task.getParseGeoPoint(Common.OBJECT_QUESTION_PIN);
             }
         });
     }
@@ -173,8 +191,6 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
 
         setContentView(R.layout.activity_catch_task);
         ButterKnife.bind(this);
-        btnToMessaging.setEnabled(false);
-        btnToMessaging.setVisibility(View.GONE);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -186,18 +202,12 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
 
         setupTask();
 
-        btnToMessaging.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnToMessagingClicked();
-            }
-        });
+
     }
 
 
     @Override
     protected void onServiceConnected() {
-        btnToMessaging.setEnabled(true);
         getSinchServiceInterface().setStartListener(this);
     }
 

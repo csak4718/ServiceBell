@@ -18,6 +18,8 @@ public class Common {
 
     public final static int REQUEST_MY_TASK = 4444;
 
+    public final static String EXTRA_RADIUS = "map_radius";
+    public final static String EXTRA_MAP_PATH = "map_path";
     public final static String EXTRA_STATE = "state";
     public final static String EXTRA_LOCATION = "location";
     public final static String EXTRA_SEEKBAR = "seekbar";
@@ -25,6 +27,10 @@ public class Common {
     public final static String EXTRA_USER_ID = "user_id";
     public final static String EXTRA_ADDRESS = "address";
     public final static String EXTRA_RECIPIENT_OBJECT_ID = "recipientObjectId";
+    public final static String EXTRA_HAS_PIN = "given_pin";
+    public final static String EXTRA_LAT = "lat";
+    public final static String EXTRA_LONG = "long";
+
     /*
      Parse object
      */
@@ -55,11 +61,9 @@ public class Common {
     public final static String OBJECT_QUESTION_PIN = "pin";
     public final static String OBJECT_QUESTION_EXPIRE_DATE = "date";
     public final static String OBJECT_QUESTION_TIME = "time";
-    public final static String OBJECT_QUESTION_LOCATION = "pin";
+    public final static String OBJECT_QUESTION_ADDRESS = "address";
     public final static String OBJECT_QUESTION_ACCEPTED_USER = "acceptedUser";
     public final static String OBJECT_QUESTION_DONE_USER = "doneUser";
-
-
 
 
     /*
@@ -67,5 +71,7 @@ public class Common {
      */
     public final static String CLOUD_NOTIFY_ACCEPT = "notifySellerAccept";
     public final static String CLOUD_NOTIFY_ACCEPT_BUYERID = "buyerId";
+
+    public final static String PATH_MAP = "map.png";
 
 }

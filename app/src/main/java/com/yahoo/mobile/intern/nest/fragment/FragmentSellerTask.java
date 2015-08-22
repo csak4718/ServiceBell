@@ -8,11 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 
 import com.parse.ParseObject;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.adapter.CatchTaskAdapter;
+import com.yahoo.mobile.intern.nest.adapter.CatchTaskDoneAdapter;
+import com.yahoo.mobile.intern.nest.adapter.MyDoneTaskAdapter;
+import com.yahoo.mobile.intern.nest.adapter.MyNewTaskAdapter;
 import com.yahoo.mobile.intern.nest.event.AcceptTaskEvent;
 import com.yahoo.mobile.intern.nest.event.CatchTaskEvent;
 import com.yahoo.mobile.intern.nest.event.DoneTaskEvent;
@@ -34,7 +38,7 @@ public class FragmentSellerTask extends FragmentTask {
     private View mView;
     private ListView mListView;
     private List<ParseObject> mList;
-    private CatchTaskAdapter mAdapter;
+    private BaseAdapter mAdapter;
 
     private int mType;
 
@@ -102,6 +106,15 @@ public class FragmentSellerTask extends FragmentTask {
         }
     }
 
+    private void setupAdapter() {
+        if(mType == Common.SELLER_NEW  ||  mType == Common.SELLER_ACCEPTED) {
+            mAdapter = new CatchTaskAdapter(getActivity(), mList);
+        }
+        else if(mType == Common.SELLER_DONE) {
+            mAdapter = new CatchTaskDoneAdapter(getActivity(), mList);
+        }
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -109,7 +122,7 @@ public class FragmentSellerTask extends FragmentTask {
         swipeRefreshLayout = (SwipeRefreshLayout) mView.findViewById(R.id.swipe_refresh);
         mListView = (ListView) mView.findViewById(R.id.listview_my_task);
         mList = new ArrayList<>();
-        mAdapter = new CatchTaskAdapter(getActivity(), mList);
+        setupAdapter();
         mListView.setAdapter(mAdapter);
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
