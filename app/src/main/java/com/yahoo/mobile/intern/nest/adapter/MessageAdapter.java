@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.sinch.android.rtc.messaging.Message;
 import com.sinch.android.rtc.messaging.WritableMessage;
 import com.yahoo.mobile.intern.nest.R;
 
@@ -47,9 +46,9 @@ public class MessageAdapter extends BaseAdapter {
         mFormatter = new SimpleDateFormat("HH:mm");
     }
 
-    public void addMessage(WritableMessage writableMessage, int direction, Date dateTime, String senderId) {
-        if(!messageIdSet.contains(writableMessage.getMessageId())){
-            messageIdSet.add(writableMessage.getMessageId());
+    public void addMessage(WritableMessage writableMessage, int direction, Date dateTime, String senderId, String messageId) {
+        if(!messageIdSet.contains(messageId)){
+            messageIdSet.add(messageId);
 
             mWritableMessages.add(new Pair(writableMessage, direction));
             mDateTime.add(dateTime);
