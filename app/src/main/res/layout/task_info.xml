@@ -58,7 +58,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/lt_addres"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -80,12 +79,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
+
         <ImageView
+            android:id="@+id/img_addres"
             android:scaleType="fitCenter"
             android:layout_marginLeft="10dp"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:src="@drawable/map"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -129,5 +131,28 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp">
+        <ImageView
+            android:scaleType="fitCenter"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/label"
+            android:layout_marginRight="10dp"/>
+
+        <TextView
+            tools:text="水電"
+            android:id="@+id/txt_category"
+            android:background="@android:color/transparent"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
 
 </LinearLayout>
