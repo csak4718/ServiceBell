@@ -3,6 +3,8 @@ package com.yahoo.mobile.intern.nest.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseException;
@@ -15,21 +17,13 @@ import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.fragment.FragmentAddChooseCategory;
 import com.yahoo.mobile.intern.nest.fragment.FragmentAddLocationDate;
 import com.yahoo.mobile.intern.nest.utils.Common;
+import com.yahoo.mobile.intern.nest.utils.Utils;
 
 import java.util.Date;
 
 public class AddTaskActivity extends AppCompatActivity {
 
     LatLng mLocation;
-//    @Bind(R.id.edt_task_title) EditText edtTaskTitle;
-//    @Bind(R.id.edt_task_content) EditText edtTaskContent;
-//    @Bind(R.id.btn_set_location) LinearLayout btnSetLocation;
-//    @Bind(R.id.btn_set_date) LinearLayout btnSetDate;
-//    @Bind(R.id.btn_set_expiretime) LinearLayout btnSetExpTime;
-//    @Bind(R.id.edt_time) EditText edtTaskTime;
-//    @Bind(R.id.text_expiretime) TextView textViewExpireTime;
-//    @Bind(R.id.text_location) TextView textViewLocation;
-
 
     /*
        task info
@@ -49,26 +43,14 @@ public class AddTaskActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("新增服務");
+        Utils.setBuyerColor(this);
 
         setContentView(R.layout.activity_add_task);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_content, new FragmentAddChooseCategory())
                 .commit();
-//        ButterKnife.bind(this);
-
-//        btnSetLocation
     }
 
-
-//
-//    @OnClick(R.id.btn_set_date) void setDateBtnSetLocation() {
-//
-//
-//    }
-
-
-//
-//
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == Common.REQUEST_LOCATION) {
@@ -110,51 +92,20 @@ public class AddTaskActivity extends AppCompatActivity {
         });
         finish();
     }
-//
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_add_task, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//
-//        if(id == android.R.id.home) {
-//            finish();
-//        }
-//        else if(id == R.id.action_post) {
-//            addTask();
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-//
-//    private boolean checkContent(){
-//        String title = edtTaskTitle.getText().toString();
-//        String content = edtTaskContent.getText().toString();
-//        String time = edtTaskTime.getText().toString();
-//        String expiretime = textViewExpireTime.getText().toString();
-//
-//        if (title.isEmpty()){
-//            showToast("標題不能空白");
-//        } else if(content.isEmpty()){
-//            showToast("內容不能空白");
-//        } else if (mLocation == null){
-//            showToast("請選地點");
-//        } else if(time.isEmpty()){
-//            showToast("請敘述任務時段");
-//        } else if(expiretime.isEmpty()){
-//            showToast("請選任務截止時間");
-//        } else {
-//            return true;
-//        }
-//        return false;
-//    }
-//
-//    private void showToast(String str){
-//        Toast.makeText(getApplicationContext(), str, Toast.LENGTH_SHORT).show();
-//    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

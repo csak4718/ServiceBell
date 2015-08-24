@@ -21,8 +21,8 @@ import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.adapter.AcceptedUserAdapter;
 import com.yahoo.mobile.intern.nest.dialog.DeleteDialogFragment;
-import com.yahoo.mobile.intern.nest.event.AcceptedUserEvent;
 import com.yahoo.mobile.intern.nest.dialog.DialogFragmentSellerProfile;
+import com.yahoo.mobile.intern.nest.event.AcceptedUserEvent;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 import com.yahoo.mobile.intern.nest.utils.Utils;
@@ -115,9 +115,10 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DialogFragmentSellerProfile dfsp;
                 if (mTask.getParseUser(Common.OBJECT_QUESTION_DONE_USER) != null){
-                    dfsp = DialogFragmentSellerProfile.newInstance(mList.get(position),mType);
+
+                    dfsp = DialogFragmentSellerProfile.newInstance(MyTaskActivity.this, mList.get(position),mType);
                 }else{
-                    dfsp = DialogFragmentSellerProfile.newInstance(mList.get(position),mType);
+                    dfsp = DialogFragmentSellerProfile.newInstance(MyTaskActivity.this, mList.get(position),mType);
                 }
                 dfsp.show(getSupportFragmentManager(),"Profile");
             }
@@ -149,6 +150,7 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
         mListView.setExpanded(true);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Utils.setBuyerColor(this);
 
         taskId = getIntent().getStringExtra(Common.EXTRA_TASK_ID);
 

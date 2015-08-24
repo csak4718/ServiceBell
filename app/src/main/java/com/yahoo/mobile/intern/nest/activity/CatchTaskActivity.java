@@ -73,13 +73,8 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
 
 
     @OnClick(R.id.rlayout_buyer) void buyerProfile(){
-        if (mType==Common.SELLER_NEW){
-            DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(buyer,mType);
-            dfsp.show(getSupportFragmentManager(),"buyerInfo");
-        }else{
-            DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(buyer,mType);
-            dfsp.show(getSupportFragmentManager(),"buyerInfo");
-        }
+        DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(CatchTaskActivity.this,buyer,mType);
+        dfsp.show(getSupportFragmentManager(),"buyerInfo");
     }
 
     @OnClick(R.id.btn_reject_task) void rejectTask() {
@@ -198,6 +193,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         ButterKnife.bind(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Utils.setSellerColor(this);
 
         taskId = getIntent().getStringExtra(Common.EXTRA_TASK_ID);
         mType = getIntent().getIntExtra(Common.EXTRA_STATE, Common.SELLER_NEW);
@@ -206,7 +202,6 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
 
 
         setupTask();
-
 
     }
 

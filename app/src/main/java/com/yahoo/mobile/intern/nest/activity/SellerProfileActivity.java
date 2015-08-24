@@ -42,7 +42,7 @@ public class SellerProfileActivity extends BaseActivity implements SinchService.
     @Bind(R.id.txt_name) TextView txtName;
 
     @OnClick(R.id.btn_popup) void popUp(){
-        DialogFragmentSellerProfile dialogFragment = DialogFragmentSellerProfile.newInstance(seller,0);
+        DialogFragmentSellerProfile dialogFragment = DialogFragmentSellerProfile.newInstance(SellerProfileActivity.this,seller,0);
         dialogFragment.show(getSupportFragmentManager(),"TTT");
     }
 

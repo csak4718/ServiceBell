@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.activity.AddTaskActivity;
 import com.yahoo.mobile.intern.nest.activity.BSInfoSettingActivity;
 import com.yahoo.mobile.intern.nest.activity.CatchTaskActivity;
@@ -72,6 +74,14 @@ public class Utils {
     /*
      * Actionbar and statusbar setup
      */
+    static public void setBuyerColor(AppCompatActivity activity) {
+        setActionBarColor(activity, activity.getResources().getColor(R.color.nest_blue_3));
+        setStatusBarColor(activity, activity.getResources().getColor(R.color.nest_blue_4));
+    }
+    static public void setSellerColor(AppCompatActivity activity) {
+        setActionBarColor(activity, activity.getResources().getColor(R.color.nest_yellow_1));
+        setStatusBarColor(activity, activity.getResources().getColor(R.color.nest_yellow_2));
+    }
     static public void setActionBarColor(AppCompatActivity activity, int color) {
         activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(color));
     }
