@@ -28,6 +28,12 @@
     <color name="PrimaryDarkColor">#5AD3D2</color>
     <color name="dark_gray">#ffb3b3b3</color>
 
+
+    <color name="nest_black_1">#eaeaea</color>
+    <color name="nest_black_2">#848484</color>
+    <color name="nest_black_3">#222222</color>
+    <color name="nest_black_4">#5D5D5D</color>
+
     <color name="nest_yellow_1">#FFD000</color>
     <color name="nest_yellow_2">#EFBB01</color>
     <color name="nest_yellow_3">#FFEA3A</color>
@@ -37,9 +43,12 @@
     <color name="nest_blue_2">#B1EAF1</color>
     <color name="nest_blue_3">#4CCFE0</color>
     <color name="nest_blue_4">#00ABC0</color>
+    
+    <color name="nest_y_1">#FFD000</color>
+    <color name="nest_y_2">#EFBB01</color>
 
-    <color name="drawer_header">#4A4A4A</color>
-    <color name="drawer_content">#848484</color>
+    <color name="drawer_header">#848484</color>
+    <color name="drawer_content">#4A4A4A</color>
 
     <integer-array name="androidcolors">
         <item>@color/blue</item>

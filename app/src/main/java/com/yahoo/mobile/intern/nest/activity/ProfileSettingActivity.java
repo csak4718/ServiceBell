@@ -161,6 +161,10 @@ public class ProfileSettingActivity extends AppCompatActivity {
 
     public void loadedMapImg(){
         ParseFile imgFile = ParseUser.getCurrentUser().getParseFile(Common.OBJECT_USER_MAP_PIC);
+        if(imgFile == null)
+            mImgMap.setVisibility(View.GONE);
+        else
+            mImgMap.setVisibility(View.VISIBLE);
         ParseUtils.displayUserMap(imgFile, mImgMap);
     }
 

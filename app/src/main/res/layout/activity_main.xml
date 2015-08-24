@@ -35,16 +35,18 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:src="@drawable/ic_add_white_24dp"
-            app:fab_colorNormal="#5AD3D2"/>
+            app:fab_colorNormal="@color/nest_yellow_4"/>
     </RelativeLayout>
 
-    <android.support.design.widget.NavigationView
+    <LinearLayout
         android:id="@+id/navigation_view"
         android:layout_height="match_parent"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
         android:layout_gravity="start"
-        app:headerLayout="@layout/header_main"
-        app:menu="@menu/menu_main_drawer"
-        />
+        >
+        <include layout="@layout/header_main" />
+        <include layout="@layout/drawer_content" />
+    </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>

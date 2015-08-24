@@ -4,10 +4,14 @@
               android:orientation="vertical"
               android:gravity="center_horizontal">
     <LinearLayout
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="30dp"
+        android:paddingRight="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="20dp">
+        >
         <LinearLayout
             android:layout_width="300dp"
             android:layout_height="wrap_content"
@@ -16,8 +20,8 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_pic"
                 android:src="@drawable/ic_account_circle_black_48dp"
-                android:layout_width="80dp"
-                android:layout_height="80dp" />
+                android:layout_width="70dp"
+                android:layout_height="70dp" />
             <LinearLayout
                 android:layout_marginLeft="10dp"
                 android:layout_width="wrap_content"
@@ -48,18 +52,18 @@
                         android:src="@drawable/ic_like"/>
                 </LinearLayout>
             </LinearLayout>
-
         </LinearLayout>
 
         <TextView
+            android:id="@+id/txt_firstSentence"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="18dp"
-            android:padding="10dp"
+            android:padding="15dp"
             android:text="嗨你好，這是我的第一句話"
-            android:background="@color/gray"/>
+            android:background="@color/nest_blue_2"/>
 
         <LinearLayout
             android:padding="3dp"
@@ -70,6 +74,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textColor="@color/black"
                 android:id="@+id/txt_others"
                 android:text="水電達人、各式水電到府服務\n各種完善售後服務"
                 android:textSize="18dp"/>
@@ -85,6 +90,7 @@
                     android:layout_height="20dp"
                     android:src="@drawable/ic_phone_black_24dp"/>
                 <TextView
+                    android:textColor="@color/nest_black_4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/txt_phone"
@@ -106,6 +112,7 @@
                     android:src="@drawable/ic_location_on_black_24dp"
                     android:alpha="0.3"/>
                 <TextView
+                    android:textColor="@color/nest_black_4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/txt_address"
@@ -124,28 +131,29 @@
         android:layout_height="wrap_content"
         android:gravity="center">
         <Button
-            android:id="@+id/btn_confirm"
+            android:id="@+id/btn_im"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/nest_blue_3"
-            android:textColor="@color/white"
+            android:background="@color/nest_y_1"
+            android:textColor="@color/nest_black_3"
             android:textSize="18dp"
-            android:text="交給此賣家"/>
+            android:text="洽談細節"/>
         <View
             android:id="@+id/btn_divider"
             android:layout_width="2dp"
             android:layout_height="match_parent"
             android:background="@color/white"/>
+
         <Button
-            android:id="@+id/btn_im"
+            android:id="@+id/btn_confirm"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/nest_blue_3"
-            android:textColor="@color/white"
+            android:background="@color/nest_y_1"
+            android:textColor="@color/nest_black_3"
             android:textSize="18dp"
-            android:text="洽談細節"/>
+            android:text="馬上成交"/>
     </LinearLayout>
 
 
