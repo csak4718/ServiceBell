@@ -10,9 +10,11 @@ import android.widget.TextView;
 import com.parse.CountCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.squareup.picasso.Picasso;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.Utils;
@@ -22,6 +24,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by cmwang on 8/20/15.
@@ -37,6 +40,7 @@ public class MyDoneTaskAdapter extends BaseAdapter {
         @Bind(R.id.txt_title) public TextView txtTitle;
         @Bind(R.id.txt_time) public TextView txtTime;
         @Bind(R.id.txt_seller_name) public TextView txtSellerName;
+        @Bind(R.id.img_pic) public CircleImageView imgProfile;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);
@@ -91,6 +95,10 @@ public class MyDoneTaskAdapter extends BaseAdapter {
                 @Override
                 public void done(ParseObject seller, ParseException e) {
                     if (e == null) {
+                        ParseFile imgFile = seller.getParseFile(Common.OBJECT_USER_PROFILE_PIC);
+                        Picasso.with(mContext)
+                                .load(imgFile.getUrl())
+                                .into(holder.imgProfile);
                         holder.txtSellerName.setText(seller.getString(Common.OBJECT_USER_NICK));
                     }
                 }

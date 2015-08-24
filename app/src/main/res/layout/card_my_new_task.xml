@@ -80,7 +80,7 @@
                 android:layout_gravity="center_horizontal" />
             <TextView
                 android:id="@+id/msg_holder"
-                tools:text="接洽"
+                android:text="接洽"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:textColor="@color/nest_yellow_4"
