@@ -12,12 +12,12 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.SearchView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -57,13 +57,13 @@ public class MapsActivity extends AppCompatActivity
     private LocationManager locationManager;
     private LocationRequest mLocationRequest;
     public GoogleApiClient mGoogleApiClient;
+    private SearchView mSearchView;
     private Geocoder mGeocoder;
     private Circle mRadiusCircle;
     private int mRadius;
 
 
     @Bind(R.id.seekBar_radius) SeekBar mRadiusSeekBar;
-    @Bind(R.id.map_search_view) SearchView mSearchView;
     @Bind(R.id.txt_address_above_pin) TextView mAddress;
     @Bind(R.id.txt_radius) TextView mRadiusTextView;
     @Bind(R.id.layout_range_seek_bar) LinearLayout mSeekBarLayout;
@@ -121,25 +121,14 @@ public class MapsActivity extends AppCompatActivity
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 mRadius = MIN_RADIUS * (1 + progress);
-                mRadiusTextView.setText(""+mRadius+" km");
+                mRadiusTextView.setText("" + mRadius + " km");
                 drawCircleOnMap();
             }
         });
 
 
-        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                new SearchClicked(query).execute();
 
-                return true;
-            }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
 
     }
 
@@ -380,6 +369,22 @@ public class MapsActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_map, menu);
+
+        mSearchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                new SearchClicked(query).execute();
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
         return true;
     }
 

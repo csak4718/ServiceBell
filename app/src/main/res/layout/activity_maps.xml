@@ -11,15 +11,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment" />
 
 
-    <SearchView
-        android:id="@+id/map_search_view"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:iconifiedByDefault="false"
-        android:queryHint="@string/map_search_hint"/>
-
+ 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -41,59 +33,59 @@
                 android:layout_centerHorizontal="true"
                 android:background="@color/white"/>
 
-    </RelativeLayout>
 
-
-    <LinearLayout
-        android:id="@+id/layout_range_seek_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="@color/white"
-        android:orientation="vertical"
-        android:padding="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginBottom="100dp">
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="10dp"
-                android:text="@string/map_range"/>
-
-            <TextView
-                android:id="@+id/txt_radius"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="10dp"
-                android:text="1 km"/>
-
-        </RelativeLayout>
-
-        <SeekBar
-            android:id="@+id/seekBar_radius"
+        <LinearLayout
+            android:id="@+id/layout_range_seek_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:max="10"
-            android:indeterminate="false"/>
-    </LinearLayout>
+            android:layout_above="@+id/btn_ok"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp">
 
-    <Button
-        android:id="@+id/btn_ok"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:text="@string/map_ok"
-        android:layout_gravity="bottom"
-        android:textColor="@color/white"
-        android:background="@color/cyan"
-        android:padding="10dp"
-        android:layout_margin="10dp"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/map_range"/>
+
+                <TextView
+                    android:id="@+id/txt_radius"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:text="1 km"/>
+
+            </RelativeLayout>
+
+            <SeekBar
+                android:id="@+id/seekBar_radius"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="10"
+                android:indeterminate="false"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_ok"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="@string/map_ok"
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/white"
+            android:background="@color/cyan"
+            android:padding="10dp"
+            android:layout_margin="10dp"/>
+
+
+    </RelativeLayout>
 </FrameLayout>

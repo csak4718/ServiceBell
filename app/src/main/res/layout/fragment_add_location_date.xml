@@ -5,7 +5,7 @@
     android:background="@android:color/white">
 
     <TextView
-        android:text="設定服務資訊，完成後就可以發布了囉！"
+        android:text="@string/add_location_date"
         android:textSize="20sp"
         android:layout_width="match_parent"
         android:layout_height="150dp"
