@@ -11,11 +11,15 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -42,13 +46,13 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MapsActivity extends FragmentActivity
+public class MapsActivity extends AppCompatActivity
                         implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleMap.OnCameraChangeListener {
 
     private double mLat, mLong;
     private boolean mGivenPinLocation;
     private boolean mShowRange;
-    static final int MIN_RADIUS = 500;
+    static final int MIN_RADIUS = 1;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private LocationManager locationManager;
     private LocationRequest mLocationRequest;
@@ -60,6 +64,9 @@ public class MapsActivity extends FragmentActivity
 
     @Bind(R.id.seekBar_radius) SeekBar mRadiusSeekBar;
     @Bind(R.id.map_search_view) SearchView mSearchView;
+    @Bind(R.id.txt_address_above_pin) TextView mAddress;
+    @Bind(R.id.txt_radius) TextView mRadiusTextView;
+    @Bind(R.id.layout_range_seek_bar) LinearLayout mSeekBarLayout;
 
     private Location mCurLocation;
 
@@ -70,6 +77,7 @@ public class MapsActivity extends FragmentActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mShowRange = getIntent().getBooleanExtra(Common.EXTRA_SEEKBAR,false);
         mGivenPinLocation = getIntent().getBooleanExtra(Common.EXTRA_HAS_PIN,false);
@@ -80,10 +88,13 @@ public class MapsActivity extends FragmentActivity
 
 
         ButterKnife.bind(this);
-        if(!mShowRange)
+        if(!mShowRange) {
             mRadiusSeekBar.setVisibility(View.GONE);
+            mSeekBarLayout.setVisibility(View.GONE);
+        }
 
-        setUpMapIfNeeded();
+        setupMapIfNeeded();
+        setupActionBar();
 
         mGeocoder = new Geocoder(this, Locale.getDefault());
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -91,7 +102,6 @@ public class MapsActivity extends FragmentActivity
                 .addConnectionCallbacks(this)
                 .addApi(LocationServices.API)
                 .build();
-
 
         mRadius = MIN_RADIUS;
         drawCircleOnMap();
@@ -111,6 +121,7 @@ public class MapsActivity extends FragmentActivity
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 mRadius = MIN_RADIUS * (1 + progress);
+                mRadiusTextView.setText(""+mRadius+" km");
                 drawCircleOnMap();
             }
         });
@@ -154,7 +165,7 @@ public class MapsActivity extends FragmentActivity
                     Intent it = new Intent();
                     it.putExtra(Common.EXTRA_MAP_PATH, path);
                     it.putExtra(Common.EXTRA_LOCATION, position);
-                    it.putExtra(Common.EXTRA_RADIUS, mRadius/MIN_RADIUS);
+                    it.putExtra(Common.EXTRA_RADIUS, mRadius);
                     it.putExtra(Common.EXTRA_ADDRESS, mSearchView.getQuery().toString());
                     setResult(RESULT_OK, it);
                     finish();
@@ -195,7 +206,7 @@ public class MapsActivity extends FragmentActivity
     @Override
     protected void onResume() {
         super.onResume();
-        setUpMapIfNeeded();
+        setupMapIfNeeded();
     }
 
     /**
@@ -213,7 +224,7 @@ public class MapsActivity extends FragmentActivity
      * stopped or paused), {@link #onCreate(Bundle)} may not be called again so we should call this
      * method in {@link #onResume()} to guarantee that it will be called.
      */
-    private void setUpMapIfNeeded() {
+    private void setupMapIfNeeded() {
         // Do a null check to confirm that we have not already instantiated the map.
         if (mMap == null) {
             // Try to obtain the map from the SupportMapFragment.
@@ -278,6 +289,8 @@ public class MapsActivity extends FragmentActivity
             e.printStackTrace();
         }
         if (addresses != null && addresses.size() > 0) {
+
+            mAddress.setText(addresses.get(0).getAddressLine(0));
             mSearchView.setQuery(addresses.get(0).getAddressLine(0), false);
         }
 
@@ -363,4 +376,30 @@ public class MapsActivity extends FragmentActivity
         return directory.getAbsolutePath();
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_map, menu);
+        return true;
+    }
+
+    public void setupActionBar(){
+        android.support.v7.app.ActionBar ab = getSupportActionBar();
+        if(mShowRange)
+            ab.setTitle(R.string.title_activity_maps＿and_range);
+        else
+            ab.setTitle(R.string.title_activity_maps);
+        return;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if(id == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
