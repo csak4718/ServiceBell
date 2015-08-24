@@ -1,5 +1,7 @@
 package com.yahoo.mobile.intern.nest.activity;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -111,9 +113,9 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DialogFragmentSellerProfile dfsp;
                 if (mTask.getParseUser(Common.OBJECT_QUESTION_DONE_USER) != null){
-                    dfsp = DialogFragmentSellerProfile.newInstance(mList.get(position),true,false);
+                    dfsp = DialogFragmentSellerProfile.newInstance(MyTaskActivity.this, mList.get(position),true,false);
                 }else{
-                    dfsp = DialogFragmentSellerProfile.newInstance(mList.get(position),false,false);
+                    dfsp = DialogFragmentSellerProfile.newInstance(MyTaskActivity.this, mList.get(position),false,false);
                 }
                 dfsp.show(getSupportFragmentManager(),"Profile");
             }
