@@ -27,7 +27,7 @@
             android:id="@+id/txt_status"
             android:text="等待中"
             android:textSize="17sp"
-            android:textColor="@color/nest_yellow_4"
+            android:textColor="@color/dark_gray"
             android:background="@drawable/round_corner"
             android:gravity="center"
             android:layout_width="wrap_content"
