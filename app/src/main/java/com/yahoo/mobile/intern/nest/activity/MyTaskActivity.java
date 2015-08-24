@@ -147,6 +147,7 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
         mListView.setExpanded(true);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Utils.setBuyerColor(this);
 
         taskId = getIntent().getStringExtra(Common.EXTRA_TASK_ID);
 

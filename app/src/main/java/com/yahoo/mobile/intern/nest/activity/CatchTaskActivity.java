@@ -193,6 +193,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         ButterKnife.bind(this);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Utils.setSellerColor(this);
 
         taskId = getIntent().getStringExtra(Common.EXTRA_TASK_ID);
         mType = getIntent().getIntExtra(Common.EXTRA_STATE, Common.SELLER_NEW);
@@ -201,7 +202,6 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
 
 
         setupTask();
-
 
     }
 
