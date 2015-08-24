@@ -59,8 +59,13 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     @Bind(R.id.txt_remaining) TextView txtRemaining;
 
     @OnClick(R.id.rlayout_buyer) void buyerProfile(){
-        DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(buyer,false,true);
-        dfsp.show(getSupportFragmentManager(),"buyerInfo");
+        if (mType==Common.SELLER_NEW){
+            DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(buyer,mType);
+            dfsp.show(getSupportFragmentManager(),"buyerInfo");
+        }else{
+            DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(buyer,mType);
+            dfsp.show(getSupportFragmentManager(),"buyerInfo");
+        }
     }
     @OnClick(R.id.btn_reject_task) void rejectTask() {
 

@@ -37,6 +37,7 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
 
     private String taskId;
     private ParseObject mTask;
+    private int mType;
 
     @Bind(R.id.txt_title) TextView txtTitle;
     @Bind(R.id.txt_content) TextView txtContent;
@@ -70,10 +71,12 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
                     setupAcceptedSellers();
                     // task is not done
                     if(task.getParseUser(Common.OBJECT_QUESTION_DONE_USER) == null) {
+                        mType = Common.BUYER_NEW;
                         txtStatus.setText("等待中");
                         ParseUtils.getTaskAcceptedUser(task);
                     }
                     else {
+                        mType = Common.BUYER_DONE;
                         txtStatus.setText("已成交");
                         ParseUser seller = task.getParseUser(Common.OBJECT_QUESTION_DONE_USER);
                         try {
@@ -98,9 +101,9 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DialogFragmentSellerProfile dfsp;
                 if (mTask.getParseUser(Common.OBJECT_QUESTION_DONE_USER) != null){
-                    dfsp = DialogFragmentSellerProfile.newInstance(mList.get(position),true,false);
+                    dfsp = DialogFragmentSellerProfile.newInstance(mList.get(position),mType);
                 }else{
-                    dfsp = DialogFragmentSellerProfile.newInstance(mList.get(position),false,false);
+                    dfsp = DialogFragmentSellerProfile.newInstance(mList.get(position),mType);
                 }
                 dfsp.show(getSupportFragmentManager(),"Profile");
             }
