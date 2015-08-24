@@ -47,12 +47,10 @@
     <string name="info_setting_intro">自我介紹</string>
     <string name="info_setting_cat">服務類別</string>
 
-
     <string name="add_choose_tag_welcome">你的服務是什麼類型的呢</string>
-    <string name="add_content">寫關於你的服務說明</string>
+    <string name="add_content">撰寫關於你的服務說明</string>
     <string name="add_location_date">設定服務資訊，完成後就可以發布了囉！</string>
 
     <string name="title_activity_my_done_task">MyDoneTaskActivity</string>
-
 
 </resources>

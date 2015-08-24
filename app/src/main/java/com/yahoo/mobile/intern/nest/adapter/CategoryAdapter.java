@@ -37,7 +37,6 @@ public class CategoryAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
-        @Bind(R.id.img_icon) public ImageView mIcon;
         @Bind(R.id.txt_title) public TextView mTitle;
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);
@@ -72,8 +71,6 @@ public class CategoryAdapter extends BaseAdapter {
         }
 
         CategoryItem item = mList.get(position);
-
-        holder.mIcon.setImageDrawable(item.mIcon);
         holder.mTitle.setText(item.mTitle);
 
         return convertView;

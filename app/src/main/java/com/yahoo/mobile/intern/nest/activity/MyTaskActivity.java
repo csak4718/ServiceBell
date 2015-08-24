@@ -51,6 +51,7 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
     @Bind(R.id.txt_task_time) TextView txtTaskTime;
     @Bind(R.id.txt_remaining) TextView txtRemaining;
     @Bind(R.id.txt_status) TextView txtStatus;
+    @Bind(R.id.txt_category) TextView txtCategory;
 
     @OnClick(R.id.img_addres) void viewMap(){
         Utils.gotoMapsActivityCurLocation(this, new LatLng(mGeoPoint.getLatitude(), mGeoPoint.getLongitude()));
@@ -70,9 +71,12 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
                     String title = task.getString(Common.OBJECT_QUESTION_TITLE);
                     String content = task.getString(Common.OBJECT_QUESTION_CONTENT);
                     String time = task.getString(Common.OBJECT_QUESTION_TIME);
+                    String category = task.getString(Common.OBJECT_QUESTION_CATEGORY);
+
                     txtTitle.setText(title);
                     txtContent.setText(content);
                     txtTaskTime.setText(time);
+                    txtCategory.setText(category);
 
                     Date expire = task.getDate(Common.OBJECT_QUESTION_EXPIRE_DATE);
                     Date current = new Date();
