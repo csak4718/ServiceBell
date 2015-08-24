@@ -1,7 +1,5 @@
 package com.yahoo.mobile.intern.nest.activity;
 
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -22,8 +20,9 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.adapter.AcceptedUserAdapter;
-import com.yahoo.mobile.intern.nest.event.AcceptedUserEvent;
+import com.yahoo.mobile.intern.nest.dialog.DeleteDialogFragment;
 import com.yahoo.mobile.intern.nest.dialog.DialogFragmentSellerProfile;
+import com.yahoo.mobile.intern.nest.event.AcceptedUserEvent;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 import com.yahoo.mobile.intern.nest.utils.Utils;
@@ -38,10 +37,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
-public class MyTaskActivity extends AppCompatActivity implements DialogFragmentSellerProfile.ProfileDialogListener {
+public class MyTaskActivity extends AppCompatActivity implements DialogFragmentSellerProfile.ProfileDialogListener, DeleteDialogFragment.DeleteDialogListener {
 
     private String taskId;
     private ParseObject mTask;
+    private int mType;
     private ParseGeoPoint mGeoPoint;
 
     @Bind(R.id.txt_location) TextView txtAddress;
@@ -85,10 +85,12 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
                     setupAcceptedSellers();
                     // task is not done
                     if(task.getParseUser(Common.OBJECT_QUESTION_DONE_USER) == null) {
+                        mType = Common.BUYER_NEW;
                         txtStatus.setText("等待中");
                         ParseUtils.getTaskAcceptedUser(task);
                     }
                     else {
+                        mType = Common.BUYER_DONE;
                         txtStatus.setText("已成交");
                         ParseUser seller = task.getParseUser(Common.OBJECT_QUESTION_DONE_USER);
                         try {
@@ -113,9 +115,10 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DialogFragmentSellerProfile dfsp;
                 if (mTask.getParseUser(Common.OBJECT_QUESTION_DONE_USER) != null){
-                    dfsp = DialogFragmentSellerProfile.newInstance(MyTaskActivity.this, mList.get(position),true,false);
+
+                    dfsp = DialogFragmentSellerProfile.newInstance(MyTaskActivity.this, mList.get(position),mType);
                 }else{
-                    dfsp = DialogFragmentSellerProfile.newInstance(MyTaskActivity.this, mList.get(position),false,false);
+                    dfsp = DialogFragmentSellerProfile.newInstance(MyTaskActivity.this, mList.get(position),mType);
                 }
                 dfsp.show(getSupportFragmentManager(),"Profile");
             }
@@ -175,13 +178,8 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
             finish();
         }
         if(id == R.id.action_delete) {
-            mTask.deleteInBackground(new DeleteCallback() {
-                @Override
-                public void done(ParseException e) {
-                    Utils.showLoadingDialog(MyTaskActivity.this);
-                    finish();
-                }
-            });
+            DeleteDialogFragment df = new DeleteDialogFragment();
+            df.show(getSupportFragmentManager(),"DeleteDialog");
         }
 
         return super.onOptionsItemSelected(item);
@@ -203,5 +201,16 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
         returnIntent.putExtra("result",true);
         setResult(RESULT_OK,returnIntent);
         finish();
+    }
+
+    @Override
+    public void onFinishDeleteDialog(boolean i) {
+        mTask.deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                Utils.showLoadingDialog(MyTaskActivity.this);
+                finish();
+            }
+        });
     }
 }

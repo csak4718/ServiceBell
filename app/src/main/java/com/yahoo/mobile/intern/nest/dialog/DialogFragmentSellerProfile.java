@@ -44,6 +44,9 @@ public class DialogFragmentSellerProfile extends DialogFragment implements Sinch
     ParseUser user;
     Boolean done,buyer;
     View mView;
+    int type;
+
+    @Bind(R.id.txt_firstSentence)TextView txtFirstSentence;
     @Bind(R.id.img_pic)CircleImageView mImgProfilePic;
     @Bind(R.id.txt_name)TextView txtName;
     @Bind(R.id.txt_address)TextView txtAdd;
@@ -68,11 +71,10 @@ public class DialogFragmentSellerProfile extends DialogFragment implements Sinch
         void onFinishProfileDialog(String inputText, ParseUser seller);
     }
 
-    public static DialogFragmentSellerProfile newInstance(Activity activity, ParseUser user,Boolean done,Boolean buyer){
+    public static DialogFragmentSellerProfile newInstance(Activity activity, ParseUser user,int type){
         DialogFragmentSellerProfile dfsp = new DialogFragmentSellerProfile();
         dfsp.user = user;
-        dfsp.done = done;
-        dfsp.buyer = buyer;
+        dfsp.type = type;
         dfsp.mActivity = activity;
         return dfsp;
     }
@@ -92,7 +94,6 @@ public class DialogFragmentSellerProfile extends DialogFragment implements Sinch
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         ButterKnife.bind(this, mView);
         setupButton();
-        disableButton();
         getProfile();
         return mView;
     }
@@ -112,14 +113,19 @@ public class DialogFragmentSellerProfile extends DialogFragment implements Sinch
         if (others == null || others.equals("")){txtOthers.setVisibility(View.GONE);}else{txtOthers.setText(others);}
     }
     public void setupButton(){
-        Log.d("test", String.valueOf(done));
-        if(done == true){
+
+        Log.d("test",String.valueOf(done));
+        if(type!=Common.BUYER_NEW){
             btnConfirm.setVisibility(View.GONE);
             divider.setVisibility(View.GONE);
         }
+        if((type!=Common.BUYER_DONE)&&(type!=Common.BUYER_NEW)){
+            txtFirstSentence.setVisibility(View.GONE);
+        }
+        disableButton();
     }
     public void disableButton(){
-        if(buyer==true){
+        if(type==Common.SELLER_NEW){
             linearBtn.setVisibility(View.GONE);
         }
     }

@@ -73,7 +73,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
 
 
     @OnClick(R.id.rlayout_buyer) void buyerProfile(){
-        DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(CatchTaskActivity.this, buyer,false,true);
+        DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(CatchTaskActivity.this,buyer,mType);
         dfsp.show(getSupportFragmentManager(),"buyerInfo");
     }
 
