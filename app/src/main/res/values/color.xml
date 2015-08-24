@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="map_mask" type="color">#8833B5E5</item>
+
+    <item name="map_mask" type="color">#aacceaeb</item>
     <item name="black" type="color">#000000</item>
     <item name="gray" type="color">#DDDDDD</item>
     <item name="white" type="color">#FFFFFF</item>
