@@ -62,12 +62,14 @@ public class MainActivity extends AppCompatActivity {
                 switch (id) {
                     case R.id.menu_my_task:
                         mActionBar.setTitle("找服務");
+                        Utils.setBuyerColor(MainActivity.this);
                         fragmentTab.switchTab(id);
                         btnAddPost.setVisibility(View.VISIBLE);
                         break;
                     case R.id.menu_catch_task:
                         if (ParseUtils.isSellerNetSeted()) {
                             mActionBar.setTitle("找服務");
+                            Utils.setSellerColor(MainActivity.this);
                             fragmentTab.switchTab(id);
                             btnAddPost.setVisibility(View.GONE);
                         }
@@ -129,9 +131,8 @@ public class MainActivity extends AppCompatActivity {
         mActionBar = getSupportActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setHomeButtonEnabled(true);
-        mActionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color
-                .nest_blue_3)));
         mActionBar.setTitle("找服務");
+        Utils.setBuyerColor(this);
     }
 
     @Override

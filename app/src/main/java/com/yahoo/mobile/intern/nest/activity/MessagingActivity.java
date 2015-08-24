@@ -3,6 +3,7 @@ package com.yahoo.mobile.intern.nest.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,8 +11,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.ParseObject;
-import com.parse.ParseRelation;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.sinch.android.rtc.PushPair;
 import com.sinch.android.rtc.messaging.Message;
@@ -19,24 +21,27 @@ import com.sinch.android.rtc.messaging.MessageClient;
 import com.sinch.android.rtc.messaging.MessageClientListener;
 import com.sinch.android.rtc.messaging.MessageDeliveryInfo;
 import com.sinch.android.rtc.messaging.MessageFailureInfo;
+import com.sinch.android.rtc.messaging.WritableMessage;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.adapter.MessageAdapter;
 import com.yahoo.mobile.intern.nest.event.RecipientEvent;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 
+import java.util.Arrays;
 import java.util.List;
+
 
 import de.greenrobot.event.EventBus;
 
 public class MessagingActivity extends BaseActivity implements MessageClientListener {
 
     private static final String TAG = MessagingActivity.class.getSimpleName();
-
     private MessageAdapter mMessageAdapter;
     private TextView recipientNickname;
     private EditText mTxtTextBody;
     private Button mBtnSend;
+    private ParseUser currentUser;
     private ParseUser recipient;
     private String recipientObjectId;
 
@@ -44,8 +49,11 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.messaging);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         recipientNickname = (TextView) findViewById(R.id.recipient_nickname);
 
+        currentUser = ParseUser.getCurrentUser();
         Intent it = getIntent();
         recipientObjectId = it.getStringExtra(Common.EXTRA_RECIPIENT_OBJECT_ID);
         ParseUtils.getRecipient(recipientObjectId);
@@ -65,6 +73,28 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
             }
         });
 
+
+
+        String[] userIds = {currentUser.getObjectId(), recipientObjectId};
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
+        query.whereContainedIn("senderId", Arrays.asList(userIds));
+        query.whereContainedIn("recipientId", Arrays.asList(userIds));
+        query.orderByAscending("createdAt");
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> messageList, com.parse.ParseException e) {
+                if (e == null) {
+                    for (int i = 0; i < messageList.size(); i++) {
+                        WritableMessage writableMessage = new WritableMessage(messageList.get(i).get("recipientId").toString(), messageList.get(i).get("messageText").toString());
+                        if (messageList.get(i).get("senderId").toString().equals(currentUser.getObjectId())) {
+                            mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_OUTGOING, messageList.get(i).getDate("msgTimeStamp"), messageList.get(i).getString("senderId"), messageList.get(i).getString("messageId"));
+                        } else {
+                            mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_INCOMING, messageList.get(i).getDate("msgTimeStamp"), messageList.get(i).getString("senderId"), messageList.get(i).getString("messageId"));
+                        }
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -126,15 +156,39 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
 
     @Override
     public void onIncomingMessage(MessageClient client, Message message) {
-        mMessageAdapter.addMessage(message, MessageAdapter.DIRECTION_INCOMING);
+        if (message.getSenderId().equals(recipientObjectId)) {
+            WritableMessage writableMessage = new WritableMessage(message.getRecipientIds().get(0), message.getTextBody());
+            mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_INCOMING, message.getTimestamp(), message.getSenderId(), message.getMessageId());
+        }
     }
 
     @Override
-    public void onMessageSent(MessageClient client, Message message, String recipientId) {
-        mMessageAdapter.addMessage(message, MessageAdapter.DIRECTION_OUTGOING);
+    public void onMessageSent(MessageClient client, final Message message, String recipientId) {
+        final WritableMessage writableMessage = new WritableMessage(message.getRecipientIds().get(0), message.getTextBody());
 
-        ParseUser sender = ParseUser.getCurrentUser();
-        ParseUtils.createChatConnection(sender, recipient);
+        // only add message to parse database if it doesn't already exist there
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
+        query.whereEqualTo("messageId", message.getMessageId());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> messageList, com.parse.ParseException e) {
+                if (e == null) {
+                    if (messageList.size() == 0) {
+                        ParseObject msg = new ParseObject("Message");
+                        msg.put("senderId", currentUser.getObjectId());
+                        msg.put("recipientId", writableMessage.getRecipientIds().get(0));
+                        msg.put("messageText", writableMessage.getTextBody());
+                        msg.put("messageId", message.getMessageId());
+                        msg.put("msgTimeStamp", message.getTimestamp());
+                        msg.saveInBackground();
+
+                        mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_OUTGOING, message.getTimestamp(), currentUser.getObjectId(), message.getMessageId());
+                    }
+                }
+            }
+        });
+
+        ParseUtils.createChatConnection(currentUser, recipient);
     }
 
     @Override
@@ -156,6 +210,20 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
     @Override
     public void onMessageDelivered(MessageClient client, MessageDeliveryInfo deliveryInfo) {
         Log.d(TAG, "onDelivered");
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if(id == android.R.id.home) {
+            finish();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }
