@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
@@ -10,8 +10,9 @@
         android:id="@+id/btn_confirm"
         android:layout_margin="15dp"
         android:text="確認發送"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/nest_blue_3"/>
-</LinearLayout>
+        android:background="@color/nest_yellow_2"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

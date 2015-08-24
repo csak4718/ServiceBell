@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
     <TextView
+        android:id="@+id/msg_holder"
         android:text="你的服務是什麼類型的呢？"
         android:textSize="20sp"
         android:layout_width="match_parent"
@@ -16,7 +17,8 @@
         android:layout_margin="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_below="@+id/msg_holder">
         <TextView
             android:text="服務名稱"
             android:textColor="@color/nest_blue_4"
@@ -50,8 +52,9 @@
         android:id="@+id/btn_next"
         android:layout_margin="15dp"
         android:text="下一步"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/nest_blue_3"/>
-</LinearLayout>
+        android:background="@color/nest_yellow_2"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>
