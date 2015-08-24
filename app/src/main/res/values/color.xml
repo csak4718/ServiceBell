@@ -37,8 +37,8 @@
     <color name="nest_blue_3">#4CCFE0</color>
     <color name="nest_blue_4">#00ABC0</color>
 
-    <color name="drawer_header">#4A4A4A</color>
-    <color name="drawer_content">#848484</color>
+    <color name="drawer_header">#848484</color>
+    <color name="drawer_content">#4A4A4A</color>
 
     <integer-array name="androidcolors">
         <item>@color/blue</item>
