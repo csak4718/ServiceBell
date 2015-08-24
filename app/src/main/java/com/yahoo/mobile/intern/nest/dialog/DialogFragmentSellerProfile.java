@@ -1,4 +1,4 @@
-package com.yahoo.mobile.intern.nest.fragment;
+package com.yahoo.mobile.intern.nest.dialog;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <TextView
+        android:text="你的服務是什麼類型的呢？"
+        android:textSize="20sp"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:gravity="center"
+        android:background="#EAEAEA"
+        />
+    <LinearLayout
+        android:layout_margin="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:text="服務名稱"
+            android:textColor="@color/nest_blue_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"/>
+        <EditText
+            android:id="@+id/edt_title"
+            android:hint="為你的服務撰寫一個標題"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/edt_round"
+            android:layout_marginBottom="10dp"/>
+        <TextView
+            android:text="服務內容說明"
+            android:textColor="@color/nest_blue_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"/>
+        <EditText
+            android:id="@+id/edt_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minLines="6"
+            android:gravity="top"
+            android:hint="你的服務包含什麼，ex：價格預算"
+            android:background="@drawable/edt_round"/>
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/btn_next"
+        android:layout_margin="15dp"
+        android:text="下一步"
+        android:textColor="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/nest_blue_3"/>
+</LinearLayout>

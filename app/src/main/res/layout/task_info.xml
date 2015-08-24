@@ -5,8 +5,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="20dp"
-    android:orientation="vertical">
-    <LinearLayout
+    android:orientation="vertical"
+    android:background="@android:color/white">
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical">
@@ -21,7 +22,19 @@
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:background="@android:color/transparent"/>
-    </LinearLayout>
+
+        <TextView
+            android:id="@+id/txt_status"
+            android:text="等待中"
+            android:textSize="17sp"
+            android:textColor="@color/nest_yellow_4"
+            android:background="@drawable/round_corner"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,10 +57,13 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/lt_addres"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:layout_marginTop="10dp">
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
         <ImageView
             android:scaleType="fitCenter"
             android:layout_width="18dp"
@@ -56,12 +72,15 @@
             android:layout_marginRight="10dp"/>
 
         <TextView
-            android:text="台北市大安區羅斯福路四段40號"
+            android:text=""
             android:id="@+id/txt_location"
             android:background="@android:color/transparent"
             android:textSize="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
+
+
     </LinearLayout>
 
     <LinearLayout

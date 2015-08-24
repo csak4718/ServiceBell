@@ -28,12 +28,19 @@
     <!-- ActionBar styles -->
     <style name="MyActionBar"
         parent="@style/Widget.AppCompat.Light.ActionBar">
-        <item name="android:background">@color/nest_yellow_1</item>
+        <item name="android:background">@color/nest_blue_3</item>
         <item name="android:textColorPrimary">@color/black</item>
 
         <!-- Support library compatibility -->
-        <item name="background">@color/nest_yellow_1</item>
+        <item name="background">@color/nest_blue_3</item>
         <item name="elevation">0dp</item>
+    </style>
+
+    <!-- Rating -->
+    <style name="myRatingBar" parent="@android:style/Widget.RatingBar">
+        <item name="android:progressDrawable">@drawable/my_ratingbar</item>
+        <item name="android:minHeight">23dip</item>
+        <item name="android:maxHeight">25dip</item>
     </style>
 
 </resources>

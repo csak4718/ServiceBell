@@ -10,16 +10,19 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.parse.DeleteCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.adapter.AcceptedUserAdapter;
+import com.yahoo.mobile.intern.nest.dialog.DeleteDialogFragment;
 import com.yahoo.mobile.intern.nest.event.AcceptedUserEvent;
-import com.yahoo.mobile.intern.nest.fragment.DialogFragmentSellerProfile;
+import com.yahoo.mobile.intern.nest.dialog.DialogFragmentSellerProfile;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 import com.yahoo.mobile.intern.nest.utils.Utils;
@@ -31,20 +34,27 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
-public class MyTaskActivity extends AppCompatActivity implements DialogFragmentSellerProfile.ProfileDialogListener {
+public class MyTaskActivity extends AppCompatActivity implements DialogFragmentSellerProfile.ProfileDialogListener, DeleteDialogFragment.DeleteDialogListener {
 
     private String taskId;
     private ParseObject mTask;
     private int mType;
+    private ParseGeoPoint mGeoPoint;
 
+    @Bind(R.id.txt_location) TextView txtAddress;
     @Bind(R.id.txt_title) TextView txtTitle;
     @Bind(R.id.txt_content) TextView txtContent;
     @Bind(R.id.list_view_accepted_seller)ExpandableHeightListView mListView;
     @Bind(R.id.txt_task_time) TextView txtTaskTime;
     @Bind(R.id.txt_remaining) TextView txtRemaining;
     @Bind(R.id.txt_status) TextView txtStatus;
+
+    @OnClick(R.id.lt_addres) void viewMap(){
+        Utils.gotoMapsActivityCurLocation(this, new LatLng(mGeoPoint.getLatitude(), mGeoPoint.getLongitude()));
+    }
 
     private AcceptedUserAdapter mAdapter;
     private List<ParseUser> mList;
@@ -67,6 +77,10 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
                     Date expire = task.getDate(Common.OBJECT_QUESTION_EXPIRE_DATE);
                     Date current = new Date();
                     txtRemaining.setText(Utils.getRemainingTime(current, expire));
+
+                    txtAddress.setText(task.getString(Common.OBJECT_QUESTION_ADDRESS));
+                    mGeoPoint = task.getParseGeoPoint(Common.OBJECT_QUESTION_PIN);
+
 
                     setupAcceptedSellers();
                     // task is not done
@@ -162,13 +176,8 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
             finish();
         }
         if(id == R.id.action_delete) {
-            mTask.deleteInBackground(new DeleteCallback() {
-                @Override
-                public void done(ParseException e) {
-                    Utils.showLoadingDialog(MyTaskActivity.this);
-                    finish();
-                }
-            });
+            DeleteDialogFragment df = new DeleteDialogFragment();
+            df.show(getSupportFragmentManager(),"DeleteDialog");
         }
 
         return super.onOptionsItemSelected(item);
@@ -190,5 +199,16 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
         returnIntent.putExtra("result",true);
         setResult(RESULT_OK,returnIntent);
         finish();
+    }
+
+    @Override
+    public void onFinishDeleteDialog(boolean i) {
+        mTask.deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                Utils.showLoadingDialog(MyTaskActivity.this);
+                finish();
+            }
+        });
     }
 }
