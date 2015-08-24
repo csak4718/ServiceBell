@@ -1,6 +1,7 @@
 package com.yahoo.mobile.intern.nest.activity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -28,6 +29,15 @@ import com.yahoo.mobile.intern.nest.event.RecipientEvent;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,11 +54,13 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
     private ParseUser currentUser;
     private ParseUser recipient;
     private String recipientObjectId;
+    private boolean afterLoadHistory = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.messaging);
+        afterLoadHistory = false;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         recipientNickname = (TextView) findViewById(R.id.recipient_nickname);
@@ -92,6 +104,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
                             mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_INCOMING, messageList.get(i).getDate("msgTimeStamp"), messageList.get(i).getString("senderId"), messageList.get(i).getString("messageId"));
                         }
                     }
+                    afterLoadHistory = true;
                 }
             }
         });
@@ -156,7 +169,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
 
     @Override
     public void onIncomingMessage(MessageClient client, Message message) {
-        if (message.getSenderId().equals(recipientObjectId)) {
+        if (message.getSenderId().equals(recipientObjectId) && afterLoadHistory) {
             WritableMessage writableMessage = new WritableMessage(message.getRecipientIds().get(0), message.getTextBody());
             mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_INCOMING, message.getTimestamp(), message.getSenderId(), message.getMessageId());
         }
@@ -194,6 +207,31 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
     @Override
     public void onShouldSendPushData(MessageClient client, Message message, List<PushPair> pushPairs) {
         // Left blank intentionally
+        final String regId = new String(pushPairs.get(0).getPushData());
+
+        class SendPushTask extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpPost httppost = new HttpPost("http://your-domain.com?reg_id=" + regId);
+
+                try {
+                    HttpResponse response = httpclient.execute(httppost);
+                    ResponseHandler<String> handler = new BasicResponseHandler();
+                    Log.d("HttpResponse", handler.handleResponse(response));
+                } catch (ClientProtocolException e) {
+                    Log.d("ClientProtocolException", e.toString());
+                } catch (IOException e) {
+                    Log.d("IOException", e.toString());
+                }
+
+                return null;
+            }
+
+        }
+
+        (new SendPushTask()).execute();
     }
 
     @Override
