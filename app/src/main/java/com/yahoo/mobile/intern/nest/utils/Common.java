@@ -30,6 +30,7 @@ public class Common {
     public final static String EXTRA_HAS_PIN = "given_pin";
     public final static String EXTRA_LAT = "lat";
     public final static String EXTRA_LONG = "long";
+    public final static String EXTRA_TYPE = "type";
 
     /*
      Parse object

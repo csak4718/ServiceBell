@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
@@ -52,6 +53,9 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
     @Bind(R.id.txt_remaining) TextView txtRemaining;
     @Bind(R.id.txt_status) TextView txtStatus;
     @Bind(R.id.txt_category) TextView txtCategory;
+
+    @Bind(R.id.new_task_section) ViewGroup newTaskSection;
+    @Bind(R.id.done_task_section) ViewGroup doneTaskSection;
 
     @OnClick(R.id.img_addres) void viewMap(){
         Utils.gotoMapsActivityCurLocation(this, new LatLng(mGeoPoint.getLatitude(), mGeoPoint.getLongitude()));
@@ -149,7 +153,7 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_my_task);
+        setContentView(R.layout.activity_my_new_task);
         ButterKnife.bind(this);
         mListView.setExpanded(true);
 
@@ -157,6 +161,13 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
         Utils.setBuyerColor(this);
 
         taskId = getIntent().getStringExtra(Common.EXTRA_TASK_ID);
+        mType = getIntent().getIntExtra(Common.EXTRA_TYPE, Common.BUYER_NEW);
+        if(mType == Common.BUYER_NEW) {
+            doneTaskSection.setVisibility(View.GONE);
+        }
+        if(mType == Common.BUYER_DONE) {
+            newTaskSection.setVisibility(View.GONE);
+        }
 
         setupTask();
     }

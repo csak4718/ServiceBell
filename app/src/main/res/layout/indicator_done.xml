@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp">
+        <ImageView
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/check"
+            android:layout_width="30dp"
+            android:layout_height="30dp" />
+        <TextView
+            android:text="成交"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:textColor="@color/nest_yellow_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+</merge>
