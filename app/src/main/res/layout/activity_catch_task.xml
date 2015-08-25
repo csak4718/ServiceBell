@@ -35,10 +35,14 @@
             android:layout_toRightOf="@id/img_user_pic"/>
 
         <RatingBar
+            android:scaleX=".8"
+            android:scaleY=".8"
+            android:transformPivotX="0dp"
+            android:transformPivotY="0dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/ratingBar"
-            style="?android:attr/ratingBarStyleSmall"
+            style="@style/myRatingBar"
             android:rating="5"
             android:layout_below="@+id/txt_name"
             android:layout_alignLeft="@+id/txt_name" />
