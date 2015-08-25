@@ -78,7 +78,7 @@ public class CatchTaskAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
         if(convertView == null) {
-            convertView = mInflater.inflate(R.layout.card_my_new_task, parent, false);
+            convertView = mInflater.inflate(R.layout.card_catch_new_task, parent, false);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         }

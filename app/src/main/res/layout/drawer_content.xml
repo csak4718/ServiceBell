@@ -16,7 +16,9 @@
         android:clickable="true"
         android:background="?android:attr/selectableItemBackground">
         <ImageView
-            android:src="@drawable/ic_location"
+            android:src="@drawable/find_service"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_width="25dp"
             android:layout_height="25dp"
             />
@@ -43,9 +45,11 @@
         android:clickable="true"
         android:background="?android:attr/selectableItemBackground">
         <ImageView
-            android:src="@drawable/ic_location"
+            android:src="@drawable/provide_service"
             android:layout_width="25dp"
             android:layout_height="25dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             />
         <TextView
             android:text="接服務"
@@ -70,9 +74,11 @@
         android:clickable="true"
         android:background="?android:attr/selectableItemBackground">
         <ImageView
-            android:src="@drawable/ic_location"
+            android:src="@drawable/setting"
             android:layout_width="25dp"
             android:layout_height="25dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             />
         <TextView
             android:text="設定"

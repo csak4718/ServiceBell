@@ -13,75 +13,58 @@
     android:background="@android:color/white"
     tools:context="com.yahoo.mobile.intern.nest.activity.CatchTaskActivity">
 
-    <include layout="@layout/task_info" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="#fff3f3f3"
-        android:gravity="center_vertical"
-        android:paddingLeft="10dp"
-        android:textColor="@android:color/black"
-        android:textStyle="bold"
-        android:text="誰需要這項服務"
-        android:textSize="20dp"/>
-
-
-
     <RelativeLayout
         android:id="@+id/rlayout_buyer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:padding="10dp">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_user_pic"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:src="@drawable/ic_account_circle_black_48dp" />
-        <LinearLayout
-            android:layout_marginLeft="10dp"
+        <TextView
+            android:id="@+id/txt_name"
+            tools:text="Emily"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center_vertical"
-            android:layout_toRightOf="@+id/img_user_pic"
-            android:id="@+id/linearLayout">
-            <TextView
-                android:id="@+id/txt_name"
-                android:text="Name"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_toRightOf="@id/img_user_pic"/>
 
-            <RatingBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ratingBar"
-                style="?android:attr/ratingBarStyleSmall"
-                android:rating="5"/>
-
-        </LinearLayout>
-
+        <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ratingBar"
+            style="?android:attr/ratingBarStyleSmall"
+            android:rating="5"
+            android:layout_below="@+id/txt_name"
+            android:layout_alignLeft="@+id/txt_name" />
     </RelativeLayout>
-
 
     <View
         android:layout_width="wrap_content"
+        android:layout_margin="10dp"
         android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
         android:layout_marginBottom="15dp"/>
 
+    <include layout="@layout/task_info" />
 
     <LinearLayout
         android:id="@+id/task_op_banner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
+        tools:visibility="visible"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_accept_task"
             android:layout_width="0dp"
-            android:layout_weight="3"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="我要提供服務"
@@ -93,7 +76,7 @@
         <Button
             android:id="@+id/btn_reject_task"
             android:layout_width="0dp"
-            android:layout_weight="2"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="無法提供服務"

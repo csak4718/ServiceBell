@@ -9,37 +9,83 @@
         android:id="@+id/map"
         tools:context="com.yahoo.mobile.intern.nest.activity.MapsActivity"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
-    
-    <SearchView
-        android:queryHint="@string/map_search_hint"
-        android:id="@+id/map_search_view"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:iconifiedByDefault="false"/>
-    
-    <Button
-        android:id="@+id/btn_ok"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:text="OK"
-        android:layout_gravity="bottom"/>
 
-    <ImageView
-        android:id="@+id/img_pin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:src="@drawable/dialog_community_pin"/>
 
-    <SeekBar
-        android:id="@+id/seekBar_radius"
-        android:max="10"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginBottom="70dp"
-        android:indeterminate="false"/>
-    
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/img_pin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:src="@drawable/dialog_community_pin"/>
+
+
+        <TextView
+                android:id="@+id/txt_address_above_pin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/img_pin"
+                android:layout_marginBottom="10dp"
+                android:layout_centerHorizontal="true"
+                android:background="@color/white"/>
+
+
+        <LinearLayout
+            android:id="@+id/layout_range_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/btn_ok"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="10dp"
+                    android:text="@string/map_range"/>
+
+                <TextView
+                    android:id="@+id/txt_radius"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:text="1 km"/>
+
+            </RelativeLayout>
+
+            <SeekBar
+                android:id="@+id/seekBar_radius"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:max="10"
+                android:indeterminate="false"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_ok"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="@string/map_ok"
+            android:layout_alignParentBottom="true"
+            android:textColor="@color/black"
+            android:background="@color/nest_yellow_1"
+            android:padding="10dp"
+            android:layout_margin="10dp"/>
+
+
+    </RelativeLayout>
 </FrameLayout>

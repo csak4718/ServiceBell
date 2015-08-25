@@ -6,7 +6,7 @@
     android:background="@android:color/white">
 
     <TextView
-        android:text="你的服務是什麼類型的呢？"
+        android:text="@string/add_choose_tag_welcome"
         android:textSize="20sp"
         android:layout_width="match_parent"
         android:layout_height="150dp"
@@ -18,6 +18,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="15dp"
         android:divider="@android:color/darker_gray"
         android:dividerHeight="1dp" />
 
