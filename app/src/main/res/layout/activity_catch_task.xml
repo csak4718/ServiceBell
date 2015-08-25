@@ -61,6 +61,7 @@
         android:id="@+id/new_task_op_banner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
         android:visibility="gone"
         tools:visibility="visible"
         android:orientation="horizontal">
@@ -94,6 +95,7 @@
         android:id="@+id/done_task_op_banner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
         android:visibility="gone"
         tools:visibility="visible"
         android:orientation="horizontal">

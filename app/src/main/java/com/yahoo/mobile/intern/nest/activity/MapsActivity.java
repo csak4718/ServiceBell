@@ -137,7 +137,7 @@ public class MapsActivity extends AppCompatActivity
 
     @OnClick(R.id.btn_ok)
     void btnOk() {
-        //LatLng position = new LatLng(mCurLocation.getLatitude(),mCurLocation.getLongitude());//mMap.getCameraPosition().target;
+        LatLng position = new LatLng(mCurLocation.getLatitude(),mCurLocation.getLongitude());//mMap.getCameraPosition().target;
         if(mShowRange){
             curUser.put(Common.OBJECT_USER_RADIUS, mRadius);
             curUser.put(Common.OBJECT_USER_ADDRESS, mAddress.getText());
@@ -164,6 +164,7 @@ public class MapsActivity extends AppCompatActivity
         else {
             Intent it = new Intent();
             it.putExtra(Common.EXTRA_ADDRESS, mSearchView.getQuery().toString());
+            it.putExtra(Common.EXTRA_LOCATION, position);
             setResult(RESULT_OK, it);
             finish();
         }

@@ -208,8 +208,6 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         mType = getIntent().getIntExtra(Common.EXTRA_STATE, Common.SELLER_NEW);
 
         setupLayoutForType();
-
-
         setupTask();
 
     }
