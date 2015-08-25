@@ -52,7 +52,7 @@ public class FragmentAddPreview extends Fragment {
         txtContent.setText(activity.content);
         txtAddress.setText(activity.address);
         txtTaskTime.setText(activity.time);
-        txtCategory.setText(activity.category);g
+        txtCategory.setText(activity.category);
 
         Date current = new Date();
         txtRemaining.setText(Utils.getRemainingTime(current, activity.expire));
