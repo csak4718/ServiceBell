@@ -15,11 +15,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseGeoPoint;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
@@ -101,9 +98,6 @@ public class ProfileSettingActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == Common.REQUEST_LOCATION) {
             if(resultCode == RESULT_OK) {
-                position = data.getParcelableExtra(Common.EXTRA_LOCATION);
-                mRadius  = data.getIntExtra(Common.EXTRA_RADIUS, 0);
-
                 mAddress = data.getStringExtra(Common.EXTRA_ADDRESS);
                 mAddressTextView.setText(mAddress);
 
@@ -136,24 +130,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
             return true;*/
         }
         if (id == android.R.id.home) {
-            ParseUser user = ParseUser.getCurrentUser();
-            if(position != null) {
-                ParseGeoPoint pin = new ParseGeoPoint(position.latitude, position.longitude);
-                user.put(Common.OBJECT_USER_PIN, pin);
-            }
-            if(mRadius != -1) {
-                user.put(Common.OBJECT_USER_RADIUS, mRadius);
-            }
-            if(mAddress != null) {
-                user.put(Common.OBJECT_USER_ADDRESS, mAddress);
-            }
-
-            user.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    finish();
-                }
-            });
+            finish();
         }
 
         return super.onOptionsItemSelected(item);
