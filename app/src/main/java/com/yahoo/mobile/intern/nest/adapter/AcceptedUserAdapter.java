@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.parse.GetDataCallback;
@@ -32,7 +33,7 @@ public class AcceptedUserAdapter extends BaseAdapter {
     private List<ParseUser> mList;
 
     static class ViewHolder {
-
+        @Bind(R.id.ratingBar) public RatingBar ratingBar;
         @Bind(R.id.img_pic) public CircleImageView imgPic;
         @Bind(R.id.txt_name) public TextView txtName;
 
@@ -91,6 +92,7 @@ public class AcceptedUserAdapter extends BaseAdapter {
 
         final ParseUser acceptedUser = mList.get(position);
         holder.txtName.setText(acceptedUser.getString(Common.OBJECT_USER_NICK));
+        holder.ratingBar.setRating(acceptedUser.getNumber(Common.OBJECT_USER_RATING).floatValue());
         displayUserParseImage(holder, acceptedUser);
 
         return convertView;
