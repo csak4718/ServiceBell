@@ -80,6 +80,7 @@ public class BSInfoSettingActivity extends AppCompatActivity {
 
         String[] category = {"居家清潔/整理","汽車保養/美容","美容/美甲","育兒服務","寵物服務","其他"};
         ArrayAdapter categoryList = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, category);
+        categoryList.setDropDownViewResource(R.layout.drop_down_item);
         mCategorySpinner.setAdapter(categoryList);
     }
 
