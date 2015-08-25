@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/ratingBar"
-            style="?android:attr/ratingBarStyleSmall"
+            style="@style/myRatingBar"
             android:rating="5"
             android:layout_below="@+id/txt_name"
             android:layout_alignLeft="@+id/txt_name" />
