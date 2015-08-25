@@ -12,9 +12,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 
 import com.parse.ParseFile;
 import com.parse.ParseUser;
@@ -23,7 +24,6 @@ import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.event.FbPictureEvent;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
-import com.yahoo.mobile.intern.nest.utils.Utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,19 +38,36 @@ import de.greenrobot.event.EventBus;
  */
 public class BSInfoSettingActivity extends AppCompatActivity {
     ParseUser user;
-    @Bind(R.id.btn_log_out)Button mBtnLogout;
+    //@Bind(R.id.btn_log_out)Button mBtnLogout;
     @Bind(R.id.edt_setting_nickname) EditText mEdtNickName;
     @Bind(R.id.edt_phone) EditText mEdtPhone;
-    @Bind(R.id.edt_address) EditText mEdtAddress;
+    //@Bind(R.id.edt_address) EditText mEdtAddress;
     @Bind(R.id.edt_others) EditText mEdtOthers;
     @Bind(R.id.img_profile_pic) ImageView mImgProfilePic;
+    @Bind(R.id.spinner_category) Spinner mCategorySpinner;
+
     Handler mHandler = new Handler();
 
+    /*
     @OnClick(R.id.btn_log_out) void setmBtnLogout(){
         ParseUser.getCurrentUser().logOut();
         Utils.gotoLoginActivity(this);
         finish();
+    }*/
+
+    @OnClick(R.id.btn_confirm) void setConfirm() {
+        final String nickName = mEdtNickName.getText().toString();
+        Bitmap profilePic = ((BitmapDrawable)mImgProfilePic.getDrawable()).getBitmap();
+        Map<String,String> profile = new HashMap<String,String>();
+        profile.put(Common.OBJECT_USER_NICK,mEdtNickName.getText().toString());
+        //profile.put(Common.OBJECT_USER_ADDRESS, mEdtAddress.getText().toString());
+        profile.put(Common.OBJECT_USER_PHONE ,mEdtPhone.getText().toString());
+        profile.put(Common.OBJECT_USER_OTHERS, mEdtOthers.getText().toString());
+        ParseUtils.updateUserProfile(profile, profilePic);
+        finish();
     }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +77,10 @@ public class BSInfoSettingActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         user = ParseUser.getCurrentUser();
         getProfile();
+
+        String[] category = {"居家清潔/整理","汽車保養/美容","美容/美甲","育兒服務","寵物服務","其他"};
+        ArrayAdapter categoryList = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, category);
+        mCategorySpinner.setAdapter(categoryList);
     }
 
     @Override
@@ -107,7 +128,7 @@ public class BSInfoSettingActivity extends AppCompatActivity {
             Bitmap profilePic = ((BitmapDrawable)mImgProfilePic.getDrawable()).getBitmap();
             Map<String,String> profile = new HashMap<String,String>();
             profile.put(Common.OBJECT_USER_NICK,mEdtNickName.getText().toString());
-            profile.put(Common.OBJECT_USER_ADDRESS, mEdtAddress.getText().toString());
+            //profile.put(Common.OBJECT_USER_ADDRESS, mEdtAddress.getText().toString());
             profile.put(Common.OBJECT_USER_PHONE ,mEdtPhone.getText().toString());
             profile.put(Common.OBJECT_USER_OTHERS, mEdtOthers.getText().toString());
             ParseUtils.updateUserProfile(profile, profilePic);
@@ -137,7 +158,7 @@ public class BSInfoSettingActivity extends AppCompatActivity {
             Picasso.with(this).load(imgUri.toString()).into(mImgProfilePic);
         }
         mEdtNickName.setText(nickName);
-        mEdtAddress.setText(address);
+        //mEdtAddress.setText(address);
         mEdtPhone.setText(phone);
         mEdtOthers.setText(others);
     }
