@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
 import com.parse.ParseFile;
+import com.parse.ParseInstallation;
 import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.fragment.FragmentTab;
@@ -150,6 +151,11 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.frame_content, fragmentTab)
                 .commit();
 
+
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.put("inMessagingActivity", false);
+        installation.put("user", ParseUser.getCurrentUser());
+        installation.saveInBackground();
     }
 
     @Override
