@@ -4,11 +4,13 @@ package com.yahoo.mobile.intern.nest.activity;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -58,7 +60,10 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     @Bind(R.id.txt_title) TextView txtTitle;
     @Bind(R.id.txt_content) TextView txtContent;
     @Bind(R.id.txt_location) TextView txtAddress;
-    @Bind(R.id.task_op_banner) LinearLayout taskOpBanner;
+
+    @Bind(R.id.new_task_op_banner) LinearLayout newTaskOpBanner;
+    @Bind(R.id.done_task_op_banner) ViewGroup doneTaskOpBanner;
+
     @Bind(R.id.btn_accept_task) Button btnAcceptTask;
     @Bind(R.id.btn_reject_task) Button btnRejectTask;
     @Bind(R.id.img_user_pic)CircleImageView imgUserPic;
@@ -97,7 +102,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
 
     @OnClick(R.id.btn_accept_task) void acceptTask() {
 
-        taskOpBanner.setVisibility(View.GONE);
+        newTaskOpBanner.setVisibility(View.GONE);
         Snackbar.make(findViewById(android.R.id.content), "你接了一個任務", Snackbar.LENGTH_LONG)
                 .show();
         ParseUser user = ParseUser.getCurrentUser();
@@ -175,13 +180,15 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     private void setupLayoutForType() {
         switch (mType) {
             case Common.SELLER_NEW:
-                taskOpBanner.setVisibility(View.VISIBLE);
+                newTaskOpBanner.setVisibility(View.VISIBLE);
                 txtStatus.setText("等待中");
                 break;
             case Common.SELLER_ACCEPTED:
+                doneTaskOpBanner.setVisibility(View.VISIBLE);
                 txtStatus.setText("洽談中");
                 break;
             case Common.SELLER_DONE:
+                doneTaskOpBanner.setVisibility(View.VISIBLE);
                 txtStatus.setText("已成交");
                 break;
         }

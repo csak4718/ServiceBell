@@ -3,14 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:clickable="true"
+    android:background="@android:color/white"
+    tools:context="com.yahoo.mobile.intern.nest.activity.MyTaskActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@android:color/white"
-        tools:context="com.yahoo.mobile.intern.nest.activity.MyTaskActivity">
+        >
 
         <RelativeLayout
             android:id="@+id/done_task_section"
@@ -26,7 +28,7 @@
             <LinearLayout
                 android:id="@+id/done_user"
                 android:layout_marginLeft="15dp"
-                android:layout_width="match_parent"
+                android:layout_width="210dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_gravity="center_vertical"
@@ -53,12 +55,26 @@
                     android:layout_height="wrap_content"/>
 
             </LinearLayout>
-            <include
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="vertical"
                 android:layout_toRightOf="@+id/done_user"
-                android:layout_alignParentTop="true"
-                layout="@layout/indicator_done" />
+                android:layout_margin="10dp">
+                <ImageView
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/check"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+                <TextView
+                    android:text="成交"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/nest_yellow_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
             <View
                 android:layout_marginTop="30dp"
                 android:layout_width="match_parent"
@@ -94,6 +110,37 @@
                 android:fadingEdge="none"
                 android:focusable="false"
                 android:scrollbars="none"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/done_task_section2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_chat"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="洽談細節"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/nest_yellow_1"
+                android:textColor="@android:color/black"
+                android:layout_margin="5dp"/>
+
+            <Button
+                android:id="@+id/btn_rate"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="給他評分"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/nest_yellow_1"
+                android:textColor="@android:color/black"
+                android:layout_margin="5dp"/>
+
         </LinearLayout>
 
     </LinearLayout>
