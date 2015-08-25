@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -27,6 +28,7 @@ import com.yahoo.mobile.intern.nest.adapter.MessageAdapter;
 import com.yahoo.mobile.intern.nest.event.RecipientEvent;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
+
 
 import java.util.Arrays;
 import java.util.List;
@@ -44,11 +46,13 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
     private ParseUser currentUser;
     private ParseUser recipient;
     private String recipientObjectId;
+    private boolean afterLoadHistory = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.messaging);
+        afterLoadHistory = false;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         recipientNickname = (TextView) findViewById(R.id.recipient_nickname);
@@ -92,6 +96,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
                             mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_INCOMING, messageList.get(i).getDate("msgTimeStamp"), messageList.get(i).getString("senderId"), messageList.get(i).getString("messageId"));
                         }
                     }
+                    afterLoadHistory = true;
                 }
             }
         });
@@ -99,12 +104,38 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
 
     @Override
     public void onStart() {
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.put("inMessagingActivity", true);
+        installation.saveInBackground();
+
         EventBus.getDefault().register(this);
         super.onStart();
     }
 
     @Override
+    public void onResume() {
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.put("inMessagingActivity", true);
+        installation.saveInBackground();
+
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.put("inMessagingActivity", false);
+        installation.saveInBackground();
+
+        super.onPause();
+    }
+
+    @Override
     public void onStop() {
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.put("inMessagingActivity", false);
+        installation.saveInBackground();
+
         EventBus.getDefault().unregister(this);
         super.onStop();
     }
@@ -116,6 +147,10 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
 
     @Override
     public void onDestroy() {
+        ParseInstallation installation = ParseInstallation.getCurrentInstallation();
+        installation.put("inMessagingActivity", false);
+        installation.saveInBackground();
+
         if (getSinchServiceInterface() != null) {
             getSinchServiceInterface().removeMessageClientListener(this);
             getSinchServiceInterface().stopClient();
@@ -156,7 +191,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
 
     @Override
     public void onIncomingMessage(MessageClient client, Message message) {
-        if (message.getSenderId().equals(recipientObjectId)) {
+        if (message.getSenderId().equals(recipientObjectId) && afterLoadHistory) {
             WritableMessage writableMessage = new WritableMessage(message.getRecipientIds().get(0), message.getTextBody());
             mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_INCOMING, message.getTimestamp(), message.getSenderId(), message.getMessageId());
         }
@@ -182,6 +217,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
                         msg.put("msgTimeStamp", message.getTimestamp());
                         msg.saveInBackground();
 
+                        ParseUtils.instantMessageNotification(currentUser, recipient);
                         mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_OUTGOING, message.getTimestamp(), currentUser.getObjectId(), message.getMessageId());
                     }
                 }

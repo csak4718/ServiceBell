@@ -108,7 +108,6 @@ public class SinchService extends Service {
 
             mSinchClient.setSupportMessaging(true);
             mSinchClient.startListeningOnActiveConnection();
-
             mSinchClient.addSinchClientListener(new MySinchClientListener());
             mSinchClient.start();
         }

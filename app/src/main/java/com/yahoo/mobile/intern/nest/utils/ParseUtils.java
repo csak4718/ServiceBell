@@ -162,6 +162,13 @@ public class ParseUtils {
 
     }
 
+    static public void instantMessageNotification(ParseUser sender, ParseUser recipient){
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("senderId", sender.getObjectId());
+        params.put("recipientId", recipient.getObjectId());
+        ParseCloud.callFunctionInBackground("instantMessageNotification", params);
+    }
+
 //    TODO: lastest friend at first row
     static public void getFriends(ParseUser currentUser){
         ParseRelation<ParseUser> friends = currentUser.getRelation(Common.OBJECT_USER_FRIENDS);
