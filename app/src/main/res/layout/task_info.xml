@@ -2,6 +2,7 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="20dp"
@@ -13,10 +14,10 @@
         android:gravity="center_vertical">
 
         <TextView
-            android:text="Title"
+            tools:text="洗車子"
             android:textStyle="bold"
             android:textColor="@android:color/black"
-            android:textSize="20sp"
+            android:textSize="22sp"
             android:id="@+id/txt_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,7 +28,7 @@
             android:id="@+id/txt_status"
             android:text="等待中"
             android:textSize="17sp"
-            android:textColor="@color/nest_yellow_4"
+            android:textColor="@color/dark_gray"
             android:background="@drawable/round_corner"
             android:gravity="center"
             android:layout_width="wrap_content"
@@ -43,13 +44,13 @@
         android:layout_marginTop="10dp">
         <ImageView
             android:scaleType="fitCenter"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:src="@drawable/ic_like"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/title"
             android:layout_marginRight="10dp"/>
         <TextView
-            android:text=""
-            android:textSize="20dp"
+            tools:text="需要洗全車，還有基本打蠟"
+            android:textSize="18sp"
             android:id="@+id/txt_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,7 +58,6 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/lt_addres"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
@@ -66,20 +66,27 @@
 
         <ImageView
             android:scaleType="fitCenter"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:src="@drawable/pin"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/place"
             android:layout_marginRight="10dp"/>
 
         <TextView
-            android:text=""
+            tools:text="台北市大安區羅斯福路四段40號"
             android:id="@+id/txt_location"
             android:background="@android:color/transparent"
-            android:textSize="20dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:textSize="18sp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
 
-
+        <ImageView
+            android:id="@+id/img_addres"
+            android:scaleType="fitCenter"
+            android:layout_marginLeft="10dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/map"/>
 
     </LinearLayout>
 
@@ -91,14 +98,15 @@
         android:layout_marginTop="10dp">
         <ImageView
             android:scaleType="fitCenter"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:src="@drawable/pin"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/calendar"
             android:layout_marginRight="10dp"/>
 
         <TextView
+            tools:text="8月29日 上午"
             android:id="@+id/txt_task_time"
-            android:textSize="20dp"
+            android:textSize="18sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
     </LinearLayout>
@@ -110,17 +118,41 @@
         android:layout_marginTop="10dp">
         <ImageView
             android:scaleType="fitCenter"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:src="@drawable/pin"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/time"
             android:layout_marginRight="10dp"/>
 
         <TextView
+            tools:text="三小時15分"
             android:id="@+id/txt_remaining"
             android:background="@android:color/transparent"
-            android:textSize="20dp"
+            android:textSize="18sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_marginTop="10dp">
+        <ImageView
+            android:scaleType="fitCenter"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/label"
+            android:layout_marginRight="10dp"/>
+
+        <TextView
+            tools:text="水電"
+            android:id="@+id/txt_category"
+            android:background="@android:color/transparent"
+            android:textSize="18sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
 
 </LinearLayout>

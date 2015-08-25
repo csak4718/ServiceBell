@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.yahoo.mobile.intern.nest.R;
@@ -32,6 +31,7 @@ public class FragmentAddPreview extends Fragment {
     @Bind(R.id.txt_location) TextView txtAddress;
     @Bind(R.id.txt_task_time) TextView txtTaskTime;
     @Bind(R.id.txt_remaining) TextView txtRemaining;
+    @Bind(R.id.txt_category) TextView txtCategory;
 
     @OnClick(R.id.btn_confirm) void onClickConfirm() {
         activity.addTask();
@@ -52,6 +52,7 @@ public class FragmentAddPreview extends Fragment {
         txtContent.setText(activity.content);
         txtAddress.setText(activity.address);
         txtTaskTime.setText(activity.time);
+        txtCategory.setText(activity.category);g
 
         Date current = new Date();
         txtRemaining.setText(Utils.getRemainingTime(current, activity.expire));

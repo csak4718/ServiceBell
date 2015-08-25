@@ -54,7 +54,7 @@
                     android:layout_gravity="center_vertical|left"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_marginBottom="10dp"
-                    android:text="Name" />
+                    android:text="@string/info_setting_name" />
                 <EditText
                     android:id="@+id/edt_setting_nickname"
                     android:singleLine="true"
@@ -73,7 +73,7 @@
                     android:layout_gravity="center_vertical|left"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_marginBottom="10dp"
-                    android:text="Phone" />
+                    android:text="@string/info_setting_phone" />
                 <EditText
                     android:id="@+id/edt_phone"
                     android:singleLine="true"
@@ -85,6 +85,7 @@
                     android:padding="5dp"
                     android:text="Fan Fan"
                     android:hint="" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -94,7 +95,6 @@
                     android:text="Address" />
                 <EditText
                     android:id="@+id/edt_address"
-
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@android:color/white"
@@ -103,13 +103,14 @@
                     android:padding="5dp"
                     android:text="Fan Fan"
                     android:hint="" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|left"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_marginBottom="10dp"
-                    android:text="Others" />
+                    android:text="@string/info_setting_intro" />
                 <EditText
                     android:id="@+id/edt_others"
                     android:layout_width="match_parent"
@@ -120,6 +121,20 @@
                     android:padding="5dp"
                     android:text="Fan Fan"
                     android:hint="" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|left"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/info_setting_cat"/>
+                <Spinner
+                    android:id="@+id/spinner_category"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
                 <Button
                     android:id="@+id/btn_log_out"
                     android:text="LOGOUT"

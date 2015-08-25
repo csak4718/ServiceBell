@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
 
     <TextView
-        android:text="設定服務資訊，完成後就可以發布了囉！"
+        android:text="@string/add_location_date"
+        android:id="@+id/msg_holder"
         android:textSize="20sp"
         android:layout_width="match_parent"
         android:layout_height="150dp"
@@ -19,10 +20,11 @@
         android:layout_margin="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/msg_holder"
         android:clickable="true"
         android:background="?android:attr/selectableItemBackground">
         <ImageView
-            android:src="@drawable/ic_location"
+            android:src="@drawable/place_blue"
             android:layout_marginRight="10dp"
             android:layout_width="30dp"
             android:layout_height="30dp" />
@@ -43,15 +45,25 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
+
+    <View
+        android:id="@+id/divider1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@+id/btn_set_location"
+        />
+
     <LinearLayout
         android:id="@+id/btn_set_time"
         android:layout_margin="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/divider1"
         android:clickable="true"
         android:background="?android:attr/selectableItemBackground">
         <ImageView
-            android:src="@drawable/ic_location"
+            android:src="@drawable/calendar_blue"
             android:layout_marginRight="10dp"
             android:layout_width="30dp"
             android:layout_height="30dp" />
@@ -71,15 +83,23 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@+id/btn_set_time"
+        />
     <LinearLayout
         android:id="@+id/btn_set_expiretime"
+        android:layout_below="@+id/divider2"
         android:layout_margin="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:background="?android:attr/selectableItemBackground">
         <ImageView
-            android:src="@drawable/ic_location"
+            android:src="@drawable/time_blue"
             android:layout_marginRight="10dp"
             android:layout_width="30dp"
             android:layout_height="30dp" />
@@ -98,13 +118,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
+
     </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"
+        android:layout_below="@+id/btn_set_expiretime"
+        />
     <Button
         android:id="@+id/btn_preview"
         android:layout_margin="15dp"
         android:text="預覽服務"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/nest_blue_3"/>
-</LinearLayout>
+        android:background="@color/nest_yellow_2"
+        android:layout_alignParentBottom="true"/>
+</RelativeLayout>

@@ -28,6 +28,7 @@ public class AddTaskActivity extends AppCompatActivity {
     /*
        task info
      */
+    public String category;
     public String title;
     public String content;
     public int mYear, mMonth, mDay;
@@ -78,6 +79,7 @@ public class AddTaskActivity extends AppCompatActivity {
         task.put(Common.OBJECT_QUESTION_TIME, time);
         task.put(Common.OBJECT_QUESTION_EXPIRE_DATE, date);
         task.put(Common.OBJECT_QUESTION_ADDRESS, address);
+        task.put(Common.OBJECT_QUESTION_CATEGORY, category);
 
         task.saveInBackground(new SaveCallback() {
             @Override

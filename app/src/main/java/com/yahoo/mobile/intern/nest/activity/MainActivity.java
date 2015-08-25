@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.melnykov.fab.FloatingActionButton;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     /*
      DrawerLayout
      */
-    @Bind(R.id.navigation_view) NavigationView navigationView;
+    @Bind(R.id.navigation_view) LinearLayout navigationView;
     @Bind(R.id.drawer_layout) DrawerLayout mDrawerLayout;
     @Bind(R.id.btn_add_post) FloatingActionButton btnAddPost;
     @Bind(R.id.drawer_img_profile) CircleImageView imgProfile;
@@ -51,46 +52,30 @@ public class MainActivity extends AppCompatActivity {
     FragmentTab fragmentTab;
 
 
+    @OnClick(R.id.btn_find_service) void findService() {
+        mActionBar.setTitle("找服務");
+        Utils.setBuyerColor(MainActivity.this);
+        fragmentTab.switchTab(R.id.menu_my_task);
+        btnAddPost.setVisibility(View.VISIBLE);
+        mDrawerLayout.closeDrawers();
+    }
+    @OnClick(R.id.btn_get_service) void getService() {
+        mActionBar.setTitle("接服務");
+        Utils.setSellerColor(MainActivity.this);
+        fragmentTab.switchTab(R.id.menu_catch_task);
+        btnAddPost.setVisibility(View.GONE);
+        mDrawerLayout.closeDrawers();
+    }
+    @OnClick(R.id.btn_setting) void goSetting() {
+        Utils.gotoProfileSettingActivity(MainActivity.this);
+        mDrawerLayout.closeDrawers();
+    }
+
     private void setupDrawer() {
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
                             R.string.app_name,
                             R.string.app_name);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                int id = menuItem.getItemId();
-                switch (id) {
-                    case R.id.menu_my_task:
-                        mActionBar.setTitle("找服務");
-                        Utils.setBuyerColor(MainActivity.this);
-                        fragmentTab.switchTab(id);
-                        btnAddPost.setVisibility(View.VISIBLE);
-                        break;
-                    case R.id.menu_catch_task:
-                        if (ParseUtils.isSellerNetSeted()) {
-                            mActionBar.setTitle("找服務");
-                            Utils.setSellerColor(MainActivity.this);
-                            fragmentTab.switchTab(id);
-                            btnAddPost.setVisibility(View.GONE);
-                        }
-                        else {
-                            Utils.gotoProfileSettingActivity(MainActivity.this);
-                        }
-                        break;
-                    case R.id.menu_instant_message:
-                        Utils.gotoIMListActivity(MainActivity.this);
-                        btnAddPost.setVisibility(View.GONE);
-                        break;
-                    case R.id.menu_settings:
-                        Utils.gotoProfileSettingActivity(MainActivity.this);
-                        btnAddPost.setVisibility(View.GONE);
-                        break;
-                }
-                mDrawerLayout.closeDrawers();
-                return true;
-            }
-        });
 
         /*
          setup header layout

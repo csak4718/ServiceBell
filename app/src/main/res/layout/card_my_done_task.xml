@@ -2,6 +2,7 @@
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="10dp"
@@ -10,18 +11,28 @@
     app:cardCornerRadius="0dp">
 
     <RelativeLayout
+        android:layout_margin="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF">
+        
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/img_pic"
+            tools:src="@drawable/place"
+            android:layout_centerVertical="true"
+            android:layout_width="60dp"
+            android:layout_height="60dp" />
+        
+        <LinearLayout
+            android:layout_toRightOf="@+id/img_pic"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:orientation="vertical"
-            android:background="#FFFFFF"
-            android:layout_alignParentLeft="true">
-
+            android:orientation="vertical">
+            
             <TextView
                 android:id="@+id/txt_title"
-                android:text="title"
+                tools:text="洗車子"
                 android:layout_marginBottom="8dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/black"
@@ -29,35 +40,38 @@
                 android:layout_height="wrap_content" />
             <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
                 <ImageView
-                    android:src="@drawable/ic_cast_light"
+                    android:src="@drawable/calendar"
                     android:layout_marginRight="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
                 <TextView
                     android:id="@+id/txt_time"
-                    android:text="8月29日 上午"
+                    tools:text="8月29日 上午"
                     android:layout_margin="2dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
             <LinearLayout
+                android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
                 <ImageView
-                    android:src="@drawable/ic_cast_light"
+                    android:src="@drawable/people"
                     android:layout_marginRight="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
                 <TextView
                     android:id="@+id/txt_seller_name"
-                    android:text=""
+                    tools:text="美美"
                     android:layout_marginLeft="2dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
                 <TextView
-                    android:text=" 接受任務"
+                    android:text=" 為你服務"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -67,20 +81,20 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true">
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp">
             <ImageView
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_done_black_24dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:src="@drawable/check"
+                android:layout_width="30dp"
+                android:layout_height="30dp" />
             <TextView
                 android:text="成交"
-                android:textSize="15sp"
+                android:textSize="17sp"
                 android:textStyle="bold"
                 android:textColor="@color/nest_yellow_4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
                 />
         </LinearLayout>
 

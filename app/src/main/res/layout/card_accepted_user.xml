@@ -30,13 +30,13 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
+            <!--style="?android:attr/ratingBarStyleSmall"-->
             <RatingBar
                 android:id="@+id/ratingBar"
-                style="?android:attr/ratingBarStyleSmall"
-                android:rating="5"
+                style="@style/myRatingBar"
+                android:rating="3"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content"/>
 
         </LinearLayout>
 

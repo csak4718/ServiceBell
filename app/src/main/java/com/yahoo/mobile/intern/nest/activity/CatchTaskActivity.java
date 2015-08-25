@@ -65,15 +65,16 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     @Bind(R.id.txt_name) TextView txtUserName;
     @Bind(R.id.txt_task_time) TextView txtTaskTime;
     @Bind(R.id.txt_remaining) TextView txtRemaining;
+    @Bind(R.id.txt_category) TextView txtCategory;
 
 
-    @OnClick(R.id.lt_addres) void viewMap(){
+    @OnClick(R.id.img_addres) void viewMap(){
         Utils.gotoMapsActivityCurLocation(this, new LatLng(mGeoPoint.getLatitude(), mGeoPoint.getLongitude()));
     }
 
 
     @OnClick(R.id.rlayout_buyer) void buyerProfile(){
-        DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(CatchTaskActivity.this, buyer,false,true);
+        DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(CatchTaskActivity.this,buyer,mType);
         dfsp.show(getSupportFragmentManager(),"buyerInfo");
     }
 
@@ -147,18 +148,19 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
                 buyer.fetchInBackground(new GetCallback<ParseUser>() {
                     @Override
                     public void done(ParseUser buyer, ParseException e) {
-                        if(e == null) {
+                        if (e == null) {
                             setupBuyerProfile(buyer);
                         }
                     }
                 });
                 String title = task.getString(Common.OBJECT_QUESTION_TITLE);
                 String content = task.getString(Common.OBJECT_QUESTION_CONTENT);
+                String category = task.getString(Common.OBJECT_QUESTION_CATEGORY);
 
                 txtTaskTime.setText(task.getString(Common.OBJECT_QUESTION_TIME));
-
                 txtTitle.setText(title);
                 txtContent.setText(content);
+                txtCategory.setText(category);
 
                 Date expire = task.getDate(Common.OBJECT_QUESTION_EXPIRE_DATE);
                 Date current = new Date();

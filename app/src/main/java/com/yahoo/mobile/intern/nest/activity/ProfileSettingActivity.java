@@ -40,6 +40,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
     private int mRadius;
     private LatLng position;
     private String mAddress;
+    //private String[] serviceCategory = {"水電","美容","打砸"};
 
     @Bind(R.id.swtich_task) Switch mSwitch;
     @Bind(R.id.img_map) ImageView mImgMap;
@@ -67,6 +68,10 @@ public class ProfileSettingActivity extends AppCompatActivity {
         mAddress = user.getString(Common.OBJECT_USER_ADDRESS);
         if(mAddress != null)
             mAddressTextView.setText(mAddress+mRadius);
+
+
+       // ArrayAdapter<String> lunchList = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, serviceCategory);
+        //mCategorySpinner.setAdapter(lunchList);
 
     }
     @OnCheckedChanged(R.id.swtich_task) void setSwitch(CompoundButton buttonView, boolean isChecked) {
@@ -156,6 +161,10 @@ public class ProfileSettingActivity extends AppCompatActivity {
 
     public void loadedMapImg(){
         ParseFile imgFile = ParseUser.getCurrentUser().getParseFile(Common.OBJECT_USER_MAP_PIC);
+        if(imgFile == null)
+            mImgMap.setVisibility(View.GONE);
+        else
+            mImgMap.setVisibility(View.VISIBLE);
         ParseUtils.displayUserMap(imgFile, mImgMap);
     }
 
