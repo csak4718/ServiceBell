@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,10 +57,11 @@ public class DialogFragmentSellerProfile extends DialogFragment implements Sinch
     @Bind(R.id.btn_divider)View divider;
     @Bind(R.id.btn_confirm)Button btnConfirm;
     @Bind(R.id.linear_btn)LinearLayout linearBtn;
+    @Bind(R.id.ratingBar)RatingBar ratingBar;
 
     @OnClick(R.id.btn_confirm) void confirm(){
-        ProfileDialogListener activity = (ProfileDialogListener) getActivity();
-        activity.onFinishProfileDialog("Confirm", user);
+        ConfirmDialog cd = ConfirmDialog.newInstance(txtName.getText().toString(),mImgProfilePic.getDrawable(),ratingBar.getRating(),user);
+        cd.show(getFragmentManager(),"123");
         this.dismiss();
     }
 
@@ -67,9 +69,6 @@ public class DialogFragmentSellerProfile extends DialogFragment implements Sinch
         btnToMessagingClicked();
     }
 
-    public interface ProfileDialogListener {
-        void onFinishProfileDialog(String inputText, ParseUser seller);
-    }
 
     public static DialogFragmentSellerProfile newInstance(Activity activity, ParseUser user,int type){
         DialogFragmentSellerProfile dfsp = new DialogFragmentSellerProfile();
@@ -111,6 +110,7 @@ public class DialogFragmentSellerProfile extends DialogFragment implements Sinch
         if (address == null || address.equals("")) {txtAdd.setVisibility(View.GONE);}else{txtAdd.setText(address);}
         if (phone == null || phone.equals("")) {txtPhone.setVisibility(View.GONE);}else{txtPhone.setText(phone);}
         if (others == null || others.equals("")){txtOthers.setVisibility(View.GONE);}else{txtOthers.setText(others);}
+        ratingBar.setRating(user.getNumber(Common.OBJECT_USER_RATING).floatValue());
     }
     public void setupButton(){
 
@@ -125,7 +125,7 @@ public class DialogFragmentSellerProfile extends DialogFragment implements Sinch
         disableButton();
     }
     public void disableButton(){
-        if(type==Common.SELLER_NEW){
+        if(type==Common.SELLER_NEW||type==Common.SELLER_ACCEPTED||type==Common.SELLER_ACCEPTED){
             linearBtn.setVisibility(View.GONE);
         }
     }
