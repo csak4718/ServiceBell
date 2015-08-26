@@ -235,6 +235,9 @@ public class ParseUtils {
                 if (profile.containsKey(Common.OBJECT_USER_OTHERS)) {
                     user.put(Common.OBJECT_USER_OTHERS, profile.get(Common.OBJECT_USER_OTHERS));
                 }
+                if (profile.containsKey(Common.OBJECT_USER_CATEGORY)){
+                    user.put(Common.OBJECT_USER_CATEGORY, profile.get(Common.OBJECT_USER_CATEGORY));
+                }
                 user.put(Common.OBJECT_USER_PROFILE_PIC, imgFile);
                 user.saveInBackground();
             }

@@ -51,6 +51,7 @@ public class Common {
     public final static String OBJECT_USER_DONE_QUESTIONS = "doneQuestions";
     public final static String OBJECT_USER_PHONE = "phone";
     public final static String OBJECT_USER_ADDRESS = "address";
+    public final static String OBJECT_USER_CATEGORY = "category";
     public final static String OBJECT_USER_OTHERS = "others";
     public final static String OBJECT_USER_MAP_PIC = "map_pic";
     public final static String OBJECT_USER_ACCEPT="acceptTask";

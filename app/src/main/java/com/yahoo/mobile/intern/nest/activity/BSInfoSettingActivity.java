@@ -28,6 +28,7 @@ import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,11 +67,12 @@ public class BSInfoSettingActivity extends AppCompatActivity {
         Bitmap profilePic = ((BitmapDrawable)mImgProfilePic.getDrawable()).getBitmap();
         Map<String,String> profile = new HashMap<String,String>();
         profile.put(Common.OBJECT_USER_NICK,mEdtNickName.getText().toString());
-        //profile.put(Common.OBJECT_USER_ADDRESS, mEdtAddress.getText().toString());
-        profile.put(Common.OBJECT_USER_PHONE ,mEdtPhone.getText().toString());
+        profile.put(Common.OBJECT_USER_CATEGORY, mCategory.get(mCategorySpinner.getSelectedItemPosition()).getString(Common.OBJECT_CATEGORY_TITLE));
+        profile.put(Common.OBJECT_USER_PHONE, mEdtPhone.getText().toString());
         profile.put(Common.OBJECT_USER_OTHERS, mEdtOthers.getText().toString());
         ParseUtils.updateUserProfile(profile, profilePic);
         finish();
+        return;
     }
 
     @Override
@@ -129,6 +131,11 @@ public class BSInfoSettingActivity extends AppCompatActivity {
         ArrayAdapter categoryList = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mCategoryStringList);
         categoryList.setDropDownViewResource(R.layout.drop_down_item);
         mCategorySpinner.setAdapter(categoryList);
+
+        ParseUser curUser = ParseUser.getCurrentUser();
+        int location = Arrays.asList(mCategoryStringList).indexOf(curUser.getString(Common.OBJECT_USER_CATEGORY));
+        if(location != -1)
+            mCategorySpinner.setSelection(location);
     }
 
     @Override
@@ -138,19 +145,6 @@ public class BSInfoSettingActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_done) {
-            final String nickName = mEdtNickName.getText().toString();
-            Bitmap profilePic = ((BitmapDrawable)mImgProfilePic.getDrawable()).getBitmap();
-            Map<String,String> profile = new HashMap<String,String>();
-            profile.put(Common.OBJECT_USER_NICK,mEdtNickName.getText().toString());
-            //profile.put(Common.OBJECT_USER_ADDRESS, mEdtAddress.getText().toString());
-            profile.put(Common.OBJECT_USER_PHONE ,mEdtPhone.getText().toString());
-            profile.put(Common.OBJECT_USER_OTHERS, mEdtOthers.getText().toString());
-            ParseUtils.updateUserProfile(profile, profilePic);
-            finish();
-            return true;
-        }
         if (id == android.R.id.home) {
             finish();
             return true;
@@ -167,7 +161,6 @@ public class BSInfoSettingActivity extends AppCompatActivity {
         others = user.getString(Common.OBJECT_USER_OTHERS);
 
         ParseFile imgFile = user.getParseFile(Common.OBJECT_USER_PROFILE_PIC);
-        Log.d("parse imgfile url", imgFile.getUrl());
         Uri imgUri = Uri.parse(imgFile.getUrl());
 
         if(mImgProfilePic != null) {
