@@ -16,6 +16,9 @@ public class Common {
     public final static int SELLER_ACCEPTED = 3;
     public final static int SELLER_DONE = 4;
 
+    public static final int CAMERA_REQUEST = 12345;
+    public static final int ACTIVITY_SELECT_IMAGE = 1234;
+
     public final static int REQUEST_MY_TASK = 4444;
     public final static int REQUEST_CATCH_TASK = 4445;
 
@@ -69,6 +72,7 @@ public class Common {
     public final static String OBJECT_QUESTION_ACCEPTED_USER = "acceptedUser";
     public final static String OBJECT_QUESTION_DONE_USER = "doneUser";
     public final static String OBJECT_QUESTION_CATEGORY = "category";
+    public final static String OBJECT_QUESTION_PICTURE = "picture";
 
     public final static String OBJECT_CATEGORY = "Category";
     public final static String OBJECT_CATEGORY_TITLE = "title";
