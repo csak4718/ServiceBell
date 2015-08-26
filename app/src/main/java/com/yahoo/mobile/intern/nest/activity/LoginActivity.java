@@ -68,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                             } else {
                                 Log.d("MyApp", "User logged in through Facebook!");
                                 Utils.gotoMainActivity(LoginActivity.this);
+                                finish();
                             }
 
                         }
@@ -132,6 +133,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         getSupportActionBar().hide();
+        Utils.setStatusBarColor(this, getResources().getColor(R.color.nest_blue_4));
 
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
@@ -148,6 +150,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     Utils.gotoMainActivity(LoginActivity.this);
+                    finish();
                 }
             }, 700);
         }

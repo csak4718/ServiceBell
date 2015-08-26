@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<RelativeLayout
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
+
 
     <TextView
         android:id="@+id/msg_holder"
@@ -46,15 +51,14 @@
             android:gravity="top"
             android:hint="你的服務包含什麼，ex：價格預算"
             android:background="@drawable/edt_round"/>
-
+        <Button
+            android:id="@+id/btn_next"
+            android:text="下一步"
+            android:textColor="@android:color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:background="@color/nest_yellow_2"/>
     </LinearLayout>
-    <Button
-        android:id="@+id/btn_next"
-        android:layout_margin="15dp"
-        android:text="下一步"
-        android:textColor="@android:color/black"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/nest_yellow_2"
-        android:layout_alignParentBottom="true"/>
 </RelativeLayout>
+</ScrollView>

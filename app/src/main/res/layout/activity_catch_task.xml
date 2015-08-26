@@ -58,9 +58,10 @@
     <include layout="@layout/task_info" />
 
     <LinearLayout
-        android:id="@+id/task_op_banner"
+        android:id="@+id/new_task_op_banner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
         android:visibility="gone"
         tools:visibility="visible"
         android:orientation="horizontal">
@@ -74,7 +75,7 @@
             android:text="我要提供服務"
             android:layout_gravity="center_horizontal"
             android:background="@color/nest_blue_1"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
             android:layout_margin="5dp"/>
 
         <Button
@@ -86,7 +87,41 @@
             android:text="無法提供服務"
             android:layout_gravity="center_horizontal"
             android:background="@color/nest_blue_1"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/black"
+            android:layout_margin="5dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/done_task_op_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="60dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_chat"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="洽談細節"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/nest_blue_1"
+            android:textColor="@android:color/black"
+            android:layout_margin="5dp"/>
+
+        <Button
+            android:id="@+id/btn_chat_cancel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="取消洽談"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/nest_blue_1"
+            android:textColor="@android:color/black"
             android:layout_margin="5dp"/>
     </LinearLayout>
 

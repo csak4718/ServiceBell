@@ -134,7 +134,7 @@ public class FragmentBuyerTask extends FragmentTask {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ParseObject task = (ParseObject) mAdapter.getItem(position);
-                Utils.gotoMyTaskActivity(getActivity(), task.getObjectId());
+                Utils.gotoMyTaskActivity(getActivity(), task.getObjectId(), mType);
             }
         });
         getNewData();

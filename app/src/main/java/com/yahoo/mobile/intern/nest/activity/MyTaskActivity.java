@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.parse.DeleteCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -37,6 +39,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.ConfirmDialogListener, DeleteDialogFragment.DeleteDialogListener {
 
@@ -44,6 +47,11 @@ public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.C
     private ParseObject mTask;
     private int mType;
     private ParseGeoPoint mGeoPoint;
+
+    private ParseUser doneUser;
+
+    private AcceptedUserAdapter mAdapter;
+    private List<ParseUser> mList;
 
     @Bind(R.id.txt_location) TextView txtAddress;
     @Bind(R.id.txt_title) TextView txtTitle;
@@ -54,12 +62,32 @@ public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.C
     @Bind(R.id.txt_status) TextView txtStatus;
     @Bind(R.id.txt_category) TextView txtCategory;
 
-    @OnClick(R.id.img_addres) void viewMap(){
+    @Bind(R.id.new_task_section) ViewGroup newTaskSection;
+    @Bind(R.id.done_task_section) ViewGroup doneTaskSection;
+    @Bind(R.id.done_task_section2) ViewGroup doneTaskSection2;
+    /*
+      Done user field
+     */
+    @Bind(R.id.txt_name) TextView txtName;
+    @Bind(R.id.img_pic) CircleImageView imgPic;
+
+
+    @OnClick(R.id.img_addres) void viewMap() {
         Utils.gotoMapsActivityCurLocation(this, new LatLng(mGeoPoint.getLatitude(), mGeoPoint.getLongitude()));
     }
 
-    private AcceptedUserAdapter mAdapter;
-    private List<ParseUser> mList;
+    @OnClick(R.id.btn_chat) void chat() {
+
+    }
+
+    @OnClick(R.id.btn_rate) void rate() {
+
+    }
+
+    void doneTaskShowSellerProfile() {
+        DialogFragmentSellerProfile.newInstance(MyTaskActivity.this, doneUser, mType)
+                                .show(getSupportFragmentManager(), "Profile");
+    }
 
     private void setupTask() {
         ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(Common.OBJECT_QUESTION);
@@ -89,18 +117,28 @@ public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.C
 
                     setupAcceptedSellers();
                     // task is not done
-                    if (task.getParseUser(Common.OBJECT_QUESTION_DONE_USER) == null) {
-                        mType = Common.BUYER_NEW;
+                    if(mType == Common.BUYER_NEW) {
                         txtStatus.setText("等待中");
                         ParseUtils.getTaskAcceptedUser(task);
-                    } else {
-                        mType = Common.BUYER_DONE;
+                    }
+                    else {
                         txtStatus.setText("已成交");
                         ParseUser seller = task.getParseUser(Common.OBJECT_QUESTION_DONE_USER);
                         try {
                             seller = seller.fetch();
-                            mList.add(seller);
-                            mAdapter.notifyDataSetChanged();
+                            doneUser = seller;
+                            txtName.setText(seller.getString(Common.OBJECT_USER_NICK));
+
+                            ParseFile imgFile = seller.getParseFile(Common.OBJECT_USER_PROFILE_PIC);
+                            ParseUtils.displayParseImage(imgFile, imgPic);
+
+                            doneTaskSection.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    doneTaskShowSellerProfile();
+                                }
+                            });
+
                         } catch (ParseException e1) {
                             e1.printStackTrace();
                         }
@@ -119,12 +157,9 @@ public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.C
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DialogFragmentSellerProfile dfsp;
                 if (mTask.getParseUser(Common.OBJECT_QUESTION_DONE_USER) != null) {
-
-                    dfsp = DialogFragmentSellerProfile.newInstance(MyTaskActivity.this, mList.get
-                            (position), mType);
-                } else {
-                    dfsp = DialogFragmentSellerProfile.newInstance(MyTaskActivity.this, mList.get
-                            (position), mType);
+                    dfsp = DialogFragmentSellerProfile.newInstance(MyTaskActivity.this, mList.get(position),mType);
+                }else{
+                    dfsp = DialogFragmentSellerProfile.newInstance(MyTaskActivity.this, mList.get(position),mType);
                 }
                 dfsp.show(getSupportFragmentManager(), "Profile");
             }
@@ -151,7 +186,7 @@ public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.C
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_my_task);
+        setContentView(R.layout.activity_my_new_task);
         ButterKnife.bind(this);
         mListView.setExpanded(true);
 
@@ -159,6 +194,14 @@ public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.C
         Utils.setBuyerColor(this);
 
         taskId = getIntent().getStringExtra(Common.EXTRA_TASK_ID);
+        mType = getIntent().getIntExtra(Common.EXTRA_TYPE, Common.BUYER_NEW);
+        if(mType == Common.BUYER_NEW) {
+            doneTaskSection.setVisibility(View.GONE);
+            doneTaskSection2.setVisibility(View.GONE);
+        }
+        if(mType == Common.BUYER_DONE) {
+            newTaskSection.setVisibility(View.GONE);
+        }
 
         setupTask();
     }

@@ -12,7 +12,20 @@
         android:background="@android:color/white"
         tools:context="com.yahoo.mobile.intern.nest.activity.MyTaskActivity">
 
-        <include layout="@layout/task_info" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <include
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                layout="@layout/card_accepted_user"
+                 />
+            <include layout="@layout/indicator_done" />
+
+        </LinearLayout>
+
 
         <TextView
             android:layout_width="match_parent"
@@ -20,19 +33,10 @@
             android:background="#fff3f3f3"
             android:gravity="center_vertical"
             android:paddingLeft="10dp"
-            android:text="誰接受了我的任務"
             android:textStyle="bold"
             android:textSize="20dp"/>
 
-        <com.yahoo.mobile.intern.nest.view.ExpandableHeightListView
-            android:id="@+id/list_view_accepted_seller"
-            android:choiceMode="singleChoice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:cacheColorHint="#00000000"
-            android:fadingEdge="none"
-            android:focusable="false"
-            android:scrollbars="none"/>
+        <include layout="@layout/task_info" />
 
 
     </LinearLayout>
