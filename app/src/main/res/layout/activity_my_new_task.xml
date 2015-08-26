@@ -1,0 +1,147 @@
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clickable="true"
+    android:background="@android:color/white"
+    tools:context="com.yahoo.mobile.intern.nest.activity.MyTaskActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@android:color/white"
+        >
+
+        <RelativeLayout
+            android:id="@+id/done_task_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:background="@android:color/white">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_pic"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_account_circle_black_48dp" />
+            <LinearLayout
+                android:id="@+id/done_user"
+                android:layout_marginLeft="15dp"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center_vertical"
+                android:layout_toRightOf="@+id/img_pic">
+                <TextView
+                    android:id="@+id/txt_name"
+                    android:textSize="20sp"
+                    android:text="Name"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <!--style="?android:attr/ratingBarStyleSmall"-->
+                <RatingBar
+                    android:layout_marginTop="8dp"
+                    android:scaleX=".8"
+                    android:scaleY=".8"
+                    android:transformPivotX="0dp"
+                    android:transformPivotY="0dp"
+                    android:isIndicator="true"
+                    android:id="@+id/ratingBar"
+                    style="@style/myRatingBar"
+                    android:rating="5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_toRightOf="@+id/done_user"
+                android:layout_margin="10dp">
+                <ImageView
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/check"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp" />
+                <TextView
+                    android:text="成交"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/nest_yellow_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+            <View
+                android:layout_marginTop="30dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                android:layout_below="@+id/done_user"/>
+        </RelativeLayout>
+
+
+        <include layout="@layout/task_info" />
+
+        <LinearLayout
+            android:id="@+id/new_task_section"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="#fff3f3f3"
+                android:gravity="center_vertical"
+                android:paddingLeft="10dp"
+                android:text="誰接受了我的任務"
+                android:textStyle="bold"
+                android:textSize="20dp"/>
+
+            <com.yahoo.mobile.intern.nest.view.ExpandableHeightListView
+                android:id="@+id/list_view_accepted_seller"
+                android:choiceMode="singleChoice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:cacheColorHint="#00000000"
+                android:fadingEdge="none"
+                android:focusable="false"
+                android:scrollbars="none"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/done_task_section2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_chat"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="洽談細節"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/nest_yellow_1"
+                android:textColor="@android:color/black"
+                android:layout_margin="5dp"/>
+
+            <Button
+                android:id="@+id/btn_rate"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="給他評分"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/nest_yellow_1"
+                android:textColor="@android:color/black"
+                android:layout_margin="5dp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
