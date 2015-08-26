@@ -144,7 +144,7 @@ public class Utils {
         Intent it = new Intent(activity, CatchTaskActivity.class);
         it.putExtra(Common.EXTRA_TASK_ID, taskId);
         it.putExtra(Common.EXTRA_STATE, state);
-        activity.startActivity(it);
+        activity.startActivityForResult(it, Common.REQUEST_CATCH_TASK);
     }
     static public void gotoSellerProfileActivity(Activity activity, String userId, String taskId) {
         Intent it = new Intent(activity, SellerProfileActivity.class);

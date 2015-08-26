@@ -1,24 +1,33 @@
 package com.yahoo.mobile.intern.nest.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.ParseException;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.fragment.FragmentAddChooseCategory;
+import com.yahoo.mobile.intern.nest.fragment.FragmentAddContent;
 import com.yahoo.mobile.intern.nest.fragment.FragmentAddLocationDate;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.Utils;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.Date;
 
 public class AddTaskActivity extends AppCompatActivity {
@@ -36,6 +45,9 @@ public class AddTaskActivity extends AppCompatActivity {
     public Date expire;
     public String time;
     public String address;
+
+    public Uri imageUri = null;
+    public Bitmap image;
 
 
     @Override
@@ -65,6 +77,31 @@ public class AddTaskActivity extends AppCompatActivity {
                 fragment.txtLocationHolder.setText(address);
             }
         }
+        if (data != null &&  resultCode == RESULT_OK && requestCode == Common.ACTIVITY_SELECT_IMAGE) {
+            FragmentAddContent fragment = (FragmentAddContent)
+                    getSupportFragmentManager().findFragmentById(R.id.frame_content);
+            Uri selectedImageUri = data.getData();
+            fragment.setImgViewUpload(selectedImageUri);
+        }
+        else if(resultCode == RESULT_OK && requestCode == Common.CAMERA_REQUEST) {
+            FragmentAddContent fragment = (FragmentAddContent)
+                    getSupportFragmentManager().findFragmentById(R.id.frame_content);
+            fragment.setImgViewUpload();
+        }
+    }
+
+    public void savePictureToPostSync(ParseObject task, Bitmap picture) {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        picture.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        byte[] bytearray= stream.toByteArray();
+        ParseFile questionPicture = new ParseFile(task.getObjectId() + "_picture.jpg", bytearray);
+        try {
+            questionPicture.save();
+            task.put(Common.OBJECT_QUESTION_PICTURE, questionPicture);
+            task.save();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void addTask() {
@@ -89,6 +126,10 @@ public class AddTaskActivity extends AppCompatActivity {
                     ParseRelation<ParseObject> myNewQuestions = user.getRelation(Common.OBJECT_USER_MY_NEW_QUESTIONS);
                     myNewQuestions.add(task);
                     user.saveInBackground();
+
+                    if(imageUri != null) {
+                        savePictureToPostSync(task, image);
+                    }
                 }
             }
         });

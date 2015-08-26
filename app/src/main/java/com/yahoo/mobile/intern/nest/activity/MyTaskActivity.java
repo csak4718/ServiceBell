@@ -1,6 +1,11 @@
 package com.yahoo.mobile.intern.nest.activity;
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -8,8 +13,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.RatingBar;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -21,6 +30,7 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.squareup.picasso.Picasso;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.adapter.AcceptedUserAdapter;
 import com.yahoo.mobile.intern.nest.dialog.ConfirmDialog;
@@ -68,6 +78,7 @@ public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.C
     @Bind(R.id.new_task_section) ViewGroup newTaskSection;
     @Bind(R.id.done_task_section) ViewGroup doneTaskSection;
     @Bind(R.id.done_task_section2) ViewGroup doneTaskSection2;
+    @Bind(R.id.img_view_question_picture)ImageView imgViewQuestionPicture;
     /*
       Done user field
      */
@@ -152,6 +163,44 @@ public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.C
                         } catch (ParseException e1) {
                             e1.printStackTrace();
                         }
+                    }
+
+                    ParseFile questionPicture = task.getParseFile(Common.OBJECT_QUESTION_PICTURE);
+                    if(questionPicture != null) {
+                        imgViewQuestionPicture.setVisibility(View.VISIBLE);
+                        Picasso.with(MyTaskActivity.this).load(questionPicture.getUrl())
+                                .into(imgViewQuestionPicture);
+                        imgViewQuestionPicture.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                final Dialog dialog = new Dialog(MyTaskActivity.this);
+                                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                dialog.setContentView(R.layout.dialog_image);
+
+                                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                                lp.copyFrom(dialog.getWindow().getAttributes());
+                                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                                lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+
+
+                                Bitmap bmp = ((BitmapDrawable) imgViewQuestionPicture.getDrawable())
+                                        .getBitmap();
+
+                                ImageView picture = (ImageView) dialog.findViewById(R.id.img_view_dialog_picture);
+                                ImageButton btnClose = (ImageButton) dialog.findViewById(R.id.img_btn_close);
+                                btnClose.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                                picture.setImageBitmap(bmp);
+                                dialog.show();
+                                dialog.getWindow().setAttributes(lp);
+                                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor
+                                        ("#80000000")));
+                            }
+                        });
                     }
                 }
             }

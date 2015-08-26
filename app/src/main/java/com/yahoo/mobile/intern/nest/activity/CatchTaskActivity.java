@@ -1,16 +1,25 @@
 package com.yahoo.mobile.intern.nest.activity;
 
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +37,9 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.sinch.android.rtc.SinchError;
+import com.squareup.picasso.Picasso;
 import com.yahoo.mobile.intern.nest.R;
+import com.yahoo.mobile.intern.nest.adapter.CatchTaskAdapter;
 import com.yahoo.mobile.intern.nest.dialog.DialogFragmentSellerProfile;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.Utils;
@@ -53,6 +64,8 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     private ProgressDialog mSpinner;
     private ParseGeoPoint mGeoPoint;
 
+    private boolean result = false;
+
     //@Bind(R.id.btn_toMessaging) Button btnToMessaging;
     @Bind(R.id.txt_status) TextView txtStatus;
 
@@ -70,6 +83,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     @Bind(R.id.txt_task_time) TextView txtTaskTime;
     @Bind(R.id.txt_remaining) TextView txtRemaining;
     @Bind(R.id.txt_category) TextView txtCategory;
+    @Bind(R.id.img_view_question_picture)ImageView imgViewQuestionPicture;
 
 
     @OnClick(R.id.img_addres) void viewMap(){
@@ -124,6 +138,8 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
 
         newTaskOpBanner.setVisibility(View.GONE);
         doneTaskOpBanner.setVisibility(View.VISIBLE);
+
+        result = true;
 
     }
     @OnClick(R.id.btn_chat) void chat() {
@@ -181,6 +197,43 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
                 txtAddress.setText(task.getString(Common.OBJECT_QUESTION_ADDRESS));
 
                 mGeoPoint = task.getParseGeoPoint(Common.OBJECT_QUESTION_PIN);
+                ParseFile questionPicture = task.getParseFile(Common.OBJECT_QUESTION_PICTURE);
+                if(questionPicture != null) {
+                    imgViewQuestionPicture.setVisibility(View.VISIBLE);
+                    Picasso.with(CatchTaskActivity.this).load(questionPicture.getUrl())
+                            .into(imgViewQuestionPicture);
+                    imgViewQuestionPicture.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            final Dialog dialog = new Dialog(CatchTaskActivity.this);
+                            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            dialog.setContentView(R.layout.dialog_image);
+
+                            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                            lp.copyFrom(dialog.getWindow().getAttributes());
+                            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                            lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+
+
+                            Bitmap bmp = ((BitmapDrawable) imgViewQuestionPicture.getDrawable())
+                                    .getBitmap();
+
+                            ImageView picture = (ImageView) dialog.findViewById(R.id.img_view_dialog_picture);
+                            ImageButton btnClose = (ImageButton) dialog.findViewById(R.id.img_btn_close);
+                            btnClose.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            picture.setImageBitmap(bmp);
+                            dialog.show();
+                            dialog.getWindow().setAttributes(lp);
+                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor
+                                    ("#80000000")));
+                        }
+                    });
+                }
             }
         });
     }
@@ -282,6 +335,9 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         int id = item.getItemId();
 
         if(id == android.R.id.home) {
+            Intent ret = new Intent();
+            ret.putExtra("result", result);
+            setResult(RESULT_OK, ret);
             finish();
         }
 
