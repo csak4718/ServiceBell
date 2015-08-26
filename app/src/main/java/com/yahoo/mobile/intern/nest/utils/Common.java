@@ -17,6 +17,7 @@ public class Common {
     public final static int SELLER_DONE = 4;
 
     public final static int REQUEST_MY_TASK = 4444;
+    public final static int REQUEST_CATCH_TASK = 4445;
 
     public final static String EXTRA_RADIUS = "map_radius";
     public final static String EXTRA_MAP_PATH = "map_path";

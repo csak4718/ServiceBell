@@ -243,7 +243,7 @@ public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.C
     public void closeActivity(){
         Intent returnIntent = new Intent();
         returnIntent.putExtra("result",true);
-        setResult(RESULT_OK,returnIntent);
+        setResult(RESULT_OK, returnIntent);
         finish();
     }
 

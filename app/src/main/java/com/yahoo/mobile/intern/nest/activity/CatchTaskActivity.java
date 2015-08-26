@@ -2,6 +2,7 @@ package com.yahoo.mobile.intern.nest.activity;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.opengl.Visibility;
@@ -53,6 +54,8 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     private ParseUser buyer;
     private ProgressDialog mSpinner;
     private ParseGeoPoint mGeoPoint;
+
+    private boolean result = false;
 
     //@Bind(R.id.btn_toMessaging) Button btnToMessaging;
     @Bind(R.id.txt_status) TextView txtStatus;
@@ -125,6 +128,8 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
 
         newTaskOpBanner.setVisibility(View.GONE);
         doneTaskOpBanner.setVisibility(View.VISIBLE);
+
+        result = true;
 
     }
     @OnClick(R.id.btn_chat) void chat() {
@@ -283,6 +288,9 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         int id = item.getItemId();
 
         if(id == android.R.id.home) {
+            Intent ret = new Intent();
+            ret.putExtra("result", result);
+            setResult(RESULT_OK, ret);
             finish();
         }
 

@@ -169,7 +169,16 @@ public class MainActivity extends AppCompatActivity {
             if (data!=null){
                 Boolean result=data.getBooleanExtra("result",false);
                 Log.d("test",result.toString());
-                if (result == true){
+                if (result){
+                    fragmentTab.setCurrentPage(1);
+                    fragmentTab.refreshAllTab();
+                }
+            }
+        }
+        if (requestCode == Common.REQUEST_CATCH_TASK) {
+            if(data != null) {
+                Boolean result=data.getBooleanExtra("result",false);
+                if(result) {
                     fragmentTab.setCurrentPage(1);
                     fragmentTab.refreshAllTab();
                 }
