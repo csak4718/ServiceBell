@@ -1,67 +1,76 @@
-<ScrollView
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
-
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:animateLayoutChanges="true"
-    android:background="@android:color/white"
-    tools:context="com.yahoo.mobile.intern.nest.activity.CatchTaskActivity">
-
-    <RelativeLayout
-        android:id="@+id/rlayout_buyer"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:padding="10dp">
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/img_user_pic"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/ic_account_circle_black_48dp" />
-        <TextView
-            android:id="@+id/txt_name"
-            tools:text="Emily"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:animateLayoutChanges="true"
+            android:background="@android:color/white"
+            tools:context="com.yahoo.mobile.intern.nest.activity.CatchTaskActivity">
+
+        <RelativeLayout
+            android:id="@+id/rlayout_buyer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="15dp"
-            android:layout_toRightOf="@id/img_user_pic"/>
+            android:layout_marginTop="10dp"
+            android:padding="10dp">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/img_user_pic"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_account_circle_black_48dp" />
+            <TextView
+                android:id="@+id/txt_name"
+                tools:text="Emily"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="15dp"
+                android:layout_toRightOf="@id/img_user_pic"/>
 
-        <RatingBar
-            android:scaleX=".8"
-            android:scaleY=".8"
-            android:transformPivotX="0dp"
-            android:transformPivotY="0dp"
+            <RatingBar
+                android:scaleX=".8"
+                android:scaleY=".8"
+                android:transformPivotX="0dp"
+                android:transformPivotY="0dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ratingBar"
+                style="@style/myRatingBar"
+                android:rating="5"
+                android:layout_below="@+id/txt_name"
+                android:layout_alignLeft="@+id/txt_name" />
+        </RelativeLayout>
+
+        <View
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/ratingBar"
-            style="@style/myRatingBar"
-            android:rating="5"
-            android:layout_below="@+id/txt_name"
-            android:layout_alignLeft="@+id/txt_name" />
-    </RelativeLayout>
+            android:layout_margin="10dp"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"
+            android:layout_marginBottom="15dp"/>
 
-    <View
-        android:layout_width="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_height="1dp"
-        android:background="@android:color/darker_gray"
-        android:layout_marginBottom="15dp"/>
+        <include layout="@layout/task_info" />
 
-    <include layout="@layout/task_info" />
 
+        </LinearLayout>
+
+    </ScrollView>
     <LinearLayout
         android:id="@+id/new_task_op_banner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
+        android:layout_alignParentBottom="true"
         android:visibility="gone"
         tools:visibility="visible"
         android:orientation="horizontal">
@@ -90,12 +99,12 @@
             android:textColor="@android:color/black"
             android:layout_margin="5dp"/>
     </LinearLayout>
-
     <LinearLayout
         android:id="@+id/done_task_op_banner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
+        android:layout_alignParentBottom="true"
         android:visibility="gone"
         tools:visibility="visible"
         android:orientation="horizontal">
@@ -113,7 +122,7 @@
             android:layout_margin="5dp"/>
 
         <Button
-            android:id="@+id/btn_chat_cancel"
+            android:id="@+id/btn_cancel_accept"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -124,6 +133,4 @@
             android:textColor="@android:color/black"
             android:layout_margin="5dp"/>
     </LinearLayout>
-
-</LinearLayout>
-</ScrollView>
+</RelativeLayout>
