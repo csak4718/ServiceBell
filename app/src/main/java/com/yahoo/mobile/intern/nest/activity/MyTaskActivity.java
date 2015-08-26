@@ -22,6 +22,7 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.adapter.AcceptedUserAdapter;
+import com.yahoo.mobile.intern.nest.dialog.ConfirmDialog;
 import com.yahoo.mobile.intern.nest.dialog.DeleteDialogFragment;
 import com.yahoo.mobile.intern.nest.dialog.DialogFragmentSellerProfile;
 import com.yahoo.mobile.intern.nest.event.AcceptedUserEvent;
@@ -40,7 +41,7 @@ import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MyTaskActivity extends AppCompatActivity implements DialogFragmentSellerProfile.ProfileDialogListener, DeleteDialogFragment.DeleteDialogListener {
+public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.ConfirmDialogListener, DeleteDialogFragment.DeleteDialogListener {
 
     private String taskId;
     private ParseObject mTask;
@@ -93,7 +94,7 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
         query.getInBackground(taskId, new GetCallback<ParseObject>() {
             @Override
             public void done(ParseObject task, ParseException e) {
-                if(e == null) {
+                if (e == null) {
                     mTask = task;
 
                     String title = task.getString(Common.OBJECT_QUESTION_TITLE);
@@ -160,7 +161,7 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
                 }else{
                     dfsp = DialogFragmentSellerProfile.newInstance(MyTaskActivity.this, mList.get(position),mType);
                 }
-                dfsp.show(getSupportFragmentManager(),"Profile");
+                dfsp.show(getSupportFragmentManager(), "Profile");
             }
         });
     }
@@ -233,11 +234,6 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onFinishProfileDialog(String inputText, ParseUser seller) {
-        Log.d("asd",inputText);
-        closeAuction(seller);
-    }
 
     public void closeAuction(ParseUser seller){
         ParseUtils.doneTask(mTask, ParseUser.getCurrentUser(), seller);
@@ -260,5 +256,11 @@ public class MyTaskActivity extends AppCompatActivity implements DialogFragmentS
                 finish();
             }
         });
+    }
+
+    @Override
+    public void onFinishConfirmDialog(String inputText, ParseUser seller) {
+        Log.d("asd", inputText);
+        closeAuction(seller);
     }
 }
