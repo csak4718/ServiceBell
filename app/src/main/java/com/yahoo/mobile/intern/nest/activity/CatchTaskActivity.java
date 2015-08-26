@@ -4,7 +4,6 @@ package com.yahoo.mobile.intern.nest.activity;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.Menu;
@@ -80,7 +79,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
 
     @OnClick(R.id.rlayout_buyer) void buyerProfile(){
         DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(CatchTaskActivity.this,buyer,mType);
-        dfsp.show(getSupportFragmentManager(),"buyerInfo");
+        dfsp.show(getSupportFragmentManager(), "buyerInfo");
     }
 
     @OnClick(R.id.btn_reject_task) void rejectTask() {
@@ -103,7 +102,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     @OnClick(R.id.btn_accept_task) void acceptTask() {
 
         newTaskOpBanner.setVisibility(View.GONE);
-        Snackbar.make(findViewById(android.R.id.content), "你接了一個任務", Snackbar.LENGTH_LONG)
+        Snackbar.make(findViewById(android.R.id.content), "你接了一個任務", Snackbar.LENGTH_SHORT)
                 .show();
         ParseUser user = ParseUser.getCurrentUser();
         ParseRelation<ParseObject> catchRelation = user.getRelation(Common.OBJECT_USER_CATCH_QUESTIONS);
@@ -122,6 +121,15 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(Common.CLOUD_NOTIFY_ACCEPT_BUYERID, mTask.getParseUser(Common.OBJECT_QUESTION_USER).getObjectId());
         ParseCloud.callFunctionInBackground(Common.CLOUD_NOTIFY_ACCEPT, params);
+
+        newTaskOpBanner.setVisibility(View.GONE);
+        doneTaskOpBanner.setVisibility(View.VISIBLE);
+
+    }
+    @OnClick(R.id.btn_chat) void chat() {
+
+    }
+    @OnClick(R.id.btn_cancel_accept) void cancelAccept() {
 
     }
 

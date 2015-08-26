@@ -20,6 +20,7 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_pic"
             tools:src="@drawable/place"
+            android:background="@android:color/white"
             android:layout_centerVertical="true"
             android:layout_width="60dp"
             android:layout_height="60dp" />
