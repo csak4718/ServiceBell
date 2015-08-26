@@ -1,19 +1,15 @@
 package com.yahoo.mobile.intern.nest.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.parse.ParseObject;
 import com.yahoo.mobile.intern.nest.R;
-import com.yahoo.mobile.intern.nest.item.CategoryItem;
+import com.yahoo.mobile.intern.nest.utils.Common;
 
 import java.util.List;
 
@@ -26,10 +22,10 @@ import butterknife.ButterKnife;
 public class CategoryAdapter extends BaseAdapter {
 
     private Context mContext;
-    private List<CategoryItem> mList;
+    private List<ParseObject> mList;
     private LayoutInflater mInflater;
 
-    public CategoryAdapter(Context context, List<CategoryItem> list) {
+    public CategoryAdapter(Context context, List<ParseObject> list) {
         mContext = context;
         mInflater = LayoutInflater.from(mContext);
 
@@ -70,8 +66,8 @@ public class CategoryAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        CategoryItem item = mList.get(position);
-        holder.mTitle.setText(item.mTitle);
+        ParseObject item = mList.get(position);
+        holder.mTitle.setText(item.getString(Common.OBJECT_CATEGORY_TITLE));
 
         return convertView;
     }
