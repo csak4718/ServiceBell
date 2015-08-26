@@ -18,14 +18,18 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.parse.ParseFile;
+import com.parse.ParseObject;
 import com.parse.ParseUser;
 import com.squareup.picasso.Picasso;
 import com.yahoo.mobile.intern.nest.R;
+import com.yahoo.mobile.intern.nest.event.CategoryEvent;
 import com.yahoo.mobile.intern.nest.event.FbPictureEvent;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.Bind;
@@ -38,6 +42,8 @@ import de.greenrobot.event.EventBus;
  */
 public class BSInfoSettingActivity extends AppCompatActivity {
     ParseUser user;
+    private List<ParseObject> mCategory = new ArrayList<ParseObject>();
+
     //@Bind(R.id.btn_log_out)Button mBtnLogout;
     @Bind(R.id.edt_setting_nickname) EditText mEdtNickName;
     @Bind(R.id.edt_phone) EditText mEdtPhone;
@@ -67,8 +73,6 @@ public class BSInfoSettingActivity extends AppCompatActivity {
         finish();
     }
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,11 +81,7 @@ public class BSInfoSettingActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         user = ParseUser.getCurrentUser();
         getProfile();
-
-        String[] category = {"居家清潔/整理","汽車保養/美容","美容/美甲","育兒服務","寵物服務","其他"};
-        ArrayAdapter categoryList = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, category);
-        categoryList.setDropDownViewResource(R.layout.drop_down_item);
-        mCategorySpinner.setAdapter(categoryList);
+        ParseUtils.getCategoryList();
     }
 
     @Override
@@ -95,6 +95,7 @@ public class BSInfoSettingActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_profile_setting, menu);
         return true;
     }
+
     @Override
     protected void onStart() {
         EventBus.getDefault().register(this);
@@ -116,6 +117,20 @@ public class BSInfoSettingActivity extends AppCompatActivity {
             }
         });
     }
+
+    public void onEvent(final CategoryEvent event){
+        Log.d("eventbus", "get category");
+        mCategory.addAll(event.categoryList);
+        String mCategoryStringList[] = new String[mCategory.size()];
+        for (int i=0; i<mCategory.size(); i++){
+            mCategoryStringList[i] = mCategory.get(i).getString(Common.OBJECT_CATEGORY_TITLE);
+        }
+
+        ArrayAdapter categoryList = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mCategoryStringList);
+        categoryList.setDropDownViewResource(R.layout.drop_down_item);
+        mCategorySpinner.setAdapter(categoryList);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will

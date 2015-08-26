@@ -67,8 +67,9 @@ public class Common {
     public final static String OBJECT_QUESTION_DONE_USER = "doneUser";
     public final static String OBJECT_QUESTION_CATEGORY = "category";
 
-    public final static String OBJECT_CATEGORY = "category";
+    public final static String OBJECT_CATEGORY = "Category";
     public final static String OBJECT_CATEGORY_TITLE = "title";
+    public final static String OBJECT_CATEGORY_ID = "cid";
 
     /*
      Cloud code function
