@@ -18,6 +18,7 @@ import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
+import com.squareup.picasso.Picasso;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.Utils;
@@ -42,6 +43,7 @@ public class CatchTaskAdapter extends BaseAdapter {
 
     static class ViewHolder {
 
+        @Bind(R.id.img_pic) public CircleImageView imgProfile;
         @Bind(R.id.txt_title) public TextView txtTitle;
         @Bind(R.id.txt_time) public TextView txtTime;
         @Bind(R.id.txt_remaining) public TextView txtRemaining;
@@ -87,6 +89,21 @@ public class CatchTaskAdapter extends BaseAdapter {
         }
 
         final ParseObject task = mList.get(position);
+
+        ParseUser buyer = task.getParseUser(Common.OBJECT_QUESTION_USER);
+        buyer.fetchInBackground(new GetCallback<ParseObject>() {
+            @Override
+            public void done(ParseObject buyer, ParseException e) {
+                if (e == null) {
+                    ParseFile imgFile = buyer.getParseFile(Common.OBJECT_USER_PROFILE_PIC);
+                    Picasso.with(mContext)
+                            .load(imgFile.getUrl())
+                            .into(holder.imgProfile);
+                }
+            }
+        });
+
+
         holder.txtTitle.setText(task.getString(Common.OBJECT_QUESTION_TITLE));
         holder.txtTime.setText(task.getString(Common.OBJECT_QUESTION_TIME));
 
