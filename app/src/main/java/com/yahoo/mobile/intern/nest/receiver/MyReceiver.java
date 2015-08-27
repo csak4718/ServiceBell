@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -28,26 +29,30 @@ public class MyReceiver extends ParsePushBroadcastReceiver {
 
 
             //if (action.equalsIgnoreCase("com.packagename.UPDATE_STATUS")) {
-                String title = "appname";
-                if (json.has("title"))
-                    title = json.getString("title");
+            String title = "appname";
+            if (json.has("title"))
+                title = json.getString("title");
 
-                String content = "mycontent";
-                if (json.has("alert"))
-                    content = json.getString("alert");
-                generateNotification(context, title, json, content);
-            //}
+            String content = "mycontent";
+            if (json.has("alert"))
+                content = json.getString("alert");
+
+            Uri uri = Uri.parse("nest://");
+            if (json.has("uri"))
+                uri = (Uri)json.get("uri");
+
+            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, 0);
+            generateNotification(context, title, uri, content);
+
         } catch (JSONException e) {
             Log.d("incomingreceiver", "JSONException: " + e.getMessage());
         }
     }
 
-    private void generateNotification(Context context, String title, JSONObject json, String contentText) {
+    private void generateNotification(Context context, String title, Uri uri, String contentText) {
         Log.d("incomingreceiver", "generate notification");
 
-        Intent intent = new Intent(context, LoginActivity.class);
-        intent.setAction(Intent.ACTION_MAIN);
-
+        Intent intent = new Intent(Intent.ACTION_MAIN, uri, context, LoginActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

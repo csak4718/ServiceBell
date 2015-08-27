@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -58,6 +57,7 @@ public class MapsActivity extends AppCompatActivity
     private boolean mGivenPinLocation;
     private boolean mShowRange;
     static final int MIN_RADIUS = 1;
+    static final int MAP_ZOOM_LEVEL = 13;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private LocationManager locationManager;
     private LocationRequest mLocationRequest;
@@ -245,7 +245,7 @@ public class MapsActivity extends AppCompatActivity
         mMap.setOnCameraChangeListener(this);
         if(mGivenPinLocation) {
             mMap.addMarker(new MarkerOptions()
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_pin))
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_map_pin))
                     .position(new LatLng(mLat, mLong))
                     .title(mTaskTitle))
                     .showInfoWindow();
@@ -261,7 +261,7 @@ public class MapsActivity extends AppCompatActivity
         if(mGivenPinLocation) {
 
             LatLng latLng = new LatLng(mLat, mLong);
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, MAP_ZOOM_LEVEL));
 
             Location location = new Location("dummyprovider");
             location.setLatitude(mLat);
@@ -273,7 +273,7 @@ public class MapsActivity extends AppCompatActivity
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
             mCurLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             LatLng latLng = new LatLng(mCurLocation.getLatitude(), mCurLocation.getLongitude());
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, MAP_ZOOM_LEVEL));
         }
     }
 
@@ -314,7 +314,7 @@ public class MapsActivity extends AppCompatActivity
                 .center(mMap.getCameraPosition().target)
                 .strokeWidth(0)
                 .radius(mRadius*1000)//km to meter
-                .fillColor(Color.argb(63, 0, 0, 255)));
+                .fillColor(getResources().getColor(R.color.nest_blue_alpha)));
     }
 
 
@@ -355,7 +355,7 @@ public class MapsActivity extends AppCompatActivity
         protected void onPostExecute(Boolean found) {
             if (found) {
                 LatLng latLng = new LatLng(mCurLocation.getLatitude(), mCurLocation.getLongitude());
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, MAP_ZOOM_LEVEL));
             }
         }
     }
