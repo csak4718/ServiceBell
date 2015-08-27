@@ -60,7 +60,9 @@ public class FragmentAddContent extends Fragment {
             return;
         }
 
-        activity.image = ((BitmapDrawable) imgViewUpload.getDrawable()).getBitmap();
+        if(imgViewUpload.getDrawable() != null) {
+            activity.image = ((BitmapDrawable) imgViewUpload.getDrawable()).getBitmap();
+        }
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.frame_content, new FragmentAddLocationDate())
