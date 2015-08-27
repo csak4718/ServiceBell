@@ -49,8 +49,14 @@
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
                 android:textSize="14sp"
-                android:text="Hello"
-                />
+                android:text="Hello" />
+            <ImageView
+                android:id="@+id/imgMessage"
+                android:paddingLeft="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
 
         </RelativeLayout>
     </RelativeLayout>
