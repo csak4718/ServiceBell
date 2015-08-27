@@ -155,6 +155,14 @@ public class ParseUtils {
         ParseCloud.callFunctionInBackground("doneTask", params);
     }
 
+    static public void updateRating(ParseUser buyer, Float rating, int num){
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("buyerId",buyer.getObjectId());
+        params.put("rating",rating);
+        params.put("votenum",num);
+        ParseCloud.callFunctionInBackground("updateRating",params);
+    }
+
     static public void createChatConnection(ParseUser sender, ParseUser recipient){
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("senderId", sender.getObjectId());

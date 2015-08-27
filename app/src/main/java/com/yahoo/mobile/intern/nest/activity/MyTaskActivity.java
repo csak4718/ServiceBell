@@ -99,7 +99,7 @@ public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.C
             RatingDialog rd = new RatingDialog();
             rd.show(getSupportFragmentManager(),"RatingDialog");
         }else{
-            Utils.makeToast(this, "zzZZ");
+            Utils.makeToast(this, "已經評分過了");
         }
     }
 
@@ -330,6 +330,7 @@ public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.C
         upDateRating(rating);
     }
     public void upDateRating(Float rating){
+        rated = true;
         mTask.put(Common.OBJECT_QUESTION_RATED, true);
         mTask.saveInBackground();
         Float curRating = doneUser.getNumber(Common.OBJECT_USER_RATING).floatValue();
@@ -341,9 +342,8 @@ public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.C
             rateNum = num.intValue();
         }
         final Float update = (curRating*rateNum+rating)/(rateNum+1);
-        doneUser.put(Common.OBJECT_USER_RATING, update);
-        doneUser.put(Common.OBJECT_USER_RATENUM, rateNum);
         ratingBar.setRating(update);
-        doneUser.saveInBackground();
+        ParseUtils.updateRating(doneUser, update, rateNum + 1);
+        Utils.makeToast(this,"已評分");
     }
 }
