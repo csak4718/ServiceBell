@@ -128,6 +128,20 @@ public class LoginActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
         super.onStop();
     }
+
+    private void gotoNextActivity() {
+        Intent it = getIntent();
+        if(it.getAction().equals("android.intent.action.VIEW")) {
+            Intent notiIntent = new Intent(this, MainActivity.class);
+            notiIntent.setData(it.getData());
+            startActivity(notiIntent);
+        }
+        else {
+            Utils.gotoMainActivity(this);
+        }
+        finish();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,8 +163,7 @@ public class LoginActivity extends AppCompatActivity {
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Utils.gotoMainActivity(LoginActivity.this);
-                    finish();
+                    gotoNextActivity();
                 }
             }, 700);
         }

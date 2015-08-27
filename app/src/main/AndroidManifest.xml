@@ -90,6 +90,16 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="com.parse.push.intent.OPEN" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:scheme="nest" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".activity.MainActivity"
@@ -134,7 +144,7 @@
         </activity>
         <activity
             android:name=".activity.MessagingActivity"
-            android:label="@string/title_activity_messaging" >
+            android:label="即時洽談" >
         </activity>
         <activity
             android:name=".activity.CatchTaskActivity"

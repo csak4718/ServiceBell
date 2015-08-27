@@ -58,6 +58,7 @@ public class DialogFragmentSellerProfile extends DialogFragment implements Sinch
     @Bind(R.id.btn_confirm)Button btnConfirm;
     @Bind(R.id.linear_btn)LinearLayout linearBtn;
     @Bind(R.id.ratingBar)RatingBar ratingBar;
+    @Bind(R.id.txt_category)TextView txtCategory;
 
     @OnClick(R.id.btn_confirm) void confirm(){
         ConfirmDialog cd = ConfirmDialog.newInstance(txtName.getText().toString(),mImgProfilePic.getDrawable(),ratingBar.getRating(),user);
@@ -111,6 +112,7 @@ public class DialogFragmentSellerProfile extends DialogFragment implements Sinch
         if (phone == null || phone.equals("")) {txtPhone.setVisibility(View.GONE);}else{txtPhone.setText(phone);}
         if (others == null || others.equals("")){txtOthers.setVisibility(View.GONE);}else{txtOthers.setText(others);}
         ratingBar.setRating(user.getNumber(Common.OBJECT_USER_RATING).floatValue());
+        setCategory();
     }
     public void setupButton(){
 
@@ -202,4 +204,8 @@ public class DialogFragmentSellerProfile extends DialogFragment implements Sinch
     protected SinchService.SinchServiceInterface getSinchServiceInterface() {
         return mSinchServiceInterface;
     }
+    public void setCategory(){
+        txtCategory.setText(user.getString(Common.OBJECT_USER_CATEGORY));
+    }
 }
+

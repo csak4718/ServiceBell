@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,7 +55,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class CatchTaskActivity extends BaseActivity implements SinchService.StartFailedListener {
-
     private int mType;
 
     private ParseObject mTask;
@@ -83,7 +83,8 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     @Bind(R.id.txt_remaining) TextView txtRemaining;
     @Bind(R.id.txt_category) TextView txtCategory;
     @Bind(R.id.img_view_question_picture)ImageView imgViewQuestionPicture;
-
+    @Bind(R.id.ratingBar)RatingBar ratingBar;
+    @Bind(R.id.btn_chat) Button btnChat;
 
     @OnClick(R.id.img_addres) void viewMap(){
         Utils.gotoMapsActivityCurLocation(this, new LatLng(mGeoPoint.getLatitude(), mGeoPoint.getLongitude()), txtTitle.getText().toString());
@@ -91,7 +92,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
 
 
     @OnClick(R.id.rlayout_buyer) void buyerProfile(){
-        DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(CatchTaskActivity.this,buyer,mType);
+        DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(CatchTaskActivity.this, buyer, mType);
         dfsp.show(getSupportFragmentManager(), "buyerInfo");
     }
 
@@ -142,7 +143,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
 
     }
     @OnClick(R.id.btn_chat) void chat() {
-
+        btnToMessagingClicked();
     }
     @OnClick(R.id.btn_cancel_accept) void cancelAccept() {
 
@@ -189,6 +190,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
                 txtTitle.setText(title);
                 txtContent.setText(content);
                 txtCategory.setText(category);
+                ratingBar.setRating(buyer.getNumber(Common.OBJECT_USER_RATING).floatValue());
 
                 Date expire = task.getDate(Common.OBJECT_QUESTION_EXPIRE_DATE);
                 Date current = new Date();

@@ -30,7 +30,6 @@
         android:divider="@null"
         android:dividerHeight="0dp" android:stackFromBottom="true" tools:listitem="@layout/message_left"/>
 
-
     <RelativeLayout
         android:id="@+id/relSendMessage"
         android:layout_width="wrap_content"
@@ -39,20 +38,65 @@
         android:paddingLeft="10dp"
         android:layout_alignParentBottom="true">
 
+        <LinearLayout
+            android:id="@+id/media_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginRight="5dp"
+            android:layout_gravity="right"
+            android:orientation="horizontal"
+            android:layout_alignParentLeft="true">
+            <ImageButton
+                android:id="@+id/img_btn_camera"
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/camera"/>
+            <ImageButton
+                android:id="@+id/img_btn_picture"
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/pictures"/>
+
+        </LinearLayout>
 
         <EditText
             android:layout_marginBottom="-4dp"
             android:id="@+id/txtTextBody"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="Message..."
+            android:hint="Write a message..."
             android:textSize="14sp"
             android:textColor="@color/dark_gray"
             android:layout_marginRight="10dp"
             android:layout_alignTop="@+id/btnSend"
             android:background="@android:color/white"
             android:layout_alignBottom="@+id/btnSend"
-            android:layout_toLeftOf="@+id/btnSend"/>
+            android:layout_toLeftOf="@+id/btnSend"
+            android:layout_toRightOf="@+id/media_layout"
+            android:visibility="visible"/>
+        <FrameLayout
+            android:id="@+id/img_preview_root"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/btnSend"
+            android:layout_toRightOf="@+id/media_layout"
+            android:visibility="gone">
+            <ImageView
+                android:id="@+id/img_view_upload"
+                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:layout_marginTop="5dp" />
+            <ImageButton
+                android:id="@+id/img_btn_preview_delete"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/photo_delete"
+                android:layout_gravity="right|top"/>
+        </FrameLayout>
 
         <Button
             android:id="@+id/btnSend"
@@ -61,7 +105,83 @@
             android:layout_alignParentRight="true"
             android:layout_margin="4dp"
             android:background="@drawable/button_send" />
+
+
     </RelativeLayout>
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/relSendMessage"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="48dp"-->
+        <!--android:background="@android:color/white"-->
+        <!--android:paddingLeft="10dp"-->
+        <!--android:layout_alignParentBottom="true">-->
+
+        <!--<LinearLayout-->
+            <!--android:id="@+id/media_layout"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:layout_marginRight="5dp"-->
+            <!--android:layout_gravity="right"-->
+            <!--android:orientation="horizontal">-->
+            <!--<ImageButton-->
+                <!--android:id="@+id/img_btn_camera"-->
+                <!--android:layout_width="30dp"-->
+                <!--android:layout_height="25dp"-->
+                <!--android:layout_margin="5dp"-->
+                <!--android:background="@drawable/camera"/>-->
+            <!--<ImageButton-->
+                <!--android:id="@+id/img_btn_picture"-->
+                <!--android:layout_width="30dp"-->
+                <!--android:layout_height="25dp"-->
+                <!--android:layout_margin="5dp"-->
+                <!--android:background="@drawable/pictures"/>-->
+
+        <!--</LinearLayout>-->
+
+        <!--<EditText-->
+            <!--android:layout_marginBottom="-4dp"-->
+            <!--android:id="@+id/txtTextBody"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:hint="Message..."-->
+            <!--android:textSize="14sp"-->
+            <!--android:textColor="@color/dark_gray"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_alignTop="@+id/btnSend"-->
+            <!--android:background="@android:color/white"-->
+            <!--android:layout_alignBottom="@+id/btnSend"-->
+            <!--android:layout_toLeftOf="@+id/btnSend"-->
+            <!--android:layout_toRightOf="@+id/media_layout"/>-->
+        <!--<FrameLayout-->
+            <!--android:id="@+id/img_preview_root"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:visibility="visible">-->
+            <!--<ImageView-->
+                <!--android:id="@+id/img_view_upload"-->
+                <!--android:scaleType="centerCrop"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="200dp"-->
+                <!--android:layout_marginTop="5dp" />-->
+            <!--<ImageButton-->
+                <!--android:id="@+id/img_btn_preview_delete"-->
+                <!--android:layout_width="20dp"-->
+                <!--android:layout_height="20dp"-->
+                <!--android:layout_marginRight="5dp"-->
+                <!--android:background="@drawable/photo_delete"-->
+                <!--android:layout_gravity="right|top"/>-->
+        <!--</FrameLayout>-->
+
+        <!--<Button-->
+            <!--android:id="@+id/btnSend"-->
+            <!--android:layout_width="72dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_margin="4dp"-->
+            <!--android:background="@drawable/button_send" />-->
+
+        <!-- -->
+    <!--</RelativeLayout>-->
 
 
 </RelativeLayout>

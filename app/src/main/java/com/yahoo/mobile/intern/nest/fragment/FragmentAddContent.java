@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -59,8 +58,10 @@ public class FragmentAddContent extends Fragment {
             Utils.makeToast(activity, "問題內容一定要填喔");
             return;
         }
-
-        activity.image = ((BitmapDrawable) imgViewUpload.getDrawable()).getBitmap();
+        
+        if (imgViewUpload.getDrawable()!=null){
+            activity.image = ((BitmapDrawable) imgViewUpload.getDrawable()).getBitmap();
+        }
 
         getFragmentManager().beginTransaction()
                 .replace(R.id.frame_content, new FragmentAddLocationDate())

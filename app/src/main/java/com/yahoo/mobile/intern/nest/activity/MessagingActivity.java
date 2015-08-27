@@ -1,17 +1,26 @@
 package com.yahoo.mobile.intern.nest.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.ParseFile;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -23,6 +32,7 @@ import com.sinch.android.rtc.messaging.MessageClientListener;
 import com.sinch.android.rtc.messaging.MessageDeliveryInfo;
 import com.sinch.android.rtc.messaging.MessageFailureInfo;
 import com.sinch.android.rtc.messaging.WritableMessage;
+import com.squareup.picasso.Picasso;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.adapter.MessageAdapter;
 import com.yahoo.mobile.intern.nest.event.RecipientEvent;
@@ -30,6 +40,8 @@ import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -48,14 +60,34 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
     private String recipientObjectId;
     private boolean afterLoadHistory = false;
 
+
+
+
+    ImageButton imgBtnCamera;
+    ImageButton imgBtnPicture;
+    ImageButton imgBtnPreviewDelete;
+    boolean postWithPicture = false;
+
+    public static final int CAMERA_REQUEST = 12345;
+    public static final int ACTIVITY_SELECT_IMAGE = 1234;
+    FrameLayout imgPreviewRoot;
+    ImageView imgViewUpload;
+    Uri mImageUri;
+    Bitmap bitmap = null;
+            
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.messaging);
         afterLoadHistory = false;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         recipientNickname = (TextView) findViewById(R.id.recipient_nickname);
+
+        imgBtnCamera = (ImageButton) findViewById(R.id.img_btn_camera);
+        imgBtnPicture = (ImageButton) findViewById(R.id.img_btn_picture);
+        imgPreviewRoot = (FrameLayout) findViewById(R.id.img_preview_root);
+        imgViewUpload = (ImageView) findViewById(R.id.img_view_upload);
+        imgBtnPreviewDelete = (ImageButton) findViewById(R.id.img_btn_preview_delete);
 
         currentUser = ParseUser.getCurrentUser();
         Intent it = getIntent();
@@ -74,6 +106,26 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
             @Override
             public void onClick(View view) {
                 sendMessage();
+            }
+        });
+
+        imgBtnCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPictureFromCamera();
+            }
+        });
+        imgBtnPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPictureFromGallery();
+            }
+        });
+        imgBtnPreviewDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                postWithPicture = false;
+                imgPreviewRoot.setVisibility(View.GONE);
             }
         });
 
@@ -170,19 +222,30 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
     }
 
     private void sendMessage() {
+        String textBody;
 
-        String textBody = mTxtTextBody.getText().toString();
         if (recipientObjectId.isEmpty()) {
             Toast.makeText(this, "No recipient added", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        if(postWithPicture) {
+            bitmap = ((BitmapDrawable) imgViewUpload.getDrawable()).getBitmap();
+            textBody = "T";
+        }
+        else {
+            textBody = "F" + mTxtTextBody.getText().toString();
+        }
+
         if (textBody.isEmpty()) {
-            Toast.makeText(this, "No text message", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No text message or picture uri string", Toast.LENGTH_SHORT).show();
             return;
         }
 
         getSinchServiceInterface().sendMessage(recipientObjectId, textBody);
         mTxtTextBody.setText("");
+        postWithPicture = false; // reset
+        imgPreviewRoot.setVisibility(View.GONE); // reset
     }
 
     private void setButtonEnabled(boolean enabled) {
@@ -192,7 +255,9 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
     @Override
     public void onIncomingMessage(MessageClient client, Message message) {
         if (message.getSenderId().equals(recipientObjectId) && afterLoadHistory) {
+
             WritableMessage writableMessage = new WritableMessage(message.getRecipientIds().get(0), message.getTextBody());
+//            Log.d("ON_INCOMING_MSG", writableMessage.getTextBody());
             mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_INCOMING, message.getTimestamp(), message.getSenderId(), message.getMessageId());
         }
     }
@@ -215,9 +280,36 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
                         msg.put("messageText", writableMessage.getTextBody());
                         msg.put("messageId", message.getMessageId());
                         msg.put("msgTimeStamp", message.getTimestamp());
-                        msg.saveInBackground();
+                        if (bitmap != null) {
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                            byte[] bytearray = stream.toByteArray();
+                            ParseFile messagePicture = new ParseFile(message.getMessageId() + "_picture.jpg", bytearray);
+                            try {
+                                messagePicture.save();
+                                msg.put("picture", messagePicture);
+                                msg.save();
+                                bitmap = null; // reset
+                            } catch (Exception err) {
+                                err.printStackTrace();
+                            }
+                        } else {
+                            Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.app_icon);
+                            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                            bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+                            byte[] bytearray = stream.toByteArray();
+                            ParseFile messagePicture = new ParseFile(message.getMessageId() + "_picture.jpg", bytearray);
+                            try {
+                                messagePicture.save();
+                                msg.put("picture", messagePicture);
+                                msg.save();
+                            } catch (Exception err) {
+                                err.printStackTrace();
+                            }
+                        }
 
                         ParseUtils.instantMessageNotification(currentUser, recipient);
+//                        Log.d("ON_MESSAGE_SENT", writableMessage.getTextBody());
                         mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_OUTGOING, message.getTimestamp(), currentUser.getObjectId(), message.getMessageId());
                     }
                 }
@@ -246,6 +338,78 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
     @Override
     public void onMessageDelivered(MessageClient client, MessageDeliveryInfo deliveryInfo) {
         Log.d(TAG, "onDelivered");
+    }
+
+
+
+
+
+    // For changing camera_btn img
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (data != null &&  resultCode == RESULT_OK && requestCode == MessagingActivity.ACTIVITY_SELECT_IMAGE) {
+            Uri selectedImageUri = data.getData();
+            setImgViewUpload(selectedImageUri);
+        }
+        else if(resultCode == RESULT_OK && requestCode == MessagingActivity.CAMERA_REQUEST) {
+            setImgViewUpload();
+        }
+    }
+
+    private File createTemporaryFile(String part, String ext) throws Exception
+    {
+        File tempDir= getExternalCacheDir();
+        return File.createTempFile(part, ext, tempDir);
+    }
+
+    private void getPictureFromCamera() {
+        Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+
+        File photo;
+        try
+        {
+            // place where to store camera taken picture
+            photo = this.createTemporaryFile("picture", ".jpg");
+            photo.delete();
+            mImageUri = Uri.fromFile(photo);
+            i.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
+            startActivityForResult(i, CAMERA_REQUEST);
+        }
+        catch(Exception e)
+        {
+            Log.v("nest", "Can't create file to take picture!");
+            Toast.makeText(this, "Please check SD card! Image shot is impossible!", Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void getPictureFromGallery() {
+        Intent i = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        startActivityForResult(i, ACTIVITY_SELECT_IMAGE);
+    }
+
+    public void setImgViewUpload(Uri uri) {
+        mImageUri = uri;
+
+        Picasso.with(this)
+                .load(mImageUri)
+                .resize(640, 480)
+                .centerInside()
+                .into(imgViewUpload);
+        imgPreviewRoot.setVisibility(View.VISIBLE);
+        postWithPicture = true;
+    }
+
+    public void setImgViewUpload() {
+
+        getContentResolver().notifyChange(mImageUri, null);
+
+        Picasso.with(this)
+                .load(mImageUri)
+                .resize(640, 480)
+                .centerInside()
+                .into(imgViewUpload);
+        imgPreviewRoot.setVisibility(View.VISIBLE);
+        postWithPicture = true;
     }
 
     @Override
