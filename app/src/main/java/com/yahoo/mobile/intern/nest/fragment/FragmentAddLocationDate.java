@@ -7,14 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.activity.AddTaskActivity;
-import com.yahoo.mobile.intern.nest.dialog.DialogServiceTime;
 import com.yahoo.mobile.intern.nest.utils.Utils;
 
 import java.util.Calendar;
@@ -62,7 +61,42 @@ public class FragmentAddLocationDate extends Fragment {
     }
 
     @OnClick(R.id.btn_set_time) void setTime() {
-        new DialogServiceTime().show(getChildFragmentManager().beginTransaction(), "dialog");
+        //new DialogServiceTime().show(getChildFragmentManager().beginTransaction(), "dialog");
+        String[] array = new String[] {"平日","週末"};
+        String[] array1 = new String[] {"早上","下午","晚上"};
+
+        new MaterialDialog.Builder(getActivity())
+                .items(array1)
+                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        /**
+                         * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
+                         * returning false here won't allow the newly selected radio button to actually be selected.
+                         **/
+                        String str = txtTimeHolder.getText().toString();
+                        txtTimeHolder.setText(str + " "+text);
+                        activity.time = txtTimeHolder.getText().toString();
+                        return true;
+                    }
+                })
+                .positiveText("確認")
+                .show();
+        new MaterialDialog.Builder(getActivity())
+                .items(array)
+                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                    @Override
+                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        /**
+                         * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
+                         * returning false here won't allow the newly selected radio button to actually be selected.
+                         **/
+                        txtTimeHolder.setText(text);
+                        return true;
+                    }
+                })
+                .positiveText("確認")
+                .show();
     }
 
     @OnClick(R.id.btn_set_expiretime) void setExpireTimeBtnSetLocation() {
