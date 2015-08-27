@@ -50,8 +50,14 @@
                 android:layout_alignParentRight="true"
                 android:textColor="@android:color/white"
                 android:textSize="14sp"
-                android:text="Hello, how are you?"
-                />
+                android:text="Hello, how are you?" />
+            <ImageView
+                android:id="@+id/imgMessage"
+                android:paddingLeft="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
 
         </RelativeLayout>
     </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.yahoo.mobile.intern.nest.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
@@ -149,6 +150,11 @@ public class MainActivity extends AppCompatActivity {
                 if(path.contains("done")) {
                     fragmentTab = FragmentTab.newInstance(R.id.menu_catch_task, 2);
                 }
+            }
+            if(host.contains("im")) {
+                String senderId = path.substring(1);
+                Utils.gotoSpinnerActivity(this, senderId);
+                fragmentTab = FragmentTab.newInstance(R.id.menu_my_task);
             }
         }
         else {
