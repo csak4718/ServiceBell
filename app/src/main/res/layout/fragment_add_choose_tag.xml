@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
-
     <TextView
         android:text="@string/add_choose_tag_welcome"
         android:textSize="20sp"

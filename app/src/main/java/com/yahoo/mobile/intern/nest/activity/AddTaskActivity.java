@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,8 +16,6 @@ import com.parse.ParseObject;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.fragment.FragmentAddChooseCategory;
 import com.yahoo.mobile.intern.nest.fragment.FragmentAddContent;
@@ -27,7 +24,6 @@ import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.Utils;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.Date;
 
 public class AddTaskActivity extends AppCompatActivity {
@@ -75,6 +71,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 FragmentAddLocationDate fragment = (FragmentAddLocationDate)
                         getSupportFragmentManager().findFragmentById(R.id.frame_content);
                 fragment.txtLocationHolder.setText(address);
+                fragment.stLocation.setImageResource(R.drawable.check_blue);
             }
         }
         if (data != null &&  resultCode == RESULT_OK && requestCode == Common.ACTIVITY_SELECT_IMAGE) {

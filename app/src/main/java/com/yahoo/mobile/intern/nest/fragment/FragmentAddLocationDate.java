@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -30,11 +31,14 @@ public class FragmentAddLocationDate extends Fragment {
 
     private View mView;
     private AddTaskActivity activity;
-
+    private String str;
 
     @Bind(R.id.txt_location_holder) public TextView txtLocationHolder;
     @Bind(R.id.txt_time_holder) public TextView txtTimeHolder;
     @Bind(R.id.txt_expire_holder) public TextView txtExpireHolder;
+    @Bind(R.id.st_exptime)public ImageView stExptime;
+    @Bind(R.id.st_time)public ImageView stTime;
+    @Bind(R.id.st_location)public ImageView stLocation;
 
     @OnClick(R.id.btn_preview) void onClickPreview() {
 
@@ -62,36 +66,39 @@ public class FragmentAddLocationDate extends Fragment {
 
     @OnClick(R.id.btn_set_time) void setTime() {
         //new DialogServiceTime().show(getChildFragmentManager().beginTransaction(), "dialog");
-        String[] array = new String[] {"平日","週末"};
-        String[] array1 = new String[] {"早上","下午","晚上"};
+        String[] array = new String[] {"平日","週末","平日&週末"};
 
-        new MaterialDialog.Builder(getActivity())
-                .items(array1)
-                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        /**
-                         * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
-                         * returning false here won't allow the newly selected radio button to actually be selected.
-                         **/
-                        String str = txtTimeHolder.getText().toString();
-                        txtTimeHolder.setText(str + " "+text);
-                        activity.time = txtTimeHolder.getText().toString();
-                        return true;
-                    }
-                })
-                .positiveText("確認")
-                .show();
         new MaterialDialog.Builder(getActivity())
                 .items(array)
                 .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                        String[] array1 = new String[] {"早上","下午","晚上","都可以"};
                         /**
                          * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
                          * returning false here won't allow the newly selected radio button to actually be selected.
                          **/
-                        txtTimeHolder.setText(text);
+                        str = text.toString();
+
+                        new MaterialDialog.Builder(getActivity())
+                                .items(array1)
+                                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                                    @Override
+                                    public boolean onSelection(MaterialDialog dialog, View view, int which,
+                                                               CharSequence text) {
+                                        /**
+                                         * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
+                                         * returning false here won't allow the newly selected radio button to
+                                         * actually be selected.
+                                         **/
+                                        txtTimeHolder.setText(str + " " + text);
+                                        activity.time = txtTimeHolder.getText().toString();
+                                        stTime.setImageResource(R.drawable.check_blue);
+                                        return true;
+                                    }
+                                })
+                                .positiveText("確認").show();
+
                         return true;
                     }
                 })
@@ -117,7 +124,7 @@ public class FragmentAddLocationDate extends Fragment {
                         activity.expire = new Date(activity.mYear-1900, activity.mMonth, activity.mDay, activity.mHour, activity.mMinute);
                         Date current = new Date();
                         txtExpireHolder.setText(Utils.getRemainingTime(current, activity.expire));
-
+                        stExptime.setImageResource(R.drawable.check_blue);
                     }
                 }, activity.mHour, activity.mMinute, false);
         DatePickerDialog dpd = DatePickerDialog.newInstance(

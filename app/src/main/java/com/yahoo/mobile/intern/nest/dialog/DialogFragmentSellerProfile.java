@@ -127,7 +127,7 @@ public class DialogFragmentSellerProfile extends DialogFragment implements Sinch
         disableButton();
     }
     public void disableButton(){
-        if(type==Common.SELLER_NEW||type==Common.SELLER_ACCEPTED||type==Common.SELLER_ACCEPTED){
+        if(type==Common.SELLER_NEW||type==Common.SELLER_ACCEPTED||type==Common.SELLER_DONE){
             linearBtn.setVisibility(View.GONE);
         }
     }
