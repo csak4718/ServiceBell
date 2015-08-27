@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
@@ -134,17 +133,18 @@ public class Utils {
         Intent it = new Intent(activity, BSInfoSettingActivity.class);
         activity.startActivity(it);
     }
-    static public void gotoMyTaskActivity(Activity activity, String taskId) {
+    static public void gotoMyTaskActivity(Activity activity, String taskId, int type) {
         Intent it = new Intent(activity, MyTaskActivity.class);
+        it.putExtra(Common.EXTRA_TYPE, type);
         it.putExtra(Common.EXTRA_TASK_ID, taskId);
         //activity.startActivity(it);
-        activity.startActivityForResult(it,Common.REQUEST_MY_TASK);
+        activity.startActivityForResult(it, Common.REQUEST_MY_TASK);
     }
     static public void gotoCatchTaskActivity(Activity activity, String taskId, int state) {
         Intent it = new Intent(activity, CatchTaskActivity.class);
         it.putExtra(Common.EXTRA_TASK_ID, taskId);
         it.putExtra(Common.EXTRA_STATE, state);
-        activity.startActivity(it);
+        activity.startActivityForResult(it, Common.REQUEST_CATCH_TASK);
     }
     static public void gotoSellerProfileActivity(Activity activity, String userId, String taskId) {
         Intent it = new Intent(activity, SellerProfileActivity.class);

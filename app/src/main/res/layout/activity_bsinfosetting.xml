@@ -8,12 +8,14 @@
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:padding="10dp">
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/img_profile_pic"
                 android:layout_marginTop="30dp"
@@ -28,18 +30,6 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_vertical"
                 android:layout_marginBottom="20dp">
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/ic_like"/>
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/ic_like"/>
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/ic_like"/>
             </LinearLayout>
 
             <LinearLayout
@@ -54,18 +44,21 @@
                     android:layout_gravity="center_vertical|left"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_marginBottom="10dp"
-                    android:text="@string/info_setting_name" />
+                    android:text="@string/info_setting_name"
+                    android:textSize="18sp"
+                    android:textColor="@color/nest_blue_1"/>
                 <EditText
                     android:id="@+id/edt_setting_nickname"
                     android:singleLine="true"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/white"
+                    android:background="@drawable/round_edittext"
                     android:layout_gravity="bottom"
                     android:layout_marginBottom="20dp"
                     android:padding="5dp"
                     android:text="Fan Fan"
-                    android:hint="" />
+                    android:hint=""
+                    />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -73,18 +66,21 @@
                     android:layout_gravity="center_vertical|left"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_marginBottom="10dp"
-                    android:text="@string/info_setting_phone" />
+                    android:text="@string/info_setting_phone"
+                    android:textSize="18sp"
+                    android:textColor="@color/nest_blue_1"/>
                 <EditText
                     android:id="@+id/edt_phone"
                     android:singleLine="true"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
-                    android:background="@android:color/white"
+                    android:background="@drawable/round_edittext"
                     android:layout_gravity="bottom"
                     android:layout_marginBottom="20dp"
                     android:padding="5dp"
                     android:text="Fan Fan"
                     android:hint="" />
+
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -92,34 +88,19 @@
                     android:layout_gravity="center_vertical|left"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_marginBottom="10dp"
-                    android:text="Address" />
-                <EditText
-                    android:id="@+id/edt_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:background="@android:color/white"
-                    android:layout_gravity="bottom"
-                    android:layout_marginBottom="20dp"
-                    android:padding="5dp"
-                    android:text="Fan Fan"
-                    android:hint="" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|left"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_marginBottom="10dp"
-                    android:text="@string/info_setting_intro" />
+                    android:text="@string/info_setting_intro"
+                    android:textSize="18sp"
+                    android:textColor="@color/nest_blue_1"/>
                 <EditText
                     android:id="@+id/edt_others"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/white"
+                    android:background="@drawable/round_edittext"
                     android:layout_gravity="bottom"
                     android:layout_marginBottom="20dp"
                     android:padding="5dp"
                     android:text="Fan Fan"
+                    android:lines="4"
                     android:hint="" />
 
                 <TextView
@@ -127,13 +108,16 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|left"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_marginBottom="10dp"
-                    android:text="@string/info_setting_cat"/>
+                    android:layout_marginBottom="18sp"
+                    android:text="@string/info_setting_cat"
+                    android:textColor="@color/nest_blue_1"/>
+
                 <Spinner
                     android:id="@+id/spinner_category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    />
+                    android:textSize="18sp"
+                    android:layout_marginBottom="10dp"/>
 
                 <Button
                     android:id="@+id/btn_log_out"
@@ -141,12 +125,20 @@
                     android:textColor="@android:color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#44609D" />
+                    android:background="#44609D"
+                    android:visibility="gone"/>
+
+                <Button
+                    android:id="@+id/btn_confirm"
+                    android:text="確認"
+                    android:textColor="@android:color/black"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/roundbutton"/>
+
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
-
-
-
 </LinearLayout>

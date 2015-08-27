@@ -19,6 +19,7 @@ import com.parse.SaveCallback;
 import com.yahoo.mobile.intern.nest.event.AcceptTaskEvent;
 import com.yahoo.mobile.intern.nest.event.AcceptedUserEvent;
 import com.yahoo.mobile.intern.nest.event.CatchTaskEvent;
+import com.yahoo.mobile.intern.nest.event.CategoryEvent;
 import com.yahoo.mobile.intern.nest.event.DoneTaskEvent;
 import com.yahoo.mobile.intern.nest.event.FriendsEvent;
 import com.yahoo.mobile.intern.nest.event.MyDoneTaskEvent;
@@ -154,6 +155,14 @@ public class ParseUtils {
         ParseCloud.callFunctionInBackground("doneTask", params);
     }
 
+    static public void updateRating(ParseUser buyer, Float rating, int num){
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("buyerId",buyer.getObjectId());
+        params.put("rating",rating);
+        params.put("votenum",num);
+        ParseCloud.callFunctionInBackground("updateRating",params);
+    }
+
     static public void createChatConnection(ParseUser sender, ParseUser recipient){
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("senderId", sender.getObjectId());
@@ -234,6 +243,9 @@ public class ParseUtils {
                 if (profile.containsKey(Common.OBJECT_USER_OTHERS)) {
                     user.put(Common.OBJECT_USER_OTHERS, profile.get(Common.OBJECT_USER_OTHERS));
                 }
+                if (profile.containsKey(Common.OBJECT_USER_CATEGORY)){
+                    user.put(Common.OBJECT_USER_CATEGORY, profile.get(Common.OBJECT_USER_CATEGORY));
+                }
                 user.put(Common.OBJECT_USER_PROFILE_PIC, imgFile);
                 user.saveInBackground();
             }
@@ -299,4 +311,16 @@ public class ParseUtils {
         user.saveInBackground();
     }
 
+    static public void getCategoryList(){
+        ParseQuery<ParseObject> category = ParseQuery.getQuery(Common.OBJECT_CATEGORY);
+        category.orderByAscending(Common.OBJECT_CATEGORY_ID);
+        category.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> list, ParseException e) {
+                if(e == null) {
+                    EventBus.getDefault().post(new CategoryEvent(list));
+                }
+            }
+        });
+    }
 }

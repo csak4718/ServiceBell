@@ -32,6 +32,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
@@ -49,6 +50,7 @@ import butterknife.OnClick;
 public class MapsActivity extends AppCompatActivity
                         implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleMap.OnCameraChangeListener {
 
+    private ParseUser curUser;
     private double mLat, mLong;
     private boolean mGivenPinLocation;
     private boolean mShowRange;
@@ -79,6 +81,7 @@ public class MapsActivity extends AppCompatActivity
         setContentView(R.layout.activity_maps);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        curUser = ParseUser.getCurrentUser();
         mShowRange = getIntent().getBooleanExtra(Common.EXTRA_SEEKBAR,false);
         mGivenPinLocation = getIntent().getBooleanExtra(Common.EXTRA_HAS_PIN,false);
         if(mGivenPinLocation){
@@ -103,9 +106,11 @@ public class MapsActivity extends AppCompatActivity
                 .addApi(LocationServices.API)
                 .build();
 
-        mRadius = MIN_RADIUS;
+        mRadius = curUser.getInt(Common.OBJECT_USER_RADIUS)*MIN_RADIUS;
         drawCircleOnMap();
 
+        mRadiusTextView.setText("" + mRadius + " km");
+        mRadiusSeekBar.setProgress(mRadius);
         mRadiusSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -126,23 +131,21 @@ public class MapsActivity extends AppCompatActivity
             }
         });
 
-
-
-
-
     }
 
 
 
     @OnClick(R.id.btn_ok)
     void btnOk() {
-        //LatLng position = new LatLng(mCurLocation.getLatitude(),mCurLocation.getLongitude());//mMap.getCameraPosition().target;
+        LatLng position = new LatLng(mCurLocation.getLatitude(),mCurLocation.getLongitude());//mMap.getCameraPosition().target;
         if(mShowRange){
+            curUser.put(Common.OBJECT_USER_RADIUS, mRadius);
+            curUser.put(Common.OBJECT_USER_ADDRESS, mAddress.getText());
+            curUser.saveInBackground();
 
             mMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
                 @Override
                 public void onSnapshotReady(Bitmap bitmap) {
-
                     int h =bitmap.getHeight();
                     int w =bitmap.getWidth();
                     Bitmap cropBmp = Bitmap.createBitmap(bitmap, 0, (h-w)/2, w, w);
@@ -150,11 +153,8 @@ public class MapsActivity extends AppCompatActivity
 
                     String path = saveToInternalStorage(cropBmp);
 
-                    LatLng position = mMap.getCameraPosition().target;
                     Intent it = new Intent();
                     it.putExtra(Common.EXTRA_MAP_PATH, path);
-                    it.putExtra(Common.EXTRA_LOCATION, position);
-                    it.putExtra(Common.EXTRA_RADIUS, mRadius);
                     it.putExtra(Common.EXTRA_ADDRESS, mSearchView.getQuery().toString());
                     setResult(RESULT_OK, it);
                     finish();
@@ -162,10 +162,9 @@ public class MapsActivity extends AppCompatActivity
             });
         }
         else {
-            LatLng position = mMap.getCameraPosition().target;
             Intent it = new Intent();
-            it.putExtra(Common.EXTRA_LOCATION, position);
             it.putExtra(Common.EXTRA_ADDRESS, mSearchView.getQuery().toString());
+            it.putExtra(Common.EXTRA_LOCATION, position);
             setResult(RESULT_OK, it);
             finish();
         }
@@ -278,7 +277,6 @@ public class MapsActivity extends AppCompatActivity
             e.printStackTrace();
         }
         if (addresses != null && addresses.size() > 0) {
-
             mAddress.setText(addresses.get(0).getAddressLine(0));
             mSearchView.setQuery(addresses.get(0).getAddressLine(0), false);
         }
@@ -294,13 +292,9 @@ public class MapsActivity extends AppCompatActivity
 
         mRadiusCircle = mMap.addCircle(new CircleOptions()
                 .center(mMap.getCameraPosition().target)
-                .radius(mRadius)
                 .strokeWidth(0)
+                .radius(mRadius*1000)//km to meter
                 .fillColor(Color.argb(63, 0, 0, 255)));
-
-
-        getSupportFragmentManager().findFragmentById(R.id.map).getView().invalidate();
-
     }
 
 

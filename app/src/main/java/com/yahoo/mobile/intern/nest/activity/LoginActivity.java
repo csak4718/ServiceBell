@@ -68,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                             } else {
                                 Log.d("MyApp", "User logged in through Facebook!");
                                 Utils.gotoMainActivity(LoginActivity.this);
+                                finish();
                             }
 
                         }
@@ -127,11 +128,26 @@ public class LoginActivity extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
         super.onStop();
     }
+
+    private void gotoNextActivity() {
+        Intent it = getIntent();
+        if(it.getAction().equals("android.intent.action.VIEW")) {
+            Intent notiIntent = new Intent(this, MainActivity.class);
+            notiIntent.setData(it.getData());
+            startActivity(notiIntent);
+        }
+        else {
+            Utils.gotoMainActivity(this);
+        }
+        finish();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         getSupportActionBar().hide();
+        Utils.setStatusBarColor(this, getResources().getColor(R.color.nest_blue_4));
 
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
@@ -147,7 +163,7 @@ public class LoginActivity extends AppCompatActivity {
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    Utils.gotoMainActivity(LoginActivity.this);
+                    gotoNextActivity();
                 }
             }, 700);
         }

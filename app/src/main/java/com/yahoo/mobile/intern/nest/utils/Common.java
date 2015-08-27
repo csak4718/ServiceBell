@@ -16,7 +16,11 @@ public class Common {
     public final static int SELLER_ACCEPTED = 3;
     public final static int SELLER_DONE = 4;
 
+    public static final int CAMERA_REQUEST = 12345;
+    public static final int ACTIVITY_SELECT_IMAGE = 1234;
+
     public final static int REQUEST_MY_TASK = 4444;
+    public final static int REQUEST_CATCH_TASK = 4445;
 
     public final static String EXTRA_RADIUS = "map_radius";
     public final static String EXTRA_MAP_PATH = "map_path";
@@ -30,6 +34,7 @@ public class Common {
     public final static String EXTRA_HAS_PIN = "given_pin";
     public final static String EXTRA_LAT = "lat";
     public final static String EXTRA_LONG = "long";
+    public final static String EXTRA_TYPE = "type";
 
     /*
      Parse object
@@ -50,10 +55,12 @@ public class Common {
     public final static String OBJECT_USER_DONE_QUESTIONS = "doneQuestions";
     public final static String OBJECT_USER_PHONE = "phone";
     public final static String OBJECT_USER_ADDRESS = "address";
+    public final static String OBJECT_USER_CATEGORY = "category";
     public final static String OBJECT_USER_OTHERS = "others";
     public final static String OBJECT_USER_MAP_PIC = "map_pic";
     public final static String OBJECT_USER_ACCEPT="acceptTask";
     public final static String OBJECT_USER_RATING="rating";
+    public final static String OBJECT_USER_RATENUM = "votenum";
 
     public final static String OBJECT_QUESTION = "Question";
     public final static String OBJECT_QUESTION_USER = "user";
@@ -66,9 +73,12 @@ public class Common {
     public final static String OBJECT_QUESTION_ACCEPTED_USER = "acceptedUser";
     public final static String OBJECT_QUESTION_DONE_USER = "doneUser";
     public final static String OBJECT_QUESTION_CATEGORY = "category";
+    public final static String OBJECT_QUESTION_RATED = "rated";
+    public final static String OBJECT_QUESTION_PICTURE = "picture";
 
-    public final static String OBJECT_CATEGORY = "category";
+    public final static String OBJECT_CATEGORY = "Category";
     public final static String OBJECT_CATEGORY_TITLE = "title";
+    public final static String OBJECT_CATEGORY_ID = "cid";
 
     /*
      Cloud code function

@@ -21,11 +21,20 @@ public class FragmentTab extends Fragment {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
+    int mTab;
 
     static public FragmentTab newInstance(int id) {
         FragmentTab fragment = new FragmentTab();
         Bundle args = new Bundle();
         args.putInt("id", id);
+        fragment.setArguments(args);
+        return fragment;
+    }
+    static public FragmentTab newInstance(int id, int tab) {
+        FragmentTab fragment = new FragmentTab();
+        Bundle args = new Bundle();
+        args.putInt("id", id);
+        args.putInt("tab", tab);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,6 +61,7 @@ public class FragmentTab extends Fragment {
 
         Bundle args = getArguments();
         int id = args.getInt("id");
+        mTab = args.getInt("tab", 0);
         adapter = new ViewPagerAdapter(getChildFragmentManager());
         setupAdapter(id);
     }
@@ -77,6 +87,8 @@ public class FragmentTab extends Fragment {
         viewPager.setAdapter(adapter);
         tabLayout = (TabLayout) view.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+
+        setCurrentPage(mTab);
     }
 
     public void setCurrentPage(int i ){

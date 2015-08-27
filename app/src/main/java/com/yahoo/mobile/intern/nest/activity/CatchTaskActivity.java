@@ -1,16 +1,27 @@
 package com.yahoo.mobile.intern.nest.activity;
 
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +38,7 @@ import com.parse.ParseRelation;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.sinch.android.rtc.SinchError;
+import com.squareup.picasso.Picasso;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.dialog.DialogFragmentSellerProfile;
 import com.yahoo.mobile.intern.nest.utils.Common;
@@ -52,13 +64,18 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     private ProgressDialog mSpinner;
     private ParseGeoPoint mGeoPoint;
 
+    private boolean result = false;
+
     //@Bind(R.id.btn_toMessaging) Button btnToMessaging;
     @Bind(R.id.txt_status) TextView txtStatus;
 
     @Bind(R.id.txt_title) TextView txtTitle;
     @Bind(R.id.txt_content) TextView txtContent;
     @Bind(R.id.txt_location) TextView txtAddress;
-    @Bind(R.id.task_op_banner) LinearLayout taskOpBanner;
+
+    @Bind(R.id.new_task_op_banner) LinearLayout newTaskOpBanner;
+    @Bind(R.id.done_task_op_banner) ViewGroup doneTaskOpBanner;
+
     @Bind(R.id.btn_accept_task) Button btnAcceptTask;
     @Bind(R.id.btn_reject_task) Button btnRejectTask;
     @Bind(R.id.img_user_pic)CircleImageView imgUserPic;
@@ -66,6 +83,8 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     @Bind(R.id.txt_task_time) TextView txtTaskTime;
     @Bind(R.id.txt_remaining) TextView txtRemaining;
     @Bind(R.id.txt_category) TextView txtCategory;
+    @Bind(R.id.img_view_question_picture)ImageView imgViewQuestionPicture;
+    @Bind(R.id.ratingBar)RatingBar ratingBar;
 
 
     @OnClick(R.id.img_addres) void viewMap(){
@@ -75,7 +94,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
 
     @OnClick(R.id.rlayout_buyer) void buyerProfile(){
         DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(CatchTaskActivity.this,buyer,mType);
-        dfsp.show(getSupportFragmentManager(),"buyerInfo");
+        dfsp.show(getSupportFragmentManager(), "buyerInfo");
     }
 
     @OnClick(R.id.btn_reject_task) void rejectTask() {
@@ -97,8 +116,8 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
 
     @OnClick(R.id.btn_accept_task) void acceptTask() {
 
-        taskOpBanner.setVisibility(View.GONE);
-        Snackbar.make(findViewById(android.R.id.content), "你接了一個任務", Snackbar.LENGTH_LONG)
+        newTaskOpBanner.setVisibility(View.GONE);
+        Snackbar.make(findViewById(android.R.id.content), "你接了一個任務", Snackbar.LENGTH_SHORT)
                 .show();
         ParseUser user = ParseUser.getCurrentUser();
         ParseRelation<ParseObject> catchRelation = user.getRelation(Common.OBJECT_USER_CATCH_QUESTIONS);
@@ -117,6 +136,17 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         Map<String, Object> params = new HashMap<String, Object>();
         params.put(Common.CLOUD_NOTIFY_ACCEPT_BUYERID, mTask.getParseUser(Common.OBJECT_QUESTION_USER).getObjectId());
         ParseCloud.callFunctionInBackground(Common.CLOUD_NOTIFY_ACCEPT, params);
+
+        newTaskOpBanner.setVisibility(View.GONE);
+        doneTaskOpBanner.setVisibility(View.VISIBLE);
+
+        result = true;
+
+    }
+    @OnClick(R.id.btn_chat) void chat() {
+
+    }
+    @OnClick(R.id.btn_cancel_accept) void cancelAccept() {
 
     }
 
@@ -161,6 +191,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
                 txtTitle.setText(title);
                 txtContent.setText(content);
                 txtCategory.setText(category);
+                ratingBar.setRating(buyer.getNumber(Common.OBJECT_USER_RATING).floatValue());
 
                 Date expire = task.getDate(Common.OBJECT_QUESTION_EXPIRE_DATE);
                 Date current = new Date();
@@ -168,6 +199,43 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
                 txtAddress.setText(task.getString(Common.OBJECT_QUESTION_ADDRESS));
 
                 mGeoPoint = task.getParseGeoPoint(Common.OBJECT_QUESTION_PIN);
+                ParseFile questionPicture = task.getParseFile(Common.OBJECT_QUESTION_PICTURE);
+                if(questionPicture != null) {
+                    imgViewQuestionPicture.setVisibility(View.VISIBLE);
+                    Picasso.with(CatchTaskActivity.this).load(questionPicture.getUrl())
+                            .into(imgViewQuestionPicture);
+                    imgViewQuestionPicture.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            final Dialog dialog = new Dialog(CatchTaskActivity.this);
+                            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                            dialog.setContentView(R.layout.dialog_image);
+
+                            WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                            lp.copyFrom(dialog.getWindow().getAttributes());
+                            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                            lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+
+
+                            Bitmap bmp = ((BitmapDrawable) imgViewQuestionPicture.getDrawable())
+                                    .getBitmap();
+
+                            ImageView picture = (ImageView) dialog.findViewById(R.id.img_view_dialog_picture);
+                            ImageButton btnClose = (ImageButton) dialog.findViewById(R.id.img_btn_close);
+                            btnClose.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialog.dismiss();
+                                }
+                            });
+                            picture.setImageBitmap(bmp);
+                            dialog.show();
+                            dialog.getWindow().setAttributes(lp);
+                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor
+                                    ("#80000000")));
+                        }
+                    });
+                }
             }
         });
     }
@@ -175,13 +243,15 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     private void setupLayoutForType() {
         switch (mType) {
             case Common.SELLER_NEW:
-                taskOpBanner.setVisibility(View.VISIBLE);
+                newTaskOpBanner.setVisibility(View.VISIBLE);
                 txtStatus.setText("等待中");
                 break;
             case Common.SELLER_ACCEPTED:
+                doneTaskOpBanner.setVisibility(View.VISIBLE);
                 txtStatus.setText("洽談中");
                 break;
             case Common.SELLER_DONE:
+                doneTaskOpBanner.setVisibility(View.VISIBLE);
                 txtStatus.setText("已成交");
                 break;
         }
@@ -201,8 +271,6 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         mType = getIntent().getIntExtra(Common.EXTRA_STATE, Common.SELLER_NEW);
 
         setupLayoutForType();
-
-
         setupTask();
 
     }
@@ -269,6 +337,9 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
         int id = item.getItemId();
 
         if(id == android.R.id.home) {
+            Intent ret = new Intent();
+            ret.putExtra("result", result);
+            setResult(RESULT_OK, ret);
             finish();
         }
 

@@ -1,5 +1,6 @@
 package com.yahoo.mobile.intern.nest.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
@@ -125,14 +126,41 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("1234", "22344");
+
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
         setupActionBar();
         setupDrawer();
 
-        fragmentTab = FragmentTab.newInstance(R.id.menu_my_task);
+        Intent it = getIntent();
+        if(it != null && it.getData() != null) {
+            Uri uri = it.getData();
+            String host = uri.getHost();
+            String path = uri.getPath();
+            Log.d("fatminmin", host);
+            if(host.contains("buyer")) {
+                fragmentTab = FragmentTab.newInstance(R.id.menu_my_task);
+            }
+            if(host.contains("seller")) {
+                Utils.setSellerColor(this);
+                if(path.contains("new")) {
+                    fragmentTab = FragmentTab.newInstance(R.id.menu_catch_task, 0);
+                }
+                if(path.contains("done")) {
+                    fragmentTab = FragmentTab.newInstance(R.id.menu_catch_task, 2);
+                }
+            }
+            if(host.contains("im")) {
+                String senderId = path.substring(1);
+                Utils.gotoSpinnerActivity(this, senderId);
+                fragmentTab = FragmentTab.newInstance(R.id.menu_my_task);
+            }
+        }
+        else {
+            fragmentTab = FragmentTab.newInstance(R.id.menu_my_task);
+        }
+
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_content, fragmentTab)
                 .commit();
@@ -170,7 +198,16 @@ public class MainActivity extends AppCompatActivity {
             if (data!=null){
                 Boolean result=data.getBooleanExtra("result",false);
                 Log.d("test",result.toString());
-                if (result == true){
+                if (result){
+                    fragmentTab.setCurrentPage(1);
+                    fragmentTab.refreshAllTab();
+                }
+            }
+        }
+        if (requestCode == Common.REQUEST_CATCH_TASK) {
+            if(data != null) {
+                Boolean result=data.getBooleanExtra("result",false);
+                if(result) {
                     fragmentTab.setCurrentPage(1);
                     fragmentTab.refreshAllTab();
                 }
