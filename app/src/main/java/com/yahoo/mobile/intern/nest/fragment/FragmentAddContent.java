@@ -58,7 +58,7 @@ public class FragmentAddContent extends Fragment {
             Utils.makeToast(activity, "問題內容一定要填喔");
             return;
         }
-
+        
         if (imgViewUpload.getDrawable()!=null){
             activity.image = ((BitmapDrawable) imgViewUpload.getDrawable()).getBitmap();
         }
