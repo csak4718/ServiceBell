@@ -144,7 +144,7 @@
         </activity>
         <activity
             android:name=".activity.MessagingActivity"
-            android:label="@string/title_activity_messaging" >
+            android:label="即時洽談" >
         </activity>
         <activity
             android:name=".activity.CatchTaskActivity"

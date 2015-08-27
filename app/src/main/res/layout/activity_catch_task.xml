@@ -1,13 +1,14 @@
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@android:color/white">
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="60dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
         android:background="@android:color/white">
 
         <LinearLayout
@@ -71,7 +72,6 @@
         android:id="@+id/new_task_op_banner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
         android:layout_alignParentBottom="true"
         android:visibility="gone"
         tools:visibility="visible"
@@ -105,7 +105,6 @@
         android:id="@+id/done_task_op_banner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
         android:layout_alignParentBottom="true"
         android:visibility="gone"
         tools:visibility="visible"
@@ -135,4 +134,4 @@
             android:textColor="@android:color/black"
             android:layout_margin="5dp"/>
     </LinearLayout>
-</RelativeLayout>
+</LinearLayout>
