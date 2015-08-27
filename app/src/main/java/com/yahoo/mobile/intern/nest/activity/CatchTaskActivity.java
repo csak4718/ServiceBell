@@ -55,7 +55,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 
 public class CatchTaskActivity extends BaseActivity implements SinchService.StartFailedListener {
-
     private int mType;
 
     private ParseObject mTask;
@@ -85,7 +84,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     @Bind(R.id.txt_category) TextView txtCategory;
     @Bind(R.id.img_view_question_picture)ImageView imgViewQuestionPicture;
     @Bind(R.id.ratingBar)RatingBar ratingBar;
-
+    @Bind(R.id.btn_chat) Button btnChat;
 
     @OnClick(R.id.img_addres) void viewMap(){
         Utils.gotoMapsActivityCurLocation(this, new LatLng(mGeoPoint.getLatitude(), mGeoPoint.getLongitude()));
@@ -93,7 +92,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
 
 
     @OnClick(R.id.rlayout_buyer) void buyerProfile(){
-        DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(CatchTaskActivity.this,buyer,mType);
+        DialogFragmentSellerProfile dfsp = DialogFragmentSellerProfile.newInstance(CatchTaskActivity.this, buyer, mType);
         dfsp.show(getSupportFragmentManager(), "buyerInfo");
     }
 
@@ -144,7 +143,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
 
     }
     @OnClick(R.id.btn_chat) void chat() {
-
+        btnToMessagingClicked();
     }
     @OnClick(R.id.btn_cancel_accept) void cancelAccept() {
 
