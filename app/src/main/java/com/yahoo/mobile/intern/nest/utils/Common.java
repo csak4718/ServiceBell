@@ -60,6 +60,7 @@ public class Common {
     public final static String OBJECT_USER_MAP_PIC = "map_pic";
     public final static String OBJECT_USER_ACCEPT="acceptTask";
     public final static String OBJECT_USER_RATING="rating";
+    public final static String OBJECT_USER_RATENUM = "votenum";
 
     public final static String OBJECT_QUESTION = "Question";
     public final static String OBJECT_QUESTION_USER = "user";
@@ -72,6 +73,7 @@ public class Common {
     public final static String OBJECT_QUESTION_ACCEPTED_USER = "acceptedUser";
     public final static String OBJECT_QUESTION_DONE_USER = "doneUser";
     public final static String OBJECT_QUESTION_CATEGORY = "category";
+    public final static String OBJECT_QUESTION_RATED = "rated";
     public final static String OBJECT_QUESTION_PICTURE = "picture";
 
     public final static String OBJECT_CATEGORY = "Category";

@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.RatingBar;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -35,6 +36,7 @@ import com.yahoo.mobile.intern.nest.adapter.AcceptedUserAdapter;
 import com.yahoo.mobile.intern.nest.dialog.ConfirmDialog;
 import com.yahoo.mobile.intern.nest.dialog.DeleteDialogFragment;
 import com.yahoo.mobile.intern.nest.dialog.DialogFragmentSellerProfile;
+import com.yahoo.mobile.intern.nest.dialog.RatingDialog;
 import com.yahoo.mobile.intern.nest.event.AcceptedUserEvent;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.ParseUtils;
@@ -51,13 +53,13 @@ import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.ConfirmDialogListener, DeleteDialogFragment.DeleteDialogListener {
+public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.ConfirmDialogListener, DeleteDialogFragment.DeleteDialogListener, RatingDialog.RatingDialogListener {
 
     private String taskId;
     private ParseObject mTask;
     private int mType;
     private ParseGeoPoint mGeoPoint;
-
+    private Boolean rated;
     private ParseUser doneUser;
 
     private AcceptedUserAdapter mAdapter;
@@ -71,6 +73,7 @@ public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.C
     @Bind(R.id.txt_remaining) TextView txtRemaining;
     @Bind(R.id.txt_status) TextView txtStatus;
     @Bind(R.id.txt_category) TextView txtCategory;
+    @Bind(R.id.ratingBar)RatingBar ratingBar;
 
     @Bind(R.id.new_task_section) ViewGroup newTaskSection;
     @Bind(R.id.done_task_section) ViewGroup doneTaskSection;
@@ -92,7 +95,12 @@ public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.C
     }
 
     @OnClick(R.id.btn_rate) void rate() {
-
+        if (rated==null||rated==false){
+            RatingDialog rd = new RatingDialog();
+            rd.show(getSupportFragmentManager(),"RatingDialog");
+        }else{
+            Utils.makeToast(this, "zzZZ");
+        }
     }
 
     void doneTaskShowSellerProfile() {
@@ -113,6 +121,8 @@ public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.C
                     String time = task.getString(Common.OBJECT_QUESTION_TIME);
                     String category = task.getString(Common.OBJECT_QUESTION_CATEGORY);
 
+                    rated = task.getBoolean(Common.OBJECT_QUESTION_RATED);
+
                     txtTitle.setText(title);
                     txtContent.setText(content);
                     txtTaskTime.setText(time);
@@ -128,16 +138,16 @@ public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.C
 
                     setupAcceptedSellers();
                     // task is not done
-                    if(mType == Common.BUYER_NEW) {
+                    if (mType == Common.BUYER_NEW) {
                         txtStatus.setText("等待中");
                         ParseUtils.getTaskAcceptedUser(task);
-                    }
-                    else {
+                    } else {
                         txtStatus.setText("已成交");
                         ParseUser seller = task.getParseUser(Common.OBJECT_QUESTION_DONE_USER);
                         try {
                             seller = seller.fetch();
                             doneUser = seller;
+                            ratingBar.setRating(doneUser.getNumber(Common.OBJECT_USER_RATING).floatValue());
                             txtName.setText(seller.getString(Common.OBJECT_USER_NICK));
 
                             ParseFile imgFile = seller.getParseFile(Common.OBJECT_USER_PROFILE_PIC);
@@ -206,9 +216,11 @@ public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.C
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DialogFragmentSellerProfile dfsp;
                 if (mTask.getParseUser(Common.OBJECT_QUESTION_DONE_USER) != null) {
-                    dfsp = DialogFragmentSellerProfile.newInstance(MyTaskActivity.this, mList.get(position),mType);
-                }else{
-                    dfsp = DialogFragmentSellerProfile.newInstance(MyTaskActivity.this, mList.get(position),mType);
+                    dfsp = DialogFragmentSellerProfile.newInstance(MyTaskActivity.this, mList.get
+                            (position), mType);
+                } else {
+                    dfsp = DialogFragmentSellerProfile.newInstance(MyTaskActivity.this, mList.get
+                            (position), mType);
                 }
                 dfsp.show(getSupportFragmentManager(), "Profile");
             }
@@ -311,5 +323,27 @@ public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.C
     public void onFinishConfirmDialog(String inputText, ParseUser seller) {
         Log.d("asd", inputText);
         closeAuction(seller);
+    }
+
+    @Override
+    public void onFinishDialog(Float rating) {
+        upDateRating(rating);
+    }
+    public void upDateRating(Float rating){
+        mTask.put(Common.OBJECT_QUESTION_RATED, true);
+        mTask.saveInBackground();
+        Float curRating = doneUser.getNumber(Common.OBJECT_USER_RATING).floatValue();
+        Number num = doneUser.getNumber(Common.OBJECT_USER_RATENUM);
+        final int rateNum;
+        if (num==null) {
+            rateNum = 0;
+        }else{
+            rateNum = num.intValue();
+        }
+        final Float update = (curRating*rateNum+rating)/(rateNum+1);
+        doneUser.put(Common.OBJECT_USER_RATING, update);
+        doneUser.put(Common.OBJECT_USER_RATENUM, rateNum);
+        ratingBar.setRating(update);
+        doneUser.saveInBackground();
     }
 }
