@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical">
     <ImageView
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="10dp"
         android:id="@+id/img_cat"
         android:src="@drawable/dog"
         android:layout_width="24dp"

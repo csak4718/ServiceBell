@@ -1,6 +1,7 @@
 package com.yahoo.mobile.intern.nest.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,15 @@ public class CategoryAdapter extends BaseAdapter {
         mContext = context;
         mInflater = LayoutInflater.from(mContext);
         mList = list;
-        mResourceList = Arrays.asList(R.drawable.house,R.drawable.car,R.drawable.beauty,R.drawable.baby,R.drawable.dog,R.drawable.other);
+        mResourceList = Arrays.asList(
+                R.drawable.house,
+                R.drawable.car,
+                R.drawable.beauty,
+                R.drawable.baby,
+                R.drawable.dog,
+                R.drawable.car,
+                R.drawable.other);
+        Log.d("CA","OnCreate");
     }
 
     static class ViewHolder {
@@ -69,7 +78,6 @@ public class CategoryAdapter extends BaseAdapter {
         else {
             holder = (ViewHolder) convertView.getTag();
         }
-
         ParseObject item = mList.get(position);
         holder.mTitle.setText(item.getString(Common.OBJECT_CATEGORY_TITLE));
         holder.imgCat.setImageResource(mResourceList.get(position));

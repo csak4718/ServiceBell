@@ -80,7 +80,7 @@ public class FragmentAddLocationDate extends Fragment {
                          **/
                         str = text.toString();
 
-                        new MaterialDialog.Builder(getActivity())
+                        MaterialDialog md = new MaterialDialog.Builder(getActivity())
                                 .items(array1)
                                 .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                                     @Override
