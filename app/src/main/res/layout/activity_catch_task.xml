@@ -39,6 +39,7 @@
                 android:layout_toRightOf="@id/img_user_pic"/>
 
             <RatingBar
+                android:isIndicator="true"
                 android:scaleX=".8"
                 android:scaleY=".8"
                 android:transformPivotX="0dp"

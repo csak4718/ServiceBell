@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +40,6 @@ import com.parse.SaveCallback;
 import com.sinch.android.rtc.SinchError;
 import com.squareup.picasso.Picasso;
 import com.yahoo.mobile.intern.nest.R;
-import com.yahoo.mobile.intern.nest.adapter.CatchTaskAdapter;
 import com.yahoo.mobile.intern.nest.dialog.DialogFragmentSellerProfile;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.Utils;
@@ -84,6 +84,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     @Bind(R.id.txt_remaining) TextView txtRemaining;
     @Bind(R.id.txt_category) TextView txtCategory;
     @Bind(R.id.img_view_question_picture)ImageView imgViewQuestionPicture;
+    @Bind(R.id.ratingBar)RatingBar ratingBar;
 
 
     @OnClick(R.id.img_addres) void viewMap(){
@@ -190,6 +191,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
                 txtTitle.setText(title);
                 txtContent.setText(content);
                 txtCategory.setText(category);
+                ratingBar.setRating(buyer.getNumber(Common.OBJECT_USER_RATING).floatValue());
 
                 Date expire = task.getDate(Common.OBJECT_QUESTION_EXPIRE_DATE);
                 Date current = new Date();
