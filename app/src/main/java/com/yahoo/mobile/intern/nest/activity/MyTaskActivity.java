@@ -1,6 +1,7 @@
 package com.yahoo.mobile.intern.nest.activity;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -16,10 +17,12 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.RatingBar;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.parse.DeleteCallback;
@@ -30,6 +33,7 @@ import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.sinch.android.rtc.SinchError;
 import com.squareup.picasso.Picasso;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.adapter.AcceptedUserAdapter;
@@ -53,7 +57,8 @@ import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.ConfirmDialogListener, DeleteDialogFragment.DeleteDialogListener, RatingDialog.RatingDialogListener {
+public class MyTaskActivity extends BaseActivity implements ConfirmDialog.ConfirmDialogListener, DeleteDialogFragment.DeleteDialogListener, RatingDialog.RatingDialogListener, SinchService.StartFailedListener {
+    private ProgressDialog mSpinner;
 
     private String taskId;
     private ParseObject mTask;
@@ -61,6 +66,7 @@ public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.C
     private ParseGeoPoint mGeoPoint;
     private Boolean rated;
     private ParseUser doneUser;
+
 
     private AcceptedUserAdapter mAdapter;
     private List<ParseUser> mList;
@@ -79,6 +85,7 @@ public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.C
     @Bind(R.id.done_task_section) ViewGroup doneTaskSection;
     @Bind(R.id.done_task_section2) ViewGroup doneTaskSection2;
     @Bind(R.id.img_view_question_picture)ImageView imgViewQuestionPicture;
+    @Bind(R.id.btn_chat) Button btnChat;
     /*
       Done user field
      */
@@ -91,7 +98,7 @@ public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.C
     }
 
     @OnClick(R.id.btn_chat) void chat() {
-
+        chatClick();
     }
 
     @OnClick(R.id.btn_rate) void rate() {
@@ -100,6 +107,54 @@ public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.C
             rd.show(getSupportFragmentManager(),"RatingDialog");
         }else{
             Utils.makeToast(this, "已經評分過了");
+        }
+    }
+
+    @Override
+    protected void onServiceConnected(){
+        btnChat.setEnabled(true);
+        getSinchServiceInterface().setStartListener(this);
+    }
+
+    @Override
+    protected void onPause(){
+        if(mSpinner!=null){
+            mSpinner.dismiss();
+        }
+        super.onPause();
+    }
+
+    // implements SinchService.StartFailedListener functions
+    @Override
+    public void onStartFailed(SinchError error) {
+        Toast.makeText(this, error.toString(), Toast.LENGTH_LONG).show();
+        if (mSpinner != null) {
+            mSpinner.dismiss();
+        }
+    }
+
+    @Override
+    public void onStarted() {
+        Utils.gotoMessagingActivity(this, doneUser.getObjectId());
+    }
+
+    private void showSpinner() {
+        mSpinner = new ProgressDialog(this);
+        mSpinner.setTitle("Logging in");
+        mSpinner.setMessage("Please wait...");
+        mSpinner.show();
+    }
+
+
+    private void chatClick(){
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        String userName = currentUser.getObjectId();
+        if (!getSinchServiceInterface().isStarted()){
+            getSinchServiceInterface().startClient(userName);
+            showSpinner();
+        }
+        else {
+            Utils.gotoMessagingActivity(MyTaskActivity.this, doneUser.getObjectId());
         }
     }
 
@@ -249,6 +304,8 @@ public class MyTaskActivity extends AppCompatActivity implements ConfirmDialog.C
 
         setContentView(R.layout.activity_my_new_task);
         ButterKnife.bind(this);
+        btnChat.setEnabled(false);
+
         mListView.setExpanded(true);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
