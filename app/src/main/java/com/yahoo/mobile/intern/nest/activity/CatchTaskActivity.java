@@ -39,7 +39,6 @@ import com.parse.SaveCallback;
 import com.sinch.android.rtc.SinchError;
 import com.squareup.picasso.Picasso;
 import com.yahoo.mobile.intern.nest.R;
-import com.yahoo.mobile.intern.nest.adapter.CatchTaskAdapter;
 import com.yahoo.mobile.intern.nest.dialog.DialogFragmentSellerProfile;
 import com.yahoo.mobile.intern.nest.utils.Common;
 import com.yahoo.mobile.intern.nest.utils.Utils;
@@ -87,7 +86,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
 
 
     @OnClick(R.id.img_addres) void viewMap(){
-        Utils.gotoMapsActivityCurLocation(this, new LatLng(mGeoPoint.getLatitude(), mGeoPoint.getLongitude()));
+        Utils.gotoMapsActivityCurLocation(this, new LatLng(mGeoPoint.getLatitude(), mGeoPoint.getLongitude()), txtTitle.getText().toString());
     }
 
 

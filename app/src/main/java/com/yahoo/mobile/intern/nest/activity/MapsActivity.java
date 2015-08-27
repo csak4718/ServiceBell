@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -28,10 +29,12 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
@@ -49,7 +52,7 @@ import butterknife.OnClick;
 
 public class MapsActivity extends AppCompatActivity
                         implements LocationListener, GoogleApiClient.ConnectionCallbacks, GoogleMap.OnCameraChangeListener {
-
+    private String mTaskTitle;
     private ParseUser curUser;
     private double mLat, mLong;
     private boolean mGivenPinLocation;
@@ -69,6 +72,7 @@ public class MapsActivity extends AppCompatActivity
     @Bind(R.id.txt_address_above_pin) TextView mAddress;
     @Bind(R.id.txt_radius) TextView mRadiusTextView;
     @Bind(R.id.layout_range_seek_bar) LinearLayout mSeekBarLayout;
+    @Bind(R.id.img_pin) ImageView mImgPin;
 
     private Location mCurLocation;
 
@@ -80,6 +84,7 @@ public class MapsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        ButterKnife.bind(this);
 
         curUser = ParseUser.getCurrentUser();
         mShowRange = getIntent().getBooleanExtra(Common.EXTRA_SEEKBAR,false);
@@ -87,10 +92,13 @@ public class MapsActivity extends AppCompatActivity
         if(mGivenPinLocation){
             mLat = getIntent().getDoubleExtra(Common.EXTRA_LAT, 0);
             mLong = getIntent().getDoubleExtra(Common.EXTRA_LONG, 0);
+            mTaskTitle = getIntent().getStringExtra(Common.EXTRA_TITLE);
+
+            mImgPin.setVisibility(View.GONE);
+            mAddress.setVisibility(View.GONE);
+
         }
 
-
-        ButterKnife.bind(this);
         if(!mShowRange) {
             mRadiusSeekBar.setVisibility(View.GONE);
             mSeekBarLayout.setVisibility(View.GONE);
@@ -138,8 +146,9 @@ public class MapsActivity extends AppCompatActivity
     @OnClick(R.id.btn_ok)
     void btnOk() {
         LatLng position = new LatLng(mCurLocation.getLatitude(),mCurLocation.getLongitude());//mMap.getCameraPosition().target;
+
         if(mShowRange){
-            curUser.put(Common.OBJECT_USER_RADIUS, mRadius);
+            curUser.put(Common.OBJECT_USER_RADIUS,  mRadius);
             curUser.put(Common.OBJECT_USER_ADDRESS, mAddress.getText());
             curUser.saveInBackground();
 
@@ -234,7 +243,13 @@ public class MapsActivity extends AppCompatActivity
      */
     private void setUpMap() {
         mMap.setOnCameraChangeListener(this);
-//        mMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+        if(mGivenPinLocation) {
+            mMap.addMarker(new MarkerOptions()
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_pin))
+                    .position(new LatLng(mLat, mLong))
+                    .title(mTaskTitle))
+                    .showInfoWindow();
+        }
     }
 
     @Override
@@ -246,8 +261,13 @@ public class MapsActivity extends AppCompatActivity
         if(mGivenPinLocation) {
 
             LatLng latLng = new LatLng(mLat, mLong);
-            Log.d("map",""+latLng);
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
+
+            Location location = new Location("dummyprovider");
+            location.setLatitude(mLat);
+            location.setLongitude(mLong);
+            mCurLocation = location;
+
         }
         else {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
