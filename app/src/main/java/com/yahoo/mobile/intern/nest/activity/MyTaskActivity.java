@@ -94,7 +94,7 @@ public class MyTaskActivity extends BaseActivity implements ConfirmDialog.Confir
 
 
     @OnClick(R.id.img_addres) void viewMap() {
-        Utils.gotoMapsActivityCurLocation(this, new LatLng(mGeoPoint.getLatitude(), mGeoPoint.getLongitude()));
+        Utils.gotoMapsActivityCurLocation(this, new LatLng(mGeoPoint.getLatitude(), mGeoPoint.getLongitude()), txtTitle.getText().toString());
     }
 
     @OnClick(R.id.btn_chat) void chat() {
