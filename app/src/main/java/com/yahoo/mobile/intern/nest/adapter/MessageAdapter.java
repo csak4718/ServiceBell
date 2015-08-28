@@ -52,7 +52,7 @@ public class MessageAdapter extends BaseAdapter {
     private List<Date> mDateTime;
     private List<String> mSenderId;
     private List<Boolean> isPictureList;
-    private List<Bitmap> bitMapList;
+//    private List<Bitmap> bitMapList;
     private Activity messageActivity;
 
     private Set<String> messageIdSet;
@@ -68,7 +68,7 @@ public class MessageAdapter extends BaseAdapter {
         mDateTime = new ArrayList<>();
         mSenderId = new ArrayList<>();
         isPictureList = new ArrayList<>();
-        bitMapList = new ArrayList<>();
+//        bitMapList = new ArrayList<>();
         messageIdSet = new HashSet<>();
         mFormatter = new SimpleDateFormat("HH:mm");
     }
@@ -87,41 +87,41 @@ public class MessageAdapter extends BaseAdapter {
             if (hasPic.equals("T")){
                 Log.d("is PICTURE", writableMessage.getTextBody());
                 isPictureList.add(true); // is picture message
-
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
-                query.whereContainedIn("messageId", Arrays.asList(messageId, Common.TEMP_MESSAGE_ID));
-                query.findInBackground(new FindCallback<ParseObject>() {
-                    public void done(List<ParseObject> messageList, ParseException e) {
-                        if (e == null) {
-                            ParseFile msgImage = (ParseFile) messageList.get(0).get("picture");
-                            msgImage.getDataInBackground(new GetDataCallback() {
-                                @Override
-                                public void done(byte[] bytes, ParseException err) {
-                                    if (err == null) {
-                                        // bytes has the bytes for the msgImage
-                                        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0,
-                                                bytes.length);
-                                        if (bmp != null) {
-                                            bitMapList.add(bmp);
-                                            notifyDataSetChanged();
-                                        }
-                                    } else {
-                                        // something went wrong
-                                    }
-                                }
-                            });
-
-                        } else {
-                            Log.d("score", "Error: " + e.getMessage());
-                        }
-                    }
-                });
+                notifyDataSetChanged();
+//                ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
+//                query.whereContainedIn("messageId", Arrays.asList(messageId, Common.TEMP_MESSAGE_ID));
+//                query.findInBackground(new FindCallback<ParseObject>() {
+//                    public void done(List<ParseObject> messageList, ParseException e) {
+//                        if (e == null) {
+//                            ParseFile msgImage = (ParseFile) messageList.get(0).get("picture");
+//                            msgImage.getDataInBackground(new GetDataCallback() {
+//                                @Override
+//                                public void done(byte[] bytes, ParseException err) {
+//                                    if (err == null) {
+//                                        // bytes has the bytes for the msgImage
+//                                        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0,
+//                                                bytes.length);
+//                                        if (bmp != null) {
+//                                            bitMapList.add(bmp);
+//                                            notifyDataSetChanged();
+//                                        }
+//                                    } else {
+//                                        // something went wrong
+//                                    }
+//                                }
+//                            });
+//
+//                        } else {
+//                            Log.d("score", "Error: " + e.getMessage());
+//                        }
+//                    }
+//                });
             }
             else {
                 Log.d("is TEXT", writableMessage.getTextBody());
                 isPictureList.add(false); // is text message
-                Bitmap bmp = BitmapFactory.decodeResource(messageActivity.getResources(), R.drawable.ic_add_black_24dp);
-                bitMapList.add(bmp);
+//                Bitmap bmp = BitmapFactory.decodeResource(messageActivity.getResources(), R.drawable.ic_add_black_24dp);
+//                bitMapList.add(bmp);
                 notifyDataSetChanged();
             }
 
@@ -180,7 +180,7 @@ public class MessageAdapter extends BaseAdapter {
 
         if (isPicture){
             txtMessage.setVisibility(View.GONE);
-            imgMessage.setImageBitmap(bitMapList.get(i));
+//            imgMessage.setImageBitmap(bitMapList.get(i));
             imgMessage.setVisibility(View.VISIBLE);
         }
         else {

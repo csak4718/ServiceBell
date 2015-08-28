@@ -244,6 +244,14 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
         if(postWithPicture) {
             bitmap = ((BitmapDrawable) imgViewUpload.getDrawable()).getBitmap();
 //            +mImageUri.toURL();
+            try{
+                URI mImageURI =new URI(mImageUri.toString());
+
+            }
+            catch (URISyntaxException e){
+                Log.d("URI", "URISyntaxException");
+            }
+
             textBody = "T";
         }
         else {
