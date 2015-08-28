@@ -119,11 +119,10 @@ public class MessageAdapter extends BaseAdapter {
             else {
                 Log.d("is TEXT", writableMessage.getTextBody());
                 isPictureList.add(false); // is text message
-                Bitmap bmp = BitmapFactory.decodeResource(messageActivity.getResources(), R.drawable.app_icon);
+                Bitmap bmp = BitmapFactory.decodeResource(messageActivity.getResources(), R.drawable.ic_add_black_24dp);
                 bitMapList.add(bmp);
                 notifyDataSetChanged();
             }
-
 
         }
     }

@@ -298,7 +298,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
                                 err.printStackTrace();
                             }
                         } else {
-                            Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.app_icon);
+                            Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_add_black_24dp);
                             ByteArrayOutputStream stream = new ByteArrayOutputStream();
                             bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                             byte[] bytearray = stream.toByteArray();
