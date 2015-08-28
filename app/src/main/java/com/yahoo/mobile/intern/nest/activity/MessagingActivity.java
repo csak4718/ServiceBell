@@ -42,7 +42,9 @@ import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 
@@ -50,6 +52,12 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
 import de.hdodenhof.circleimageview.CircleImageView;
+
+
+import java.net.URI;
+import java.net.URL;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 
 public class MessagingActivity extends BaseActivity implements MessageClientListener {
 
@@ -235,6 +243,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
 
         if(postWithPicture) {
             bitmap = ((BitmapDrawable) imgViewUpload.getDrawable()).getBitmap();
+//            +mImageUri.toURL();
             textBody = "T";
         }
         else {
@@ -245,6 +254,12 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
             Toast.makeText(this, "No text message or picture uri string", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        Date temporaryDate=new Date(1111);
+
+        WritableMessage writableMessage = new WritableMessage(recipientObjectId, textBody);
+
+        mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_OUTGOING, temporaryDate, currentUser.getObjectId(), Common.TEMP_MESSAGE_ID);
 
         getSinchServiceInterface().sendMessage(recipientObjectId, textBody);
         mTxtTextBody.setText("");
@@ -314,7 +329,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
 
                         ParseUtils.instantMessageNotification(currentUser, recipient);
 //                        Log.d("ON_MESSAGE_SENT", writableMessage.getTextBody());
-                        mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_OUTGOING, message.getTimestamp(), currentUser.getObjectId(), message.getMessageId());
+//                        mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_OUTGOING, message.getTimestamp(), currentUser.getObjectId(), message.getMessageId());
                     }
                 }
             }

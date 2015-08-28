@@ -31,6 +31,7 @@ import com.yahoo.mobile.intern.nest.utils.Common;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -74,7 +75,7 @@ public class MessageAdapter extends BaseAdapter {
 
     public void addMessage(WritableMessage msg, int direction, Date dateTime, String senderId, String messageId) {
         if(!messageIdSet.contains(messageId)){
-            messageIdSet.add(messageId);
+            if (!messageId.equals(Common.TEMP_MESSAGE_ID)) messageIdSet.add(messageId);
 
             String hasPic = msg.getTextBody().substring(0, 1);
             String text = msg.getTextBody().substring(1);
@@ -88,7 +89,7 @@ public class MessageAdapter extends BaseAdapter {
                 isPictureList.add(true); // is picture message
 
                 ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
-                query.whereEqualTo("messageId", messageId);
+                query.whereContainedIn("messageId", Arrays.asList(messageId, Common.TEMP_MESSAGE_ID));
                 query.findInBackground(new FindCallback<ParseObject>() {
                     public void done(List<ParseObject> messageList, ParseException e) {
                         if (e == null) {
