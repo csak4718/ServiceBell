@@ -246,7 +246,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
 //            +mImageUri.toURL();
             try{
                 URI mImageURI =new URI(mImageUri.toString());
-
+//                TODO: send image by IM
             }
             catch (URISyntaxException e){
                 Log.d("URI", "URISyntaxException");
