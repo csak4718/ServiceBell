@@ -13,11 +13,10 @@
 
     <ImageView
         android:id="@+id/img_pin"
-        android:layout_width="36dp"
-        android:layout_height="48dp"
-        android:scaleType="fitXY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:src="@drawable/map_pin"/>
+        android:src="@drawable/ic_map_pin"/>
 
 
     <TextView

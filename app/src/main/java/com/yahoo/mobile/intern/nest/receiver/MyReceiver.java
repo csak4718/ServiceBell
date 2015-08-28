@@ -39,9 +39,9 @@ public class MyReceiver extends ParsePushBroadcastReceiver {
 
             Uri uri = Uri.parse("nest://");
             if (json.has("uri"))
-                uri = (Uri)json.get("uri");
+                uri = Uri.parse(json.getString("uri"));
+            Log.d("uri",""+uri);
 
-            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, 0);
             generateNotification(context, title, uri, content);
 
         } catch (JSONException e) {
@@ -52,7 +52,7 @@ public class MyReceiver extends ParsePushBroadcastReceiver {
     private void generateNotification(Context context, String title, Uri uri, String contentText) {
         Log.d("incomingreceiver", "generate notification");
 
-        Intent intent = new Intent(Intent.ACTION_MAIN, uri, context, LoginActivity.class);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri, context, LoginActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -63,7 +63,8 @@ public class MyReceiver extends ParsePushBroadcastReceiver {
                 .setContentText(contentText)
                 .setPriority(Notification.PRIORITY_MAX)
                 .setVisibility(Notification.VISIBILITY_PUBLIC)
-                .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000});
+                .setVibrate(new long[]{1000,1000,1000})
+                .setDefaults(Notification.DEFAULT_SOUND);
 
         mBuilder.setContentIntent(contentIntent);
         mNotificationManager.notify(1, mBuilder.build());
