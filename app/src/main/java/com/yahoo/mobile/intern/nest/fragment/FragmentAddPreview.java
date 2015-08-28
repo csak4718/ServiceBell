@@ -69,40 +69,41 @@ public class FragmentAddPreview extends Fragment {
         Date current = new Date();
         txtRemaining.setText(Utils.getRemainingTime(current, activity.expire));
 
+        if(activity.image != null) {
+            imgViewQuestionPicture.setVisibility(View.VISIBLE);
+            imgViewQuestionPicture.setImageBitmap(activity.image);
+            imgViewQuestionPicture.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final Dialog dialog = new Dialog(getActivity());
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.dialog_image);
 
-        imgViewQuestionPicture.setVisibility(View.VISIBLE);
-        imgViewQuestionPicture.setImageBitmap(activity.image);
-        imgViewQuestionPicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Dialog dialog = new Dialog(getActivity());
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.setContentView(R.layout.dialog_image);
-
-                WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
-                lp.copyFrom(dialog.getWindow().getAttributes());
-                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-                lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+                    WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                    lp.copyFrom(dialog.getWindow().getAttributes());
+                    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                    lp.height = WindowManager.LayoutParams.MATCH_PARENT;
 
 
-                Bitmap bmp = ((BitmapDrawable) imgViewQuestionPicture.getDrawable())
-                        .getBitmap();
+                    Bitmap bmp = ((BitmapDrawable) imgViewQuestionPicture.getDrawable())
+                            .getBitmap();
 
-                ImageView picture = (ImageView) dialog.findViewById(R.id.img_view_dialog_picture);
-                ImageButton btnClose = (ImageButton) dialog.findViewById(R.id.img_btn_close);
-                btnClose.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        dialog.dismiss();
-                    }
-                });
-                picture.setImageBitmap(bmp);
-                dialog.show();
-                dialog.getWindow().setAttributes(lp);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor
-                        ("#80000000")));
-            }
-        });
+                    ImageView picture = (ImageView) dialog.findViewById(R.id.img_view_dialog_picture);
+                    ImageButton btnClose = (ImageButton) dialog.findViewById(R.id.img_btn_close);
+                    btnClose.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    picture.setImageBitmap(bmp);
+                    dialog.show();
+                    dialog.getWindow().setAttributes(lp);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor
+                            ("#80000000")));
+                }
+            });
+        }
 
         return mView;
     }

@@ -152,7 +152,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
 
 
     private void setupBuyerProfile(ParseUser buyer) {
-        txtUserName.setText((String) buyer.get(Common.OBJECT_USER_FB_NAME));
+        txtUserName.setText((String) buyer.get(Common.OBJECT_USER_NICK));
         ParseFile imgFile = buyer.getParseFile(Common.OBJECT_USER_PROFILE_PIC);
         imgFile.getDataInBackground(new GetDataCallback() {
             @Override
