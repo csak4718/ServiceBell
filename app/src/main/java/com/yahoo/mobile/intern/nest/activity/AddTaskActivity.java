@@ -71,6 +71,7 @@ public class AddTaskActivity extends AppCompatActivity {
                 FragmentAddLocationDate fragment = (FragmentAddLocationDate)
                         getSupportFragmentManager().findFragmentById(R.id.frame_content);
                 fragment.txtLocationHolder.setText(address);
+                fragment.stLocation.setImageResource(R.drawable.check_blue);
             }
         }
         if (data != null &&  resultCode == RESULT_OK && requestCode == Common.ACTIVITY_SELECT_IMAGE) {
