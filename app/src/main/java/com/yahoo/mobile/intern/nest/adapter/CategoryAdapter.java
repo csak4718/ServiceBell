@@ -35,7 +35,7 @@ public class CategoryAdapter extends BaseAdapter {
         mList = list;
         mResourceList = Arrays.asList(
                 R.drawable.house,
-                R.drawable.car,
+                R.drawable.water,
                 R.drawable.beauty,
                 R.drawable.baby,
                 R.drawable.dog,
