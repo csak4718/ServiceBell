@@ -133,6 +133,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
          Use cloud code to notify buyer
          */
         Map<String, Object> params = new HashMap<String, Object>();
+        params.put(Common.CLOUD_NOTIFY_ACCEPT_SENDERNAME, user.getString(Common.OBJECT_USER_NICK));
         params.put(Common.CLOUD_NOTIFY_ACCEPT_BUYERID, mTask.getParseUser(Common.OBJECT_QUESTION_USER).getObjectId());
         ParseCloud.callFunctionInBackground(Common.CLOUD_NOTIFY_ACCEPT, params);
 
