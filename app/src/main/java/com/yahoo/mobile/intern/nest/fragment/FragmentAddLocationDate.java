@@ -9,12 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 import com.wdullaer.materialdatetimepicker.time.RadialPickerLayout;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.activity.AddTaskActivity;
+import com.yahoo.mobile.intern.nest.dialog.DateDialog;
 import com.yahoo.mobile.intern.nest.utils.Utils;
 
 import java.util.Calendar;
@@ -65,45 +65,7 @@ public class FragmentAddLocationDate extends Fragment {
     }
 
     @OnClick(R.id.btn_set_time) void setTime() {
-        //new DialogServiceTime().show(getChildFragmentManager().beginTransaction(), "dialog");
-        String[] array = new String[] {"平日","週末","平日&週末"};
-
-        new MaterialDialog.Builder(getActivity())
-                .items(array)
-                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
-                        String[] array1 = new String[] {"早上","下午","晚上","都可以"};
-                        /**
-                         * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
-                         * returning false here won't allow the newly selected radio button to actually be selected.
-                         **/
-                        str = text.toString();
-
-                        MaterialDialog md = new MaterialDialog.Builder(getActivity())
-                                .items(array1)
-                                .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
-                                    @Override
-                                    public boolean onSelection(MaterialDialog dialog, View view, int which,
-                                                               CharSequence text) {
-                                        /**
-                                         * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
-                                         * returning false here won't allow the newly selected radio button to
-                                         * actually be selected.
-                                         **/
-                                        txtTimeHolder.setText(str + " " + text);
-                                        activity.time = txtTimeHolder.getText().toString();
-                                        stTime.setImageResource(R.drawable.check_blue);
-                                        return true;
-                                    }
-                                })
-                                .positiveText("確認").show();
-
-                        return true;
-                    }
-                })
-                .positiveText("確認")
-                .show();
+        new DateDialog().show(getFragmentManager(),"123");
     }
 
     @OnClick(R.id.btn_set_expiretime) void setExpireTimeBtnSetLocation() {
@@ -151,5 +113,9 @@ public class FragmentAddLocationDate extends Fragment {
         ButterKnife.bind(this, mView);
 
         return mView;
+    }
+    public void onDateDialogFinish(String str){
+        txtTimeHolder.setText(str);
+        stTime.setImageResource(R.drawable.check_blue);
     }
 }

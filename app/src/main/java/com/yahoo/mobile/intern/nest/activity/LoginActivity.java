@@ -109,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
         FbUtils.getFbProfilePicture(mFbId);
     }
     public void onEvent(final FbPictureEvent event) {
+        Log.d("fatminmin", "fuck3");
         ParseUser.getCurrentUser().put(Common.OBJECT_USER_FB_NAME, mNickName);
         Map<String,String> profile = new HashMap<String,String>();
         profile.put(Common.OBJECT_USER_NICK, mNickName);
