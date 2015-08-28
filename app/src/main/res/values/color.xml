@@ -65,4 +65,8 @@
         <item>@color/darkred</item>
     </integer-array>
 
+
+    <color name="radio_button_selected_color">#ff33b5e5</color>
+    <color name="radio_button_unselected_color">@android:color/transparent</color>
+
 </resources>

@@ -67,7 +67,6 @@ public class AddTaskActivity extends AppCompatActivity {
                 LatLng position = data.getParcelableExtra(Common.EXTRA_LOCATION);
                 mLocation = position;
                 address = data.getStringExtra(Common.EXTRA_ADDRESS);
-
                 FragmentAddLocationDate fragment = (FragmentAddLocationDate)
                         getSupportFragmentManager().findFragmentById(R.id.frame_content);
                 fragment.txtLocationHolder.setText(address);
