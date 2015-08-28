@@ -234,7 +234,7 @@ public class ParseUtils {
             user.put(Common.OBJECT_USER_PHONE, profile.get(Common.OBJECT_USER_PHONE));
         }
         if (profile.containsKey(Common.OBJECT_USER_OTHERS)) {
-            user.put(Common.OBJECT_USER_OTHERS, profile.get(Common.OBxJECT_USER_OTHERS));
+            user.put(Common.OBJECT_USER_OTHERS, profile.get(Common.OBJECT_USER_OTHERS));
         }
         if (profile.containsKey(Common.OBJECT_USER_CATEGORY)){
             user.put(Common.OBJECT_USER_CATEGORY, profile.get(Common.OBJECT_USER_CATEGORY));
