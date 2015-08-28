@@ -78,7 +78,7 @@
         android:layout_height="1dp"/>
     <Button
         android:id="@+id/btn_confirm"
-        android:text="Confirm"
+        android:text="確認"
         android:textColor="@color/nest_blue_4"
         android:background="@android:color/transparent"
         android:layout_width="match_parent"
