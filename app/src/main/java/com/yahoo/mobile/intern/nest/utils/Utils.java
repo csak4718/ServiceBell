@@ -107,11 +107,12 @@ public class Utils {
         context.startActivity(it);
     }
 
-    static public void gotoMapsActivityCurLocation(Activity activity, LatLng latlng) {
+    static public void gotoMapsActivityCurLocation(Activity activity, LatLng latlng, String locationTitle) {
         Intent it = new Intent(activity, MapsActivity.class);
         it.putExtra(Common.EXTRA_HAS_PIN, true);
         it.putExtra(Common.EXTRA_LAT, latlng.latitude);
         it.putExtra(Common.EXTRA_LONG, latlng.longitude);
+        it.putExtra(Common.EXTRA_TITLE, locationTitle);
         activity.startActivity(it);
     }
 

@@ -46,7 +46,10 @@ import java.util.Arrays;
 import java.util.List;
 
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class MessagingActivity extends BaseActivity implements MessageClientListener {
 
@@ -54,7 +57,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
     private MessageAdapter mMessageAdapter;
     private TextView recipientNickname;
     private EditText mTxtTextBody;
-    private Button mBtnSend;
+    private ImageButton mBtnSend;
     private ParseUser currentUser;
     private ParseUser recipient;
     private String recipientObjectId;
@@ -81,6 +84,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
         setContentView(R.layout.messaging);
         afterLoadHistory = false;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         recipientNickname = (TextView) findViewById(R.id.recipient_nickname);
 
         imgBtnCamera = (ImageButton) findViewById(R.id.img_btn_camera);
@@ -101,7 +105,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
         ListView messagesList = (ListView) findViewById(R.id.lstMessages);
         messagesList.setAdapter(mMessageAdapter);
 
-        mBtnSend = (Button) findViewById(R.id.btnSend);
+        mBtnSend = (ImageButton) findViewById(R.id.btnSend);
         mBtnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -294,7 +298,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
                                 err.printStackTrace();
                             }
                         } else {
-                            Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.app_icon);
+                            Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_add_black_24dp);
                             ByteArrayOutputStream stream = new ByteArrayOutputStream();
                             bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                             byte[] bytearray = stream.toByteArray();
