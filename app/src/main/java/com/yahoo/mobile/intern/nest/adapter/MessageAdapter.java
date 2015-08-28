@@ -16,14 +16,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 import com.sinch.android.rtc.messaging.WritableMessage;
 import com.squareup.picasso.Picasso;
 import com.yahoo.mobile.intern.nest.R;
+import com.yahoo.mobile.intern.nest.event.RecipientEvent;
+import com.yahoo.mobile.intern.nest.utils.Common;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,6 +35,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by dwkung on 8/17/15.
@@ -162,16 +168,16 @@ public class MessageAdapter extends BaseAdapter {
         }
 
         WritableMessage writableMessage = mWritableMessages.get(i).first;
-        String name = mSenderId.get(i);
+//        String name = mSenderId.get(i);
         boolean isPicture = isPictureList.get(i);
 
-        TextView txtSender = (TextView) convertView.findViewById(R.id.txtSender);
+//        final TextView txtSender = (TextView) convertView.findViewById(R.id.txtSender);
         TextView txtMessage = (TextView) convertView.findViewById(R.id.txtMessage);
         ImageView imgMessage = (ImageView) convertView.findViewById(R.id.imgMessage);
-        TextView txtDate = (TextView) convertView.findViewById(R.id.txtDate);
+//        TextView txtDate = (TextView) convertView.findViewById(R.id.txtDate);
+        final ImageView imgSender = (ImageView) convertView.findViewById(R.id.img_pic);
 
 
-        txtSender.setText(name);
         if (isPicture){
             txtMessage.setVisibility(View.GONE);
             imgMessage.setImageBitmap(bitMapList.get(i));
@@ -183,7 +189,28 @@ public class MessageAdapter extends BaseAdapter {
             txtMessage.setVisibility(View.VISIBLE);
         }
 
-        txtDate.setText(mFormatter.format(mDateTime.get(i)));
+//        txtDate.setText(mFormatter.format(mDateTime.get(i)));
+
+        ParseQuery<ParseUser> query = ParseUser.getQuery();
+        query.getInBackground(mSenderId.get(i), new GetCallback<ParseUser>() {
+            public void done(ParseUser sender, ParseException e) {
+                if (e == null) {
+                    // The query was successful.
+//                    txtSender.setText(sender.getString("nickname"));
+
+                    ParseFile imgFile = sender.getParseFile(Common.OBJECT_USER_PROFILE_PIC);
+                    Picasso.with(messageActivity)
+                            .load(imgFile.getUrl())
+                            .into(imgSender);
+
+
+                } else {
+                    // Something went wrong.
+                }
+            }
+        });
+
+
 
         return convertView;
     }
