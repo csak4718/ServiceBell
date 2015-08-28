@@ -55,6 +55,8 @@ public class MyReceiver extends ParsePushBroadcastReceiver {
         Intent intent = new Intent(Intent.ACTION_VIEW, uri, context, LoginActivity.class);
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
+
+        Uri ringUri = Uri.parse("android.resource://com.yahoo.mobile.intern.nest/raw/ding");
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setWhen(System.currentTimeMillis())
@@ -64,7 +66,7 @@ public class MyReceiver extends ParsePushBroadcastReceiver {
                 .setPriority(Notification.PRIORITY_MAX)
                 .setVisibility(Notification.VISIBILITY_PUBLIC)
                 .setVibrate(new long[]{1000,1000,1000})
-                .setDefaults(Notification.DEFAULT_SOUND);
+                .setSound(ringUri);
 
         mBuilder.setContentIntent(contentIntent);
         mNotificationManager.notify(1, mBuilder.build());
