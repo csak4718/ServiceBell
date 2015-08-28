@@ -217,6 +217,7 @@ public class ParseUtils {
     }
 
     static public void updateUserProfile(final Map<String,String> profile, final String mFbId, Bitmap profilePic) {
+        Log.d("fatminmin", "fuck4");
         final ParseUser user = ParseUser.getCurrentUser();
         user.put(Common.OBJECT_USER_FB_ID, mFbId);
         updateUserProfile(profile, profilePic);
@@ -244,36 +245,37 @@ public class ParseUtils {
     }
 
     static public void updateUserProfile(final Map<String,String> profile, Bitmap profilePic) {
+
+        Log.d("fatminmin", "fuck5");
+
         final ParseUser user = ParseUser.getCurrentUser();
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         profilePic.compress(Bitmap.CompressFormat.JPEG, 100, stream);
         byte[] bytearray= stream.toByteArray();
         final ParseFile imgFile = new ParseFile(user.getUsername() + "_profile.jpg", bytearray);
-        imgFile.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-
-                if (profile.containsKey(Common.OBJECT_USER_NICK)) {
-                    user.put(Common.OBJECT_USER_NICK, profile.get(Common.OBJECT_USER_NICK));
-                }
-                if (profile.containsKey(Common.OBJECT_USER_ADDRESS)) {
-                    user.put(Common.OBJECT_USER_ADDRESS, profile.get(Common.OBJECT_USER_ADDRESS));
-                }
-                if (profile.containsKey(Common.OBJECT_USER_PHONE)) {
-                    user.put(Common.OBJECT_USER_PHONE, profile.get(Common.OBJECT_USER_PHONE));
-                }
-                if (profile.containsKey(Common.OBJECT_USER_OTHERS)) {
-                    user.put(Common.OBJECT_USER_OTHERS, profile.get(Common.OBJECT_USER_OTHERS));
-                }
-                if (profile.containsKey(Common.OBJECT_USER_CATEGORY)){
-                    user.put(Common.OBJECT_USER_CATEGORY, profile.get(Common.OBJECT_USER_CATEGORY));
-                }
-
-                user.put(Common.OBJECT_USER_PROFILE_PIC, imgFile);
-                user.saveInBackground();
+        try {
+            imgFile.save();
+            if (profile.containsKey(Common.OBJECT_USER_NICK)) {
+                user.put(Common.OBJECT_USER_NICK, profile.get(Common.OBJECT_USER_NICK));
             }
-        });
+            if (profile.containsKey(Common.OBJECT_USER_ADDRESS)) {
+                user.put(Common.OBJECT_USER_ADDRESS, profile.get(Common.OBJECT_USER_ADDRESS));
+            }
+            if (profile.containsKey(Common.OBJECT_USER_PHONE)) {
+                user.put(Common.OBJECT_USER_PHONE, profile.get(Common.OBJECT_USER_PHONE));
+            }
+            if (profile.containsKey(Common.OBJECT_USER_OTHERS)) {
+                user.put(Common.OBJECT_USER_OTHERS, profile.get(Common.OBJECT_USER_OTHERS));
+            }
+            if (profile.containsKey(Common.OBJECT_USER_CATEGORY)){
+                user.put(Common.OBJECT_USER_CATEGORY, profile.get(Common.OBJECT_USER_CATEGORY));
+            }
+            user.put(Common.OBJECT_USER_PROFILE_PIC, imgFile);
+            user.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
     /*
      Misc
