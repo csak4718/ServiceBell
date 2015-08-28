@@ -87,7 +87,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     @Bind(R.id.btn_chat) Button btnChat;
 
     @OnClick(R.id.img_addres) void viewMap(){
-        Utils.gotoMapsActivityCurLocation(this, new LatLng(mGeoPoint.getLatitude(), mGeoPoint.getLongitude()));
+        Utils.gotoMapsActivityCurLocation(this, new LatLng(mGeoPoint.getLatitude(), mGeoPoint.getLongitude()), txtTitle.getText().toString());
     }
 
 

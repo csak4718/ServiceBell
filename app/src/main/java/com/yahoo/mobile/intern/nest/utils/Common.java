@@ -35,6 +35,7 @@ public class Common {
     public final static String EXTRA_LAT = "lat";
     public final static String EXTRA_LONG = "long";
     public final static String EXTRA_TYPE = "type";
+    public final static String EXTRA_TITLE = "title";
 
     /*
      Parse object

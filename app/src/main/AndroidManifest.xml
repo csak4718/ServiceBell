@@ -69,7 +69,7 @@
             </intent-filter>
         </receiver>
         <receiver
-            android:name="com.parse.ParsePushBroadcastReceiver"
+            android:name="com.yahoo.mobile.intern.nest.receiver.MyReceiver"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.parse.push.intent.RECEIVE" />
