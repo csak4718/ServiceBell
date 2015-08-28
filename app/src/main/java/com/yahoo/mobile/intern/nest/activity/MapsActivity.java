@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -57,7 +58,7 @@ public class MapsActivity extends AppCompatActivity
     private boolean mGivenPinLocation;
     private boolean mShowRange;
     static final int MIN_RADIUS = 1;
-    static final int MAP_ZOOM_LEVEL = 13;
+    static final int MAP_ZOOM_LEVEL = 14;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private LocationManager locationManager;
     private LocationRequest mLocationRequest;
@@ -136,6 +137,9 @@ public class MapsActivity extends AppCompatActivity
                 mRadius = MIN_RADIUS * (1 + progress);
                 mRadiusTextView.setText("" + mRadius + " km");
                 drawCircleOnMap();
+
+                LatLng latLng = mMap.getCameraPosition().target;
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, autoZoomLevel()));
             }
         });
 
@@ -274,6 +278,7 @@ public class MapsActivity extends AppCompatActivity
             mCurLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
             LatLng latLng = new LatLng(mCurLocation.getLatitude(), mCurLocation.getLongitude());
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, MAP_ZOOM_LEVEL));
+
         }
     }
 
@@ -371,7 +376,7 @@ public class MapsActivity extends AppCompatActivity
             fos = new FileOutputStream(mypath);
 
             // Use the compress method on the BitMap object to write image to the OutputStream
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 75, fos);
             fos.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -420,5 +425,26 @@ public class MapsActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private int autoZoomLevel() {
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+
+        double equatorLength = 40075004; // in meters
+        double widthInPixels = dm.widthPixels;
+        int densityDpi = (int)(dm.density * 160f);
+        double metersPerPixel = equatorLength / densityDpi;
+
+        int zoomLevel = 1;
+        while ((metersPerPixel * widthInPixels) > mRadius*1000) {
+            metersPerPixel /= 2;
+            zoomLevel++;
+        }
+        Log.d("auto zoom", "zoom level = "+zoomLevel+"mRadius="+mRadius);
+
+        zoomLevel = MAP_ZOOM_LEVEL-(mRadius-1)/3+2;
+        return zoomLevel;
     }
 }

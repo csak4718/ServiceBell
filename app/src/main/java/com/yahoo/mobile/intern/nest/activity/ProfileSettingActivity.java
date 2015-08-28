@@ -43,6 +43,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
     @Bind(R.id.img_map) ImageView mImgMap;
     @Bind(R.id.lt_map_setting) LinearLayout mSettingLayout;
     @Bind(R.id.txt_setting_address) TextView mAddressTextView;
+    @Bind(R.id.txt_setting_radius) TextView mRaiusTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,9 @@ public class ProfileSettingActivity extends AppCompatActivity {
 
         mAddress = user.getString(Common.OBJECT_USER_ADDRESS);
         if(mAddress != null)
-            mAddressTextView.setText(mAddress+mRadius);
+            mAddressTextView.setText(mAddress);
+
+        mRaiusTextView.setText(mRadius+" km");
 
 
        // ArrayAdapter<String> lunchList = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, serviceCategory);
