@@ -58,7 +58,7 @@ public class MyReceiver extends ParsePushBroadcastReceiver {
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.drawable.ic_stat_notification_icon)
+                .setSmallIcon(R.drawable.logo_2)
                 .setContentTitle(title)
                 .setContentText(contentText)
                 .setPriority(Notification.PRIORITY_MAX)
