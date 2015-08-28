@@ -138,7 +138,6 @@
                     android:background="@drawable/roundbutton"/>
 
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

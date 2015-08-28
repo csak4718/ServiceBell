@@ -87,7 +87,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
     @Bind(R.id.btn_chat) Button btnChat;
 
     @OnClick(R.id.img_addres) void viewMap(){
-        Utils.gotoMapsActivityCurLocation(this, new LatLng(mGeoPoint.getLatitude(), mGeoPoint.getLongitude()));
+        Utils.gotoMapsActivityCurLocation(this, new LatLng(mGeoPoint.getLatitude(), mGeoPoint.getLongitude()), txtTitle.getText().toString());
     }
 
 
@@ -133,6 +133,7 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
          Use cloud code to notify buyer
          */
         Map<String, Object> params = new HashMap<String, Object>();
+        params.put(Common.CLOUD_NOTIFY_ACCEPT_SENDERNAME, user.getString(Common.OBJECT_USER_NICK));
         params.put(Common.CLOUD_NOTIFY_ACCEPT_BUYERID, mTask.getParseUser(Common.OBJECT_QUESTION_USER).getObjectId());
         ParseCloud.callFunctionInBackground(Common.CLOUD_NOTIFY_ACCEPT, params);
 

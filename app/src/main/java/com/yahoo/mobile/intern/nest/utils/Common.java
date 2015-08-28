@@ -36,6 +36,7 @@ public class Common {
     public final static String EXTRA_LAT = "lat";
     public final static String EXTRA_LONG = "long";
     public final static String EXTRA_TYPE = "type";
+    public final static String EXTRA_TITLE = "title";
 
     /*
      Parse object
@@ -85,6 +86,7 @@ public class Common {
      Cloud code function
      */
     public final static String CLOUD_NOTIFY_ACCEPT = "notifySellerAccept";
+    public final static String CLOUD_NOTIFY_ACCEPT_SENDERNAME = "senderName";
     public final static String CLOUD_NOTIFY_ACCEPT_BUYERID = "buyerId";
 
     public final static String PATH_MAP = "map.png";

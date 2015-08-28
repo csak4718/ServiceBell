@@ -14,6 +14,7 @@ import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseUser;
+import com.squareup.picasso.Picasso;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.utils.Common;
 
@@ -93,7 +94,11 @@ public class AcceptedUserAdapter extends BaseAdapter {
         final ParseUser acceptedUser = mList.get(position);
         holder.txtName.setText(acceptedUser.getString(Common.OBJECT_USER_NICK));
         holder.ratingBar.setRating(acceptedUser.getNumber(Common.OBJECT_USER_RATING).floatValue());
-        displayUserParseImage(holder, acceptedUser);
+
+        ParseFile imgFile = acceptedUser.getParseFile(Common.OBJECT_USER_PROFILE_PIC);
+        Picasso.with(mContext)
+                .load(imgFile.getUrl())
+                .into(holder.imgPic);
 
         return convertView;
     }

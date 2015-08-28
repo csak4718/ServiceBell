@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:src="@drawable/dialog_community_pin"/>
+        android:src="@drawable/ic_map_pin"/>
 
 
     <TextView
@@ -26,6 +26,7 @@
             android:layout_above="@+id/img_pin"
             android:layout_marginBottom="10dp"
             android:layout_centerHorizontal="true"
+            android:padding="5dp"
             android:background="@color/white"/>
 
 
