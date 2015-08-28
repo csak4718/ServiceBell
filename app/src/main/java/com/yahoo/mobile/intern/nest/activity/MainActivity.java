@@ -23,7 +23,6 @@ import com.parse.ParseUser;
 import com.yahoo.mobile.intern.nest.R;
 import com.yahoo.mobile.intern.nest.fragment.FragmentTab;
 import com.yahoo.mobile.intern.nest.utils.Common;
-import com.yahoo.mobile.intern.nest.utils.ParseUtils;
 import com.yahoo.mobile.intern.nest.utils.Utils;
 
 import butterknife.Bind;
@@ -80,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
          setup header layout
          */
         ParseFile imgFile = ParseUser.getCurrentUser().getParseFile(Common.OBJECT_USER_PROFILE_PIC);
-        ParseUtils.displayParseImage(imgFile, imgProfile);
+        //ParseUtils.displayParseImage(imgFile, imgProfile);
         txtName.setText(ParseUser.getCurrentUser().getString(Common.OBJECT_USER_NICK));
 
     }

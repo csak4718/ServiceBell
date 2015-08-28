@@ -56,7 +56,7 @@ public class MyReceiver extends ParsePushBroadcastReceiver {
         PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
 
-        Uri ringUri = Uri.parse("android.resource://com.yahoo.mobile.intern.nest/raw/ding.mp3");
+        Uri ringUri = Uri.parse("android.resource://com.yahoo.mobile.intern.nest/raw/ding");
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setWhen(System.currentTimeMillis())
