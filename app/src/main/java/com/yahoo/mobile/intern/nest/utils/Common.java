@@ -63,6 +63,7 @@ public class Common {
     public final static String OBJECT_USER_ACCEPT="acceptTask";
     public final static String OBJECT_USER_RATING="rating";
     public final static String OBJECT_USER_RATENUM = "votenum";
+    public final static String OBJECT_USER_FIRST = "firstsentence";
 
     public final static String OBJECT_QUESTION = "Question";
     public final static String OBJECT_QUESTION_USER = "user";

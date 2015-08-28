@@ -12,21 +12,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <RadioButton
-            android:buttonTint="@drawable/button_test"
             android:id="@+id/normal"
             android:text="平日"
             android:textColor="@color/nest_black_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <RadioButton
-            android:buttonTint="@drawable/button_test"
             android:id="@+id/weekend"
             android:text="週末"
             android:textColor="@color/nest_black_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <RadioButton
-            android:buttonTint="@drawable/button_test"
             android:id="@+id/allweek"
             android:text="平日＆週末"
             android:textColor="@color/nest_black_2"
@@ -42,28 +39,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <RadioButton
-            android:buttonTint="@drawable/button_test"
             android:id="@+id/day"
             android:text="白天"
             android:textColor="@color/nest_black_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <RadioButton
-            android:buttonTint="@drawable/button_test"
             android:id="@+id/afternoon"
             android:text="下午"
             android:textColor="@color/nest_black_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <RadioButton
-            android:buttonTint="@drawable/button_test"
             android:id="@+id/night"
             android:text="晚上"
             android:textColor="@color/nest_black_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
         <RadioButton
-            android:buttonTint="@drawable/button_test"
             android:id="@+id/allday"
             android:text="都可"
             android:textColor="@color/nest_black_2"
@@ -78,7 +71,7 @@
         android:layout_height="1dp"/>
     <Button
         android:id="@+id/btn_confirm"
-        android:text="Confirm"
+        android:text="確認"
         android:textColor="@color/nest_blue_4"
         android:background="@android:color/transparent"
         android:layout_width="match_parent"

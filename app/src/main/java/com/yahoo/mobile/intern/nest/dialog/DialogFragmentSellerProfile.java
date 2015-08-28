@@ -99,11 +99,12 @@ public class DialogFragmentSellerProfile extends DialogFragment implements Sinch
     }
 
     public void getProfile(){
-        String nickName,phone, address, others ="";
+        String nickName,phone, address, others, first ="";
         nickName = user.getString(Common.OBJECT_USER_NICK);
         phone = user.getString(Common.OBJECT_USER_PHONE);
         address = user.getString(Common.OBJECT_USER_ADDRESS);
         others = user.getString(Common.OBJECT_USER_OTHERS);
+        first = user.getString(Common.OBJECT_USER_FIRST);
 
         ParseFile imgFile = user.getParseFile(Common.OBJECT_USER_PROFILE_PIC);
         ParseUtils.displayParseImage(imgFile, mImgProfilePic);
@@ -112,6 +113,7 @@ public class DialogFragmentSellerProfile extends DialogFragment implements Sinch
         if (phone == null || phone.equals("")) {txtPhone.setVisibility(View.GONE);}else{txtPhone.setText(phone);}
         if (others == null || others.equals("")){txtOthers.setVisibility(View.GONE);}else{txtOthers.setText(others);}
         ratingBar.setRating(user.getNumber(Common.OBJECT_USER_RATING).floatValue());
+        txtFirstSentence.setText(first);
         setCategory();
     }
     public void setupButton(){

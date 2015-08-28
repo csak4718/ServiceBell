@@ -115,6 +115,7 @@ public class FragmentAddLocationDate extends Fragment {
         return mView;
     }
     public void onDateDialogFinish(String str){
+        activity.time = str;
         txtTimeHolder.setText(str);
         stTime.setImageResource(R.drawable.check_blue);
     }
