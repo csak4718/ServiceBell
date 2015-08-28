@@ -70,7 +70,7 @@ public class BSInfoSettingActivity extends AppCompatActivity {
         profile.put(Common.OBJECT_USER_CATEGORY, mCategory.get(mCategorySpinner.getSelectedItemPosition()).getString(Common.OBJECT_CATEGORY_TITLE));
         profile.put(Common.OBJECT_USER_PHONE, mEdtPhone.getText().toString());
         profile.put(Common.OBJECT_USER_OTHERS, mEdtOthers.getText().toString());
-        ParseUtils.updateUserProfile(profile, profilePic);
+        ParseUtils.updateUserProfile(profile);
         finish();
         return;
     }

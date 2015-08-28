@@ -44,6 +44,7 @@ public class FbUtils {
         request.executeAsync();
     }
     static public void getFbProfilePicture(final String uid) {
+        Log.d("fatminmin", "fuck1");
         Runnable getPicRunnable = new Runnable() {
             @Override
             public void run() {
@@ -51,6 +52,7 @@ public class FbUtils {
                 try {
                     URL imageURL = new URL("https://graph.facebook.com/" + uid + "/picture?type=large");
                     bitmap = BitmapFactory.decodeStream(imageURL.openConnection().getInputStream());
+                    Log.d("fatminmin", "fuck2");
                     EventBus.getDefault().post(new FbPictureEvent(bitmap));
                 } catch (Exception e) {
                     e.printStackTrace();
