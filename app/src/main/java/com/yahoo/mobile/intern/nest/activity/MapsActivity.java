@@ -26,6 +26,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -58,7 +59,7 @@ public class MapsActivity extends AppCompatActivity
     private boolean mGivenPinLocation;
     private boolean mShowRange;
     static final int MIN_RADIUS = 1;
-    static final int MAP_ZOOM_LEVEL = 14;
+    static int MAP_ZOOM_LEVEL = 14;
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
     private LocationManager locationManager;
     private LocationRequest mLocationRequest;
@@ -116,6 +117,8 @@ public class MapsActivity extends AppCompatActivity
                 .build();
 
         mRadius = curUser.getInt(Common.OBJECT_USER_RADIUS)*MIN_RADIUS;
+        MAP_ZOOM_LEVEL = autoZoomLevel();
+
         drawCircleOnMap();
 
         mRadiusTextView.setText("" + mRadius + " km");
@@ -139,7 +142,10 @@ public class MapsActivity extends AppCompatActivity
                 drawCircleOnMap();
 
                 LatLng latLng = mMap.getCameraPosition().target;
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, autoZoomLevel()));
+
+
+                CameraUpdate zoom=CameraUpdateFactory.zoomTo(autoZoomLevel());
+                mMap.animateCamera(zoom);
             }
         });
 
@@ -360,7 +366,8 @@ public class MapsActivity extends AppCompatActivity
         protected void onPostExecute(Boolean found) {
             if (found) {
                 LatLng latLng = new LatLng(mCurLocation.getLatitude(), mCurLocation.getLongitude());
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, MAP_ZOOM_LEVEL));
+                CameraUpdate center= CameraUpdateFactory.newLatLng(latLng);
+                mMap.animateCamera(center);
             }
         }
     }
@@ -437,14 +444,12 @@ public class MapsActivity extends AppCompatActivity
         int densityDpi = (int)(dm.density * 160f);
         double metersPerPixel = equatorLength / densityDpi;
 
-        int zoomLevel = 1;
+        int zoomLevel = -3;
         while ((metersPerPixel * widthInPixels) > mRadius*1000) {
             metersPerPixel /= 2;
             zoomLevel++;
         }
         Log.d("auto zoom", "zoom level = "+zoomLevel+"mRadius="+mRadius);
-
-        zoomLevel = MAP_ZOOM_LEVEL-(mRadius-1)/3+2;
         return zoomLevel;
     }
 }
