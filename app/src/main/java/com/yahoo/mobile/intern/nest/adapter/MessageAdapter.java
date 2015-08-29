@@ -1,43 +1,31 @@
 package com.yahoo.mobile.intern.nest.adapter;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.parse.FindCallback;
 import com.parse.GetCallback;
-import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
-import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.sinch.android.rtc.messaging.WritableMessage;
 import com.squareup.picasso.Picasso;
 import com.yahoo.mobile.intern.nest.R;
-import com.yahoo.mobile.intern.nest.event.RecipientEvent;
 import com.yahoo.mobile.intern.nest.utils.Common;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by dwkung on 8/17/15.
@@ -190,14 +178,17 @@ public class MessageAdapter extends BaseAdapter {
         }
 
 //        txtDate.setText(mFormatter.format(mDateTime.get(i)));
-        if (!mSenderId.get(i).equals(ParseUser.getCurrentUser())) {
+        if (!mSenderId.get(i).equals(ParseUser.getCurrentUser().getObjectId())) {
+
+            final TextView txtName = (TextView) convertView.findViewById(R.id.txtName);
+
             ParseQuery<ParseUser> query = ParseUser.getQuery();
             query.getInBackground(mSenderId.get(i), new GetCallback<ParseUser>() {
                 public void done(ParseUser sender, ParseException e) {
                     if (e == null) {
                         // The query was successful.
 //                    txtSender.setText(sender.getString("nickname"));
-
+                        txtName.setText(sender.getString(Common.OBJECT_USER_NICK));
                         ParseFile imgFile = sender.getParseFile(Common.OBJECT_USER_PROFILE_PIC);
                         Picasso.with(messageActivity)
                                 .load(imgFile.getUrl())
