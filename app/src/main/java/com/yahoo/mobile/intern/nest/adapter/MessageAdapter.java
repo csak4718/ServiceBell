@@ -190,27 +190,26 @@ public class MessageAdapter extends BaseAdapter {
         }
 
 //        txtDate.setText(mFormatter.format(mDateTime.get(i)));
-
-        ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.getInBackground(mSenderId.get(i), new GetCallback<ParseUser>() {
-            public void done(ParseUser sender, ParseException e) {
-                if (e == null) {
-                    // The query was successful.
+        if (!mSenderId.get(i).equals(ParseUser.getCurrentUser())) {
+            ParseQuery<ParseUser> query = ParseUser.getQuery();
+            query.getInBackground(mSenderId.get(i), new GetCallback<ParseUser>() {
+                public void done(ParseUser sender, ParseException e) {
+                    if (e == null) {
+                        // The query was successful.
 //                    txtSender.setText(sender.getString("nickname"));
 
-                    ParseFile imgFile = sender.getParseFile(Common.OBJECT_USER_PROFILE_PIC);
-                    Picasso.with(messageActivity)
-                            .load(imgFile.getUrl())
-                            .into(imgSender);
+                        ParseFile imgFile = sender.getParseFile(Common.OBJECT_USER_PROFILE_PIC);
+                        Picasso.with(messageActivity)
+                                .load(imgFile.getUrl())
+                                .into(imgSender);
 
 
-                } else {
-                    // Something went wrong.
+                    } else {
+                        // Something went wrong.
+                    }
                 }
-            }
-        });
-
-
+            });
+        }
 
         return convertView;
     }

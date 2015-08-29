@@ -29,7 +29,7 @@
         android:transcriptMode="alwaysScroll"
         android:layout_above="@+id/relSendMessage"
         android:layout_below="@+id/relRecipient"
-        android:background="@drawable/bg_shadow"
+        android:background="@color/gray"
         android:padding="0dip"
         android:divider="@null"
         android:dividerHeight="0dp" android:stackFromBottom="true" tools:listitem="@layout/message_left"/>
