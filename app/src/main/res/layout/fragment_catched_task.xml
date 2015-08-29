@@ -14,6 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:dividerHeight="8dp"
+            android:background="@color/nest_black_2"
             android:padding="5dp"
             android:divider="@android:color/transparent"/>
 

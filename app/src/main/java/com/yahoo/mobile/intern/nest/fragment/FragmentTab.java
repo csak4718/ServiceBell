@@ -71,6 +71,14 @@ public class FragmentTab extends Fragment {
         setupAdapter(id);
         adapter.notifyDataSetChanged();
         tabLayout.setupWithViewPager(viewPager);
+
+        if(id == R.id.menu_catch_task) {
+            setTabColor(R.color.nest_black_4);
+
+        }
+        else if(id == R.id.menu_my_task) {
+            setTabColor(R.color.white);
+        }
     }
 
     @Nullable
@@ -94,4 +102,5 @@ public class FragmentTab extends Fragment {
     public void setCurrentPage(int i ){
         viewPager.setCurrentItem(i);
     }
+    public void setTabColor(int color) {tabLayout.setBackgroundColor(getResources().getColor(color));}
 }
