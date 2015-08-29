@@ -85,7 +85,7 @@
             android:gravity="center"
             android:text="我要提供服務"
             android:layout_gravity="center_horizontal"
-            android:background="@color/nest_blue_1"
+            android:background="@color/nest_blue_2"
             android:textColor="@android:color/black"
             android:layout_margin="5dp"/>
 
@@ -97,7 +97,7 @@
             android:gravity="center"
             android:text="無法提供服務"
             android:layout_gravity="center_horizontal"
-            android:background="@color/nest_blue_1"
+            android:background="@color/nest_blue_2"
             android:textColor="@android:color/black"
             android:layout_margin="5dp"/>
     </LinearLayout>
@@ -118,7 +118,7 @@
             android:gravity="center"
             android:text="洽談細節"
             android:layout_gravity="center_horizontal"
-            android:background="@color/nest_blue_1"
+            android:background="@color/nest_blue_2"
             android:textColor="@android:color/black"
             android:layout_margin="5dp"/>
 
@@ -130,7 +130,7 @@
             android:gravity="center"
             android:text="取消洽談"
             android:layout_gravity="center_horizontal"
-            android:background="@color/nest_blue_1"
+            android:background="@color/nest_blue_2"
             android:textColor="@android:color/black"
             android:layout_margin="5dp"/>
     </LinearLayout>

@@ -46,7 +46,7 @@
                     android:layout_marginBottom="10dp"
                     android:text="@string/info_setting_name"
                     android:textSize="18sp"
-                    android:textColor="@color/nest_blue_1"/>
+                    android:textColor="@color/nest_blue_2"/>
                 <EditText
                     android:id="@+id/edt_setting_nickname"
                     android:singleLine="true"
@@ -68,7 +68,7 @@
                     android:layout_marginBottom="10dp"
                     android:text="@string/info_setting_phone"
                     android:textSize="18sp"
-                    android:textColor="@color/nest_blue_1"/>
+                    android:textColor="@color/nest_blue_2"/>
                 <EditText
                     android:id="@+id/edt_phone"
                     android:singleLine="true"
@@ -90,7 +90,7 @@
                     android:layout_marginBottom="10dp"
                     android:text="@string/info_setting_intro"
                     android:textSize="18sp"
-                    android:textColor="@color/nest_blue_1"/>
+                    android:textColor="@color/nest_blue_2"/>
                 <EditText
                     android:id="@+id/edt_others"
                     android:layout_width="match_parent"
@@ -110,7 +110,7 @@
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_marginBottom="18sp"
                     android:text="@string/info_setting_cat"
-                    android:textColor="@color/nest_blue_1"/>
+                    android:textColor="@color/nest_blue_2"/>
 
                 <Spinner
                     android:id="@+id/spinner_category"

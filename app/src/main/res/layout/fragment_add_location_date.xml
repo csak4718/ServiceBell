@@ -35,7 +35,7 @@
             android:background="?android:attr/selectableItemBackground">
             <TextView
                 android:text="服務地點"
-                android:textColor="@color/nest_blue_4"
+                android:textColor="@color/nest_blue_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
@@ -83,7 +83,7 @@
             android:orientation="vertical">
             <TextView
                 android:text="服務日期與時段"
-                android:textColor="@color/nest_blue_4"
+                android:textColor="@color/nest_blue_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
@@ -129,7 +129,7 @@
             android:orientation="vertical">
             <TextView
                 android:text="服務受理結束日期"
-                android:textColor="@color/nest_blue_4"
+                android:textColor="@color/nest_blue_3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView

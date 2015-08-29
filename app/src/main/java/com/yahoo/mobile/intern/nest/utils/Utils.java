@@ -74,12 +74,12 @@ public class Utils {
      * Actionbar and statusbar setup
      */
     static public void setBuyerColor(AppCompatActivity activity) {
-        setActionBarColor(activity, activity.getResources().getColor(R.color.nest_blue_3));
-        setStatusBarColor(activity, activity.getResources().getColor(R.color.nest_blue_4));
+        setActionBarColor(activity, activity.getResources().getColor(R.color.nest_blue_2));
+        setStatusBarColor(activity, activity.getResources().getColor(R.color.nest_blue_3));
     }
     static public void setSellerColor(AppCompatActivity activity) {
-        setActionBarColor(activity, activity.getResources().getColor(R.color.nest_yellow_1));
-        setStatusBarColor(activity, activity.getResources().getColor(R.color.nest_yellow_2));
+        setActionBarColor(activity, activity.getResources().getColor(R.color.nest_blue_2));
+        setStatusBarColor(activity, activity.getResources().getColor(R.color.nest_blue_3));
     }
     static public void setActionBarColor(AppCompatActivity activity, int color) {
         activity.getSupportActionBar().setBackgroundDrawable(new ColorDrawable(color));

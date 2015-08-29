@@ -68,14 +68,14 @@
             android:layout_margin="10dp">
             <ImageView
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/check_blue"
+                android:src="@drawable/check"
                 android:layout_width="30dp"
                 android:layout_height="30dp" />
             <TextView
                 android:text="成交"
                 android:textSize="17sp"
                 android:textStyle="bold"
-                android:textColor="@color/nest_blue_3"
+                android:textColor="@color/nest_yellow_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 />

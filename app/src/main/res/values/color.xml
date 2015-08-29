@@ -41,11 +41,10 @@
     <color name="nest_yellow_4">#FABF2C</color>
 
 
-    <color name="nest_blue_alpha">#884CCFE0</color>
-    <color name="nest_blue_1">#4CCFE0</color>
-    <color name="nest_blue_2">#B1EAF1</color>
-    <color name="nest_blue_3">#4CCFE0</color>
-    <color name="nest_blue_4">#00ABC0</color>
+    <color name="nest_blue_alpha">#88B1EAF1</color>
+    <color name="nest_blue_1">#B1EAF1</color>
+    <color name="nest_blue_2">#4CCFE0</color>
+    <color name="nest_blue_3">#00ABC0</color>
     
     <color name="nest_y_1">#FFD000</color>
     <color name="nest_y_2">#EFBB01</color>
