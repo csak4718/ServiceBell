@@ -120,12 +120,14 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
         imgBtnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mTxtTextBody.setVisibility(View.GONE);
                 getPictureFromCamera();
             }
         });
         imgBtnPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mTxtTextBody.setVisibility(View.GONE);
                 getPictureFromGallery();
             }
         });
@@ -134,6 +136,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
             public void onClick(View v) {
                 postWithPicture = false;
                 imgPreviewRoot.setVisibility(View.GONE);
+                mTxtTextBody.setVisibility(View.VISIBLE);
             }
         });
 
@@ -241,22 +244,19 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
 
         if(postWithPicture) {
             bitmap = ((BitmapDrawable) imgViewUpload.getDrawable()).getBitmap();
-//            try{
-//                URI mImageURI =new URI(mImageUri.toString());
-//
-//            }
-//            catch (URISyntaxException e){
-//                Log.d("URI", "URISyntaxException");
-//            }
-
             textBody = "T";
         }
         else {
             textBody = "F" + mTxtTextBody.getText().toString();
         }
 
-        if (textBody.isEmpty()) {
-            Toast.makeText(this, "No text message or picture uri string", Toast.LENGTH_SHORT).show();
+        if ( (!postWithPicture) && textBody.substring(1).isEmpty() ) {
+            Toast.makeText(this, "No text message", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if ((!postWithPicture) && (textBody.substring(1).trim().length() == 0)) {
+            Toast.makeText(this, "All texts are whitespaces", Toast.LENGTH_SHORT).show();
             return;
         }
 

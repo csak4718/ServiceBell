@@ -19,7 +19,7 @@
     <RelativeLayout
         android:id="@+id/relSendMessage"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
         android:background="@android:color/white"
         android:paddingLeft="6dp"
         android:layout_alignParentBottom="true">
@@ -32,7 +32,7 @@
             android:layout_gravity="center_vertical"
             android:orientation="horizontal"
             android:layout_alignParentLeft="true"
-            android:layout_marginTop="5dp">
+            android:layout_marginTop="3dp">
             <ImageButton
                 android:id="@+id/img_btn_camera"
                 android:layout_width="30dp"
@@ -45,7 +45,6 @@
                 android:layout_width="30dp"
                 android:layout_height="25dp"
                 android:layout_margin="5dp"
-                android:visibility="gone"
                 android:background="@drawable/pictures"
                 android:layout_gravity="center_vertical"/>
 
@@ -76,14 +75,16 @@
             <ImageView
                 android:id="@+id/img_view_upload"
                 android:scaleType="centerCrop"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_marginTop="5dp" />
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="5dp"
+                android:layout_gravity="center_horizontal"
+                />
             <ImageButton
                 android:id="@+id/img_btn_preview_delete"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="35dp"
                 android:background="@drawable/photo_delete"
                 android:layout_gravity="right|top"/>
         </FrameLayout>
