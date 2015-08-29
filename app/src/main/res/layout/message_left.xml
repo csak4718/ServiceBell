@@ -49,6 +49,7 @@
         android:layout_below="@+id/txtName"
         android:layout_alignLeft="@+id/txtName"
         android:layout_alignStart="@+id/txtName"
+        android:scaleType="centerCrop"
         android:visibility="gone"/>
 
 

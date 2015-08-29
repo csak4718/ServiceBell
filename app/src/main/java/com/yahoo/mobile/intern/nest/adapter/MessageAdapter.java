@@ -1,15 +1,22 @@
 package com.yahoo.mobile.intern.nest.adapter;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +31,7 @@ import com.parse.ParseUser;
 import com.sinch.android.rtc.messaging.WritableMessage;
 import com.squareup.picasso.Picasso;
 import com.yahoo.mobile.intern.nest.R;
+import com.yahoo.mobile.intern.nest.activity.MessagingActivity;
 import com.yahoo.mobile.intern.nest.utils.Common;
 
 import java.text.SimpleDateFormat;
@@ -199,7 +207,7 @@ public class MessageAdapter extends BaseAdapter {
 
 //        final TextView txtSender = (TextView) convertView.findViewById(R.id.txtSender);
         TextView txtMessage = (TextView) convertView.findViewById(R.id.txtMessage);
-        ImageView imgMessage = (ImageView) convertView.findViewById(R.id.imgMessage);
+        final ImageView imgMessage = (ImageView) convertView.findViewById(R.id.imgMessage);
 //        TextView txtDate = (TextView) convertView.findViewById(R.id.txtDate);
         final ImageView imgSender = (ImageView) convertView.findViewById(R.id.img_pic);
 
@@ -207,6 +215,39 @@ public class MessageAdapter extends BaseAdapter {
         if (isPicture){
             txtMessage.setVisibility(View.GONE);
             imgMessage.setImageBitmap(bitMapList.get(i));
+
+            imgMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final Dialog dialog = new Dialog(messageActivity);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.dialog_image);
+
+                    WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                    lp.copyFrom(dialog.getWindow().getAttributes());
+                    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                    lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+
+
+                    Bitmap bmp = ((BitmapDrawable) imgMessage.getDrawable())
+                            .getBitmap();
+
+                    ImageView picture = (ImageView) dialog.findViewById(R.id.img_view_dialog_picture);
+                    ImageButton btnClose = (ImageButton) dialog.findViewById(R.id.img_btn_close);
+                    btnClose.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    picture.setImageBitmap(bmp);
+                    dialog.show();
+                    dialog.getWindow().setAttributes(lp);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor
+                            ("#80000000")));
+                }
+            });
+
             imgMessage.setVisibility(View.VISIBLE);
         }
         else {
