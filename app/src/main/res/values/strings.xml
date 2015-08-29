@@ -12,7 +12,7 @@
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_profile_setting">Setting</string>
+    <string name="title_activity_profile_setting">個人設定</string>
     <string name="title_activity_view_task">ViewTaskActivity</string>
 
     <string name="apptask_title">任務名稱</string>g

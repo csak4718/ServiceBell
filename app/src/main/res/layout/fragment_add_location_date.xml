@@ -13,8 +13,8 @@
         android:paddingLeft="60dp"
         android:paddingRight="60dp"
         android:gravity="center"
-        android:background="#EAEAEA"
-        />
+        android:background="@drawable/bg_gray"/>
+
     <LinearLayout
         android:id="@+id/btn_set_location"
         android:layout_margin="15dp"
