@@ -190,7 +190,7 @@ public class MessageAdapter extends BaseAdapter {
         }
 
 //        txtDate.setText(mFormatter.format(mDateTime.get(i)));
-        if (!mSenderId.get(i).equals(ParseUser.getCurrentUser())) {
+        if (!mSenderId.get(i).equals(ParseUser.getCurrentUser().getObjectId())) {
             ParseQuery<ParseUser> query = ParseUser.getQuery();
             query.getInBackground(mSenderId.get(i), new GetCallback<ParseUser>() {
                 public void done(ParseUser sender, ParseException e) {
