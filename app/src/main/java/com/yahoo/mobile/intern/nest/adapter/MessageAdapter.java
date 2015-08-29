@@ -3,15 +3,13 @@ package com.yahoo.mobile.intern.nest.adapter;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
+import android.os.Handler;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,18 +24,14 @@ import com.parse.ParseUser;
 import com.sinch.android.rtc.messaging.WritableMessage;
 import com.squareup.picasso.Picasso;
 import com.yahoo.mobile.intern.nest.R;
-import com.yahoo.mobile.intern.nest.event.RecipientEvent;
 import com.yahoo.mobile.intern.nest.utils.Common;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by dwkung on 8/17/15.
@@ -52,7 +46,7 @@ public class MessageAdapter extends BaseAdapter {
     private List<Date> mDateTime;
     private List<String> mSenderId;
     private List<Boolean> isPictureList;
-//    private List<Bitmap> bitMapList;
+    private List<Bitmap> bitMapList;
     private Activity messageActivity;
 
     private Set<String> messageIdSet;
@@ -68,12 +62,12 @@ public class MessageAdapter extends BaseAdapter {
         mDateTime = new ArrayList<>();
         mSenderId = new ArrayList<>();
         isPictureList = new ArrayList<>();
-//        bitMapList = new ArrayList<>();
+        bitMapList = new ArrayList<>();
         messageIdSet = new HashSet<>();
         mFormatter = new SimpleDateFormat("HH:mm");
     }
 
-    public void addMessage(WritableMessage msg, int direction, Date dateTime, String senderId, String messageId) {
+    public void addMessage(WritableMessage msg, int direction, Date dateTime, String senderId, String messageId, boolean fromSendMessage, Bitmap fromSendMessageBmp) {
         if(!messageIdSet.contains(messageId)){
             if (!messageId.equals(Common.TEMP_MESSAGE_ID)) messageIdSet.add(messageId);
 
@@ -87,41 +81,73 @@ public class MessageAdapter extends BaseAdapter {
             if (hasPic.equals("T")){
                 Log.d("is PICTURE", writableMessage.getTextBody());
                 isPictureList.add(true); // is picture message
-                notifyDataSetChanged();
-//                ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
-//                query.whereContainedIn("messageId", Arrays.asList(messageId, Common.TEMP_MESSAGE_ID));
-//                query.findInBackground(new FindCallback<ParseObject>() {
-//                    public void done(List<ParseObject> messageList, ParseException e) {
-//                        if (e == null) {
-//                            ParseFile msgImage = (ParseFile) messageList.get(0).get("picture");
-//                            msgImage.getDataInBackground(new GetDataCallback() {
-//                                @Override
-//                                public void done(byte[] bytes, ParseException err) {
-//                                    if (err == null) {
-//                                        // bytes has the bytes for the msgImage
-//                                        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0,
-//                                                bytes.length);
-//                                        if (bmp != null) {
-//                                            bitMapList.add(bmp);
-//                                            notifyDataSetChanged();
-//                                        }
-//                                    } else {
-//                                        // something went wrong
-//                                    }
-//                                }
-//                            });
+
+                if (fromSendMessage) bitMapList.add(fromSendMessageBmp);
+                else{
+                    List<ParseObject> msgList = new ArrayList<>();
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
+                    query.whereEqualTo("messageId", messageId);
+
+                    while (msgList.size()!=1) {
+                        Log.d("LOOP", "in While loop");
+                        try {
+                            msgList = query.find();
+                            Log.d("IN_ADD_MESSAGE", String.valueOf(msgList.size()));
+                        } catch (ParseException e) {
+
+                        }
+                    }
+
+                    ParseFile msgImage = (ParseFile) msgList.get(0).get("picture");
+                    try {
+                        byte[] bytes = msgImage.getData();
+                        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0,
+                                bytes.length);
+                        if (bmp != null) {
+                            bitMapList.add(bmp);
+                            notifyDataSetChanged();
+                        }
+                    }
+                    catch (ParseException e){
+
+                    }
+
+//                    query.findInBackground(new FindCallback<ParseObject>() {
+//                        public void done(List<ParseObject> messageList, ParseException e) {
+//                            if (e == null) {
+//                                Log.d("IN_ADD_MESSAGE", String.valueOf(messageList.size()));
 //
-//                        } else {
-//                            Log.d("score", "Error: " + e.getMessage());
+//
+//                                ParseFile msgImage = (ParseFile) messageList.get(0).get("picture");
+//                                msgImage.getDataInBackground(new GetDataCallback() {
+//                                    @Override
+//                                    public void done(byte[] bytes, ParseException err) {
+//                                        if (err == null) {
+//                                            // bytes has the bytes for the msgImage
+//                                            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0,
+//                                                    bytes.length);
+//                                            if (bmp != null) {
+//                                                bitMapList.add(bmp);
+//                                                notifyDataSetChanged();
+//                                            }
+//                                        } else {
+//                                            // something went wrong
+//                                        }
+//                                    }
+//                                });
+//
+//                            } else {
+//                                Log.d("score", "Error: " + e.getMessage());
+//                            }
 //                        }
-//                    }
-//                });
+//                    });
+                }
             }
             else {
                 Log.d("is TEXT", writableMessage.getTextBody());
                 isPictureList.add(false); // is text message
-//                Bitmap bmp = BitmapFactory.decodeResource(messageActivity.getResources(), R.drawable.ic_add_black_24dp);
-//                bitMapList.add(bmp);
+                Bitmap trivialBitmap = BitmapFactory.decodeResource(messageActivity.getResources(), R.drawable.ic_add_black_24dp);
+                bitMapList.add(trivialBitmap);
                 notifyDataSetChanged();
             }
 
@@ -180,7 +206,7 @@ public class MessageAdapter extends BaseAdapter {
 
         if (isPicture){
             txtMessage.setVisibility(View.GONE);
-//            imgMessage.setImageBitmap(bitMapList.get(i));
+            imgMessage.setImageBitmap(bitMapList.get(i));
             imgMessage.setVisibility(View.VISIBLE);
         }
         else {
@@ -191,13 +217,16 @@ public class MessageAdapter extends BaseAdapter {
 
 //        txtDate.setText(mFormatter.format(mDateTime.get(i)));
         if (!mSenderId.get(i).equals(ParseUser.getCurrentUser().getObjectId())) {
+
+            final TextView txtName = (TextView) convertView.findViewById(R.id.txtName);
+
             ParseQuery<ParseUser> query = ParseUser.getQuery();
             query.getInBackground(mSenderId.get(i), new GetCallback<ParseUser>() {
                 public void done(ParseUser sender, ParseException e) {
                     if (e == null) {
                         // The query was successful.
 //                    txtSender.setText(sender.getString("nickname"));
-
+                        txtName.setText(sender.getString(Common.OBJECT_USER_NICK));
                         ParseFile imgFile = sender.getParseFile(Common.OBJECT_USER_PROFILE_PIC);
                         Picasso.with(messageActivity)
                                 .load(imgFile.getUrl())
