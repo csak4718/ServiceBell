@@ -31,6 +31,7 @@ import com.yahoo.mobile.intern.nest.utils.Common;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -51,7 +52,7 @@ public class MessageAdapter extends BaseAdapter {
     private List<Date> mDateTime;
     private List<String> mSenderId;
     private List<Boolean> isPictureList;
-    private List<Bitmap> bitMapList;
+//    private List<Bitmap> bitMapList;
     private Activity messageActivity;
 
     private Set<String> messageIdSet;
@@ -67,14 +68,14 @@ public class MessageAdapter extends BaseAdapter {
         mDateTime = new ArrayList<>();
         mSenderId = new ArrayList<>();
         isPictureList = new ArrayList<>();
-        bitMapList = new ArrayList<>();
+//        bitMapList = new ArrayList<>();
         messageIdSet = new HashSet<>();
         mFormatter = new SimpleDateFormat("HH:mm");
     }
 
     public void addMessage(WritableMessage msg, int direction, Date dateTime, String senderId, String messageId) {
         if(!messageIdSet.contains(messageId)){
-            messageIdSet.add(messageId);
+            if (!messageId.equals(Common.TEMP_MESSAGE_ID)) messageIdSet.add(messageId);
 
             String hasPic = msg.getTextBody().substring(0, 1);
             String text = msg.getTextBody().substring(1);
@@ -86,41 +87,41 @@ public class MessageAdapter extends BaseAdapter {
             if (hasPic.equals("T")){
                 Log.d("is PICTURE", writableMessage.getTextBody());
                 isPictureList.add(true); // is picture message
-
-                ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
-                query.whereEqualTo("messageId", messageId);
-                query.findInBackground(new FindCallback<ParseObject>() {
-                    public void done(List<ParseObject> messageList, ParseException e) {
-                        if (e == null) {
-                            ParseFile msgImage = (ParseFile) messageList.get(0).get("picture");
-                            msgImage.getDataInBackground(new GetDataCallback() {
-                                @Override
-                                public void done(byte[] bytes, ParseException err) {
-                                    if (err == null) {
-                                        // bytes has the bytes for the msgImage
-                                        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0,
-                                                bytes.length);
-                                        if (bmp != null) {
-                                            bitMapList.add(bmp);
-                                            notifyDataSetChanged();
-                                        }
-                                    } else {
-                                        // something went wrong
-                                    }
-                                }
-                            });
-
-                        } else {
-                            Log.d("score", "Error: " + e.getMessage());
-                        }
-                    }
-                });
+                notifyDataSetChanged();
+//                ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
+//                query.whereContainedIn("messageId", Arrays.asList(messageId, Common.TEMP_MESSAGE_ID));
+//                query.findInBackground(new FindCallback<ParseObject>() {
+//                    public void done(List<ParseObject> messageList, ParseException e) {
+//                        if (e == null) {
+//                            ParseFile msgImage = (ParseFile) messageList.get(0).get("picture");
+//                            msgImage.getDataInBackground(new GetDataCallback() {
+//                                @Override
+//                                public void done(byte[] bytes, ParseException err) {
+//                                    if (err == null) {
+//                                        // bytes has the bytes for the msgImage
+//                                        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0,
+//                                                bytes.length);
+//                                        if (bmp != null) {
+//                                            bitMapList.add(bmp);
+//                                            notifyDataSetChanged();
+//                                        }
+//                                    } else {
+//                                        // something went wrong
+//                                    }
+//                                }
+//                            });
+//
+//                        } else {
+//                            Log.d("score", "Error: " + e.getMessage());
+//                        }
+//                    }
+//                });
             }
             else {
                 Log.d("is TEXT", writableMessage.getTextBody());
                 isPictureList.add(false); // is text message
-                Bitmap bmp = BitmapFactory.decodeResource(messageActivity.getResources(), R.drawable.ic_add_black_24dp);
-                bitMapList.add(bmp);
+//                Bitmap bmp = BitmapFactory.decodeResource(messageActivity.getResources(), R.drawable.ic_add_black_24dp);
+//                bitMapList.add(bmp);
                 notifyDataSetChanged();
             }
 
@@ -179,7 +180,7 @@ public class MessageAdapter extends BaseAdapter {
 
         if (isPicture){
             txtMessage.setVisibility(View.GONE);
-            imgMessage.setImageBitmap(bitMapList.get(i));
+//            imgMessage.setImageBitmap(bitMapList.get(i));
             imgMessage.setVisibility(View.VISIBLE);
         }
         else {
@@ -189,27 +190,26 @@ public class MessageAdapter extends BaseAdapter {
         }
 
 //        txtDate.setText(mFormatter.format(mDateTime.get(i)));
-
-        ParseQuery<ParseUser> query = ParseUser.getQuery();
-        query.getInBackground(mSenderId.get(i), new GetCallback<ParseUser>() {
-            public void done(ParseUser sender, ParseException e) {
-                if (e == null) {
-                    // The query was successful.
+        if (!mSenderId.get(i).equals(ParseUser.getCurrentUser())) {
+            ParseQuery<ParseUser> query = ParseUser.getQuery();
+            query.getInBackground(mSenderId.get(i), new GetCallback<ParseUser>() {
+                public void done(ParseUser sender, ParseException e) {
+                    if (e == null) {
+                        // The query was successful.
 //                    txtSender.setText(sender.getString("nickname"));
 
-                    ParseFile imgFile = sender.getParseFile(Common.OBJECT_USER_PROFILE_PIC);
-                    Picasso.with(messageActivity)
-                            .load(imgFile.getUrl())
-                            .into(imgSender);
+                        ParseFile imgFile = sender.getParseFile(Common.OBJECT_USER_PROFILE_PIC);
+                        Picasso.with(messageActivity)
+                                .load(imgFile.getUrl())
+                                .into(imgSender);
 
 
-                } else {
-                    // Something went wrong.
+                    } else {
+                        // Something went wrong.
+                    }
                 }
-            }
-        });
-
-
+            });
+        }
 
         return convertView;
     }

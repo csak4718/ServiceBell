@@ -6,6 +6,7 @@ package com.yahoo.mobile.intern.nest.utils;
 public class Common {
 
     public final static int REQUEST_LOCATION = 5566;
+    public final static String TEMP_MESSAGE_ID = "1111";
 
     /*
         Fragment type

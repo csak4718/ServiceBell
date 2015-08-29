@@ -7,52 +7,45 @@
     android:background="@color/gray"
     >
 
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/img_pic"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/ic_account_circle_black_48dp"
-            android:layout_alignParentRight="true"/>
-
-        <RelativeLayout
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:padding="0dp">
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:padding="0dp">
+            android:orientation="horizontal">
+
+
             <LinearLayout
+                android:id="@+id/messageBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:padding="@dimen/abc_dialog_padding_material"
+                android:background="@drawable/comment_box_2"
+                >
 
-
-                <LinearLayout
-                    android:id="@+id/messageBox"
+                <TextView
+                    android:id="@+id/txtMessage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="@dimen/abc_dialog_padding_material"
-                    android:background="@drawable/comment_box_2"
-                    android:layout_marginTop="70dp">
-
-                    <TextView
-                        android:id="@+id/txtMessage"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@android:color/black"
-                        android:text="g"
-                        android:textSize="14sp"
+                    android:textColor="@android:color/black"
+                    android:text="g"
+                    android:textSize="14sp"
 
 
-                        />
-                    <ImageView
-                        android:id="@+id/imgMessage"
-                        android:paddingLeft="12dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:visibility="visible"/>
+                    />
+                <ImageView
+                    android:id="@+id/imgMessage"
+                    android:paddingLeft="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="visible"/>
 
-                </LinearLayout>
             </LinearLayout>
+        </LinearLayout>
 
 
-        </RelativeLayout>
+    </RelativeLayout>
 </RelativeLayout>
