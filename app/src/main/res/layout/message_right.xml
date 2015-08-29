@@ -1,51 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="2dp"
-    android:background="@color/gray"
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="10dp">
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/txtMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:padding="13dp"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        tools:text="Medium"
+        android:background="@drawable/im"
         android:layout_alignParentRight="true"
-        android:padding="0dp">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+        android:layout_alignParentTop="true" />
 
+    <ImageView
+        android:id="@+id/imgMessage"
+        android:paddingLeft="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
 
-            <LinearLayout
-                android:id="@+id/messageBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="@dimen/abc_dialog_padding_material"
-                android:background="@drawable/comment_box_2"
-                >
-
-                <TextView
-                    android:id="@+id/txtMessage"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@android:color/black"
-                    android:text="g"
-                    android:textSize="14sp"
-
-
-                    />
-                <ImageView
-                    android:id="@+id/imgMessage"
-                    android:paddingLeft="12dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="visible"/>
-
-            </LinearLayout>
-        </LinearLayout>
-
-
-    </RelativeLayout>
 </RelativeLayout>

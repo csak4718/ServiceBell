@@ -63,16 +63,12 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
 
     private static final String TAG = MessagingActivity.class.getSimpleName();
     private MessageAdapter mMessageAdapter;
-    private TextView recipientNickname;
     private EditText mTxtTextBody;
     private ImageButton mBtnSend;
     private ParseUser currentUser;
     private ParseUser recipient;
     private String recipientObjectId;
     private boolean afterLoadHistory = false;
-
-
-
 
     ImageButton imgBtnCamera;
     ImageButton imgBtnPicture;
@@ -92,8 +88,6 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
         setContentView(R.layout.messaging);
         afterLoadHistory = false;
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        recipientNickname = (TextView) findViewById(R.id.recipient_nickname);
 
         imgBtnCamera = (ImageButton) findViewById(R.id.img_btn_camera);
         imgBtnPicture = (ImageButton) findViewById(R.id.img_btn_picture);
@@ -153,7 +147,9 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
             public void done(List<ParseObject> messageList, com.parse.ParseException e) {
                 if (e == null) {
                     for (int i = 0; i < messageList.size(); i++) {
-                        WritableMessage writableMessage = new WritableMessage(messageList.get(i).get("recipientId").toString(), messageList.get(i).get("messageText").toString());
+                        WritableMessage writableMessage =
+                                new WritableMessage(messageList.get(i).get("recipientId")
+                                        .toString(), messageList.get(i).get("messageText").toString());
                         if (messageList.get(i).get("senderId").toString().equals(currentUser.getObjectId())) {
                             mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_OUTGOING, messageList.get(i).getDate("msgTimeStamp"), messageList.get(i).getString("senderId"), messageList.get(i).getString("messageId"));
                         } else {
@@ -206,7 +202,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
 
     public void onEvent(RecipientEvent event){
         recipient = event.recipient;
-        recipientNickname.setText(recipient.getString("nickname"));
+        getSupportActionBar().setTitle(recipient.getString("nickname"));
     }
 
     @Override
