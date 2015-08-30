@@ -131,8 +131,8 @@
             android:gravity="center"
             android:text="洽談細節"
             android:layout_gravity="center_horizontal"
-            android:background="@color/nest_yellow_1"
-            android:textColor="@android:color/black"
+            android:background="@color/nest_blue_2"
+            android:textColor="@android:color/white"
             android:layout_margin="5dp"/>
 
         <Button
@@ -143,8 +143,8 @@
             android:gravity="center"
             android:text="給他評分"
             android:layout_gravity="center_horizontal"
-            android:background="@color/nest_yellow_1"
-            android:textColor="@android:color/black"
+            android:background="@color/nest_blue_2"
+            android:textColor="@android:color/white"
             android:layout_margin="5dp"/>
 
     </LinearLayout>
