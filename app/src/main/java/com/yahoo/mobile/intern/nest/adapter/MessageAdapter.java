@@ -1,23 +1,37 @@
 package com.yahoo.mobile.intern.nest.adapter;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Handler;
 import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.parse.FindCallback;
 import com.parse.GetCallback;
+import com.parse.GetDataCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.sinch.android.rtc.messaging.WritableMessage;
 import com.squareup.picasso.Picasso;
 import com.yahoo.mobile.intern.nest.R;
+import com.yahoo.mobile.intern.nest.activity.MessagingActivity;
 import com.yahoo.mobile.intern.nest.utils.Common;
 
 import java.text.SimpleDateFormat;
@@ -40,7 +54,7 @@ public class MessageAdapter extends BaseAdapter {
     private List<Date> mDateTime;
     private List<String> mSenderId;
     private List<Boolean> isPictureList;
-//    private List<Bitmap> bitMapList;
+    private List<Bitmap> bitMapList;
     private Activity messageActivity;
 
     private Set<String> messageIdSet;
@@ -56,12 +70,12 @@ public class MessageAdapter extends BaseAdapter {
         mDateTime = new ArrayList<>();
         mSenderId = new ArrayList<>();
         isPictureList = new ArrayList<>();
-//        bitMapList = new ArrayList<>();
+        bitMapList = new ArrayList<>();
         messageIdSet = new HashSet<>();
         mFormatter = new SimpleDateFormat("HH:mm");
     }
 
-    public void addMessage(WritableMessage msg, int direction, Date dateTime, String senderId, String messageId) {
+    public void addMessage(WritableMessage msg, int direction, Date dateTime, String senderId, String messageId, boolean fromSendMessage, Bitmap fromSendMessageBmp) {
         if(!messageIdSet.contains(messageId)){
             if (!messageId.equals(Common.TEMP_MESSAGE_ID)) messageIdSet.add(messageId);
 
@@ -75,41 +89,73 @@ public class MessageAdapter extends BaseAdapter {
             if (hasPic.equals("T")){
                 Log.d("is PICTURE", writableMessage.getTextBody());
                 isPictureList.add(true); // is picture message
-                notifyDataSetChanged();
-//                ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
-//                query.whereContainedIn("messageId", Arrays.asList(messageId, Common.TEMP_MESSAGE_ID));
-//                query.findInBackground(new FindCallback<ParseObject>() {
-//                    public void done(List<ParseObject> messageList, ParseException e) {
-//                        if (e == null) {
-//                            ParseFile msgImage = (ParseFile) messageList.get(0).get("picture");
-//                            msgImage.getDataInBackground(new GetDataCallback() {
-//                                @Override
-//                                public void done(byte[] bytes, ParseException err) {
-//                                    if (err == null) {
-//                                        // bytes has the bytes for the msgImage
-//                                        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0,
-//                                                bytes.length);
-//                                        if (bmp != null) {
-//                                            bitMapList.add(bmp);
-//                                            notifyDataSetChanged();
-//                                        }
-//                                    } else {
-//                                        // something went wrong
-//                                    }
-//                                }
-//                            });
+
+                if (fromSendMessage) bitMapList.add(fromSendMessageBmp);
+                else{
+                    List<ParseObject> msgList = new ArrayList<>();
+                    ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
+                    query.whereEqualTo("messageId", messageId);
+
+                    while (msgList.size()!=1) {
+                        Log.d("LOOP", "in While loop");
+                        try {
+                            msgList = query.find();
+                            Log.d("IN_ADD_MESSAGE", String.valueOf(msgList.size()));
+                        } catch (ParseException e) {
+
+                        }
+                    }
+
+                    ParseFile msgImage = (ParseFile) msgList.get(0).get("picture");
+                    try {
+                        byte[] bytes = msgImage.getData();
+                        Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0,
+                                bytes.length);
+                        if (bmp != null) {
+                            bitMapList.add(bmp);
+                            notifyDataSetChanged();
+                        }
+                    }
+                    catch (ParseException e){
+
+                    }
+
+//                    query.findInBackground(new FindCallback<ParseObject>() {
+//                        public void done(List<ParseObject> messageList, ParseException e) {
+//                            if (e == null) {
+//                                Log.d("IN_ADD_MESSAGE", String.valueOf(messageList.size()));
 //
-//                        } else {
-//                            Log.d("score", "Error: " + e.getMessage());
+//
+//                                ParseFile msgImage = (ParseFile) messageList.get(0).get("picture");
+//                                msgImage.getDataInBackground(new GetDataCallback() {
+//                                    @Override
+//                                    public void done(byte[] bytes, ParseException err) {
+//                                        if (err == null) {
+//                                            // bytes has the bytes for the msgImage
+//                                            Bitmap bmp = BitmapFactory.decodeByteArray(bytes, 0,
+//                                                    bytes.length);
+//                                            if (bmp != null) {
+//                                                bitMapList.add(bmp);
+//                                                notifyDataSetChanged();
+//                                            }
+//                                        } else {
+//                                            // something went wrong
+//                                        }
+//                                    }
+//                                });
+//
+//                            } else {
+//                                Log.d("score", "Error: " + e.getMessage());
+//                            }
 //                        }
-//                    }
-//                });
+//                    });
+                }
             }
             else {
                 Log.d("is TEXT", writableMessage.getTextBody());
                 isPictureList.add(false); // is text message
-//                Bitmap bmp = BitmapFactory.decodeResource(messageActivity.getResources(), R.drawable.ic_add_black_24dp);
-//                bitMapList.add(bmp);
+                Bitmap trivialBitmap = BitmapFactory.decodeResource(messageActivity.getResources(), R.drawable.ic_add_black_24dp);
+                bitMapList.add(trivialBitmap);
                 notifyDataSetChanged();
             }
 
@@ -161,14 +207,57 @@ public class MessageAdapter extends BaseAdapter {
 
 //        final TextView txtSender = (TextView) convertView.findViewById(R.id.txtSender);
         TextView txtMessage = (TextView) convertView.findViewById(R.id.txtMessage);
-        ImageView imgMessage = (ImageView) convertView.findViewById(R.id.imgMessage);
+        final ImageView imgMessage = (ImageView) convertView.findViewById(R.id.imgMessage);
 //        TextView txtDate = (TextView) convertView.findViewById(R.id.txtDate);
         final ImageView imgSender = (ImageView) convertView.findViewById(R.id.img_pic);
 
 
         if (isPicture){
             txtMessage.setVisibility(View.GONE);
-//            imgMessage.setImageBitmap(bitMapList.get(i));
+
+            if (bitMapList.get(i).getHeight() > bitMapList.get(i).getWidth() + 20) {
+                imgMessage.requestLayout();
+                imgMessage.getLayoutParams().height = 450;
+                imgMessage.getLayoutParams().width = 350;
+            }
+            else if (bitMapList.get(i).getWidth() > bitMapList.get(i).getHeight() + 20){
+                imgMessage.requestLayout();
+                imgMessage.getLayoutParams().height = 350;
+                imgMessage.getLayoutParams().width = 450;
+            }
+            imgMessage.setImageBitmap(bitMapList.get(i));
+            imgMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final Dialog dialog = new Dialog(messageActivity);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.dialog_image);
+
+                    WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+                    lp.copyFrom(dialog.getWindow().getAttributes());
+                    lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                    lp.height = WindowManager.LayoutParams.MATCH_PARENT;
+
+
+                    Bitmap bmp = ((BitmapDrawable) imgMessage.getDrawable())
+                            .getBitmap();
+
+                    ImageView picture = (ImageView) dialog.findViewById(R.id.img_view_dialog_picture);
+                    ImageButton btnClose = (ImageButton) dialog.findViewById(R.id.img_btn_close);
+                    btnClose.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+                    picture.setImageBitmap(bmp);
+                    dialog.show();
+                    dialog.getWindow().setAttributes(lp);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.parseColor
+                            ("#80000000")));
+                }
+            });
+
             imgMessage.setVisibility(View.VISIBLE);
         }
         else {
