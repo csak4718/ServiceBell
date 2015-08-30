@@ -245,13 +245,19 @@ public class CatchTaskActivity extends BaseActivity implements SinchService.Star
             case Common.SELLER_NEW:
                 newTaskOpBanner.setVisibility(View.VISIBLE);
                 txtStatus.setText("等待中");
+                txtStatus.setBackgroundResource(R.drawable.round_corner_red);
+                txtStatus.setTextColor(getResources().getColor(R.color.nest_status_red));
                 break;
             case Common.SELLER_ACCEPTED:
                 doneTaskOpBanner.setVisibility(View.VISIBLE);
                 txtStatus.setText("洽談中");
+                txtStatus.setBackgroundResource(R.drawable.round_corner_blue);
+                txtStatus.setTextColor(getResources().getColor(R.color.nest_status_blue));
                 break;
             case Common.SELLER_DONE:
                 doneTaskOpBanner.setVisibility(View.VISIBLE);
+                txtStatus.setBackgroundResource(R.drawable.round_corner_green);
+                txtStatus.setTextColor(getResources().getColor(R.color.nest_status_green));
                 txtStatus.setText("已成交");
                 break;
         }

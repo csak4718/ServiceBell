@@ -9,12 +9,13 @@
     android:padding="5dp"
     android:layout_gravity="center"
     app:cardCornerRadius="0dp"
-    app:cardBackgroundColor="#FFFFFF">
+    app:cardBackgroundColor="@color/nest_black_5">
 
     <RelativeLayout
         android:layout_margin="10dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/nest_black_5">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/img_pic"
@@ -29,14 +30,14 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:orientation="vertical"
-            android:background="#FFFFFF">
+            android:background="@color/nest_black_5">
 
             <TextView
                 android:id="@+id/txt_title"
                 tools:text="洗車子"
                 android:layout_marginBottom="8dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@android:color/black"
+                android:textColor="@android:color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
             <LinearLayout
@@ -51,6 +52,7 @@
                 <TextView
                     android:id="@+id/txt_time"
                     android:text="8月29日 上午"
+                    android:textColor="@color/white"
                     android:layout_margin="2dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -68,6 +70,7 @@
                 <TextView
                     android:id="@+id/txt_remaining"
                     tools:text="3小時15分04秒"
+                    android:textColor="@color/white"
                     android:layout_margin="2dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -85,7 +88,7 @@
                 tools:text="0"
                 android:textSize="25sp"
                 android:textStyle="bold"
-                android:textColor="@color/nest_blue_3"
+                android:textColor="@color/nest_yellow_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal" />
@@ -94,7 +97,7 @@
                 android:text="接洽"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:textColor="@color/nest_blue_3"
+                android:textColor="@color/nest_yellow_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal" />

@@ -143,8 +143,8 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/nest_y_1"
-            android:textColor="@color/nest_black_3"
+            android:background="@color/nest_blue_2"
+            android:textColor="@color/white"
             android:textSize="18dp"
             android:text="洽談細節"/>
         <View
@@ -158,8 +158,8 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/nest_y_1"
-            android:textColor="@color/nest_black_3"
+            android:background="@color/nest_blue_2"
+            android:textColor="@color/white"
             android:textSize="18dp"
             android:text="馬上成交"/>
     </LinearLayout>

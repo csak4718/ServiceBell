@@ -67,7 +67,7 @@ public class ProfileSettingActivity extends AppCompatActivity {
         if(mAddress != null)
             mAddressTextView.setText(mAddress);
 
-        mRaiusTextView.setText(mRadius+" km");
+        mRaiusTextView.setText("服務範圍："+mRadius+" km");
 
 
        // ArrayAdapter<String> lunchList = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, serviceCategory);

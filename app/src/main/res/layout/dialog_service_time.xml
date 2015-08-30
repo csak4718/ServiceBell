@@ -6,7 +6,7 @@
 
     <TextView
         android:text="設定服務時間"
-        android:textColor="@color/nest_blue_4"
+        android:textColor="@color/nest_blue_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"

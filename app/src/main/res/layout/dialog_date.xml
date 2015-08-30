@@ -72,7 +72,7 @@
     <Button
         android:id="@+id/btn_confirm"
         android:text="確認"
-        android:textColor="@color/nest_blue_4"
+        android:textColor="@color/nest_blue_3"
         android:background="@android:color/transparent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

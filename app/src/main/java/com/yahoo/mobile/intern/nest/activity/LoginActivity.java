@@ -148,7 +148,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         getSupportActionBar().hide();
-        Utils.setStatusBarColor(this, getResources().getColor(R.color.nest_blue_4));
+        Utils.setStatusBarColor(this, getResources().getColor(R.color.nest_blue_3));
 
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);

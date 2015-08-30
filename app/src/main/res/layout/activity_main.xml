@@ -16,8 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:minHeight="?attr/actionBarSize"
-            android:theme="@style/toolbarTheme"
-            android:background="#5AD3D2" />
+            android:theme="@style/toolbarTheme"/>
 
         <FrameLayout
             android:id="@+id/frame_content"
@@ -35,7 +34,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
             android:src="@drawable/ic_add_white_24dp"
-            app:fab_colorNormal="@color/nest_yellow_4"/>
+            app:fab_colorNormal="@color/nest_blue_2"/>
     </RelativeLayout>
 
     <LinearLayout

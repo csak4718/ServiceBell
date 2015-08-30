@@ -194,9 +194,13 @@ public class MyTaskActivity extends BaseActivity implements ConfirmDialog.Confir
                     // task is not done
                     if (mType == Common.BUYER_NEW) {
                         txtStatus.setText("等待中");
+                        txtStatus.setBackgroundResource(R.drawable.round_corner_red);
+                        txtStatus.setTextColor(getResources().getColor(R.color.nest_status_red));
                         ParseUtils.getTaskAcceptedUser(task);
                     } else {
                         txtStatus.setText("已成交");
+                        txtStatus.setBackgroundResource(R.drawable.round_corner_green);
+                        txtStatus.setTextColor(getResources().getColor(R.color.nest_status_green));
                         ParseUser seller = task.getParseUser(Common.OBJECT_QUESTION_DONE_USER);
                         try {
                             seller = seller.fetch();
