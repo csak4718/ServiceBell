@@ -26,7 +26,7 @@
     <Button
         android:layout_marginTop="50dp"
         android:id="@+id/btn_confirm"
-        android:background="@color/nest_y_1"
+        android:background="@color/nest_yellow_1"
         android:text="確認"
         android:textSize="20sp"
         android:layout_width="match_parent"

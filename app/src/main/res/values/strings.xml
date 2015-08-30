@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">服務鈴</string>
+    <string name="find_service">尋找服務</string>
+    <string name="provide_service">提供服務</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">個人設定</string>

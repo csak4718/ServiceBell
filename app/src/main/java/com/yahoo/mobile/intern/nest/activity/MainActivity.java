@@ -52,14 +52,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     @OnClick(R.id.btn_find_service) void findService() {
-        mActionBar.setTitle("找服務");
+        mActionBar.setTitle(R.string.find_service);
         Utils.setBuyerColor(MainActivity.this);
         fragmentTab.switchTab(R.id.menu_my_task);
         btnAddPost.setVisibility(View.VISIBLE);
         mDrawerLayout.closeDrawers();
     }
     @OnClick(R.id.btn_get_service) void getService() {
-        mActionBar.setTitle("接服務");
+        mActionBar.setTitle(R.string.provide_service);
         Utils.setSellerColor(MainActivity.this);
         fragmentTab.switchTab(R.id.menu_catch_task);
         btnAddPost.setVisibility(View.GONE);
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         mActionBar = getSupportActionBar();
         mActionBar.setDisplayHomeAsUpEnabled(true);
         mActionBar.setHomeButtonEnabled(true);
-        mActionBar.setTitle("找服務");
+        mActionBar.setTitle(R.string.find_service);
         Utils.setBuyerColor(this);
     }
 

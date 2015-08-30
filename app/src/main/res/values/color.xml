@@ -29,28 +29,31 @@
     <color name="dark_gray">#ffb3b3b3</color>
 
 
-    <color name="nest_black_1">#eaeaea</color>
+    <color name="drawer_header">#848484</color>
+    <color name="drawer_content">#4A4A4A</color>
+
+    <color name="nest_black_1">#EAEAEA</color>
     <color name="nest_black_2">#848484</color>
-    <color name="nest_black_3">#222222</color>
+    <color name="nest_black_3">#4A4A4A</color>
+
+
     <color name="nest_black_4">#5D5D5D</color>
     <color name="nest_black_5">#A0A0A0</color>
 
     <color name="nest_yellow_1">#FFD000</color>
     <color name="nest_yellow_2">#EFBB01</color>
-    <color name="nest_yellow_3">#FFEA3A</color>
-    <color name="nest_yellow_4">#FABF2C</color>
-
 
     <color name="nest_blue_alpha">#88B1EAF1</color>
+
     <color name="nest_blue_1">#B1EAF1</color>
     <color name="nest_blue_2">#4CCFE0</color>
     <color name="nest_blue_3">#00ABC0</color>
-    
-    <color name="nest_y_1">#FFD000</color>
-    <color name="nest_y_2">#EFBB01</color>
 
-    <color name="drawer_header">#848484</color>
-    <color name="drawer_content">#4A4A4A</color>
+    <color name="nest_status_red">#EC5A7A</color>
+    <color name="nest_status_blue">#6466E2</color>
+    <color name="nest_status_green">#7ED321</color>
+
+    
 
     <integer-array name="androidcolors">
         <item>@color/blue</item>

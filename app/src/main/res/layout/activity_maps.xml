@@ -77,8 +77,8 @@
         android:layout_height="48dp"
         android:text="@string/map_ok"
         android:layout_alignParentBottom="true"
-        android:textColor="@color/black"
-        android:background="@color/nest_yellow_1"
+        android:textColor="@color/white"
+        android:background="@color/nest_blue_2"
         android:padding="10dp"
         android:layout_margin="10dp"/>
 

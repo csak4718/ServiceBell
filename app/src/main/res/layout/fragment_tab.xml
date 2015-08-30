@@ -9,6 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
+        app:tabTextColor="@color/nest_black_5"
         app:tabIndicatorColor="@color/nest_blue_3"
         app:tabSelectedTextColor="@color/nest_blue_2"/>
     <android.support.v4.view.ViewPager

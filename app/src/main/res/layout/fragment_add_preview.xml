@@ -16,9 +16,10 @@
     <Button
         android:id="@+id/btn_confirm"
         android:text="確認發送"
-        android:textColor="@android:color/black"
+        android:layout_margin="15dp"
+        android:textColor="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/nest_yellow_2"
+        android:background="@color/nest_blue_2"
         android:layout_alignParentBottom="true"/>
 </LinearLayout>

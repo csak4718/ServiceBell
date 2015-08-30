@@ -23,7 +23,7 @@
             android:layout_height="25dp"
             />
         <TextView
-            android:text="找服務"
+            android:text="@string/find_service"
             android:textColor="@android:color/white"
             android:textSize="15sp"
             android:layout_marginLeft="15dp"
@@ -52,7 +52,7 @@
             android:layout_marginRight="10dp"
             />
         <TextView
-            android:text="接服務"
+            android:text="@string/provide_service"
             android:textColor="@android:color/white"
             android:textSize="15sp"
             android:layout_marginLeft="15dp"

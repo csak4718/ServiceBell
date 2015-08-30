@@ -34,7 +34,7 @@
         android:padding="12dp"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:background="@color/nest_y_1"
+        android:background="@color/nest_yellow_1"
         android:gravity="center_horizontal">
         <TextView
             android:textColor="@color/black"
