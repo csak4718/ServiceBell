@@ -113,6 +113,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
         mBtnSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mTxtTextBody.setVisibility(View.VISIBLE);
                 sendMessage();
             }
         });
