@@ -42,9 +42,14 @@
 
     <ImageView
         android:id="@+id/imgMessage"
-        android:paddingLeft="12dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:padding="40dp"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:background="@drawable/img_chats_bg_01"
+        android:layout_below="@+id/txtName"
+        android:layout_alignLeft="@+id/txtName"
+        android:layout_alignStart="@+id/txtName"
+        android:scaleType="centerCrop"
         android:visibility="gone"/>
 
 

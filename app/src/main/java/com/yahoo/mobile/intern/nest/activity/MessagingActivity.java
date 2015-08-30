@@ -20,6 +20,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.GetDataCallback;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
@@ -118,12 +120,14 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
         imgBtnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mTxtTextBody.setVisibility(View.GONE);
                 getPictureFromCamera();
             }
         });
         imgBtnPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mTxtTextBody.setVisibility(View.GONE);
                 getPictureFromGallery();
             }
         });
@@ -132,11 +136,12 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
             public void onClick(View v) {
                 postWithPicture = false;
                 imgPreviewRoot.setVisibility(View.GONE);
+                mTxtTextBody.setVisibility(View.VISIBLE);
             }
         });
 
 
-
+        final Bitmap trivialBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_add_black_24dp);
         String[] userIds = {currentUser.getObjectId(), recipientObjectId};
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Message");
         query.whereContainedIn("senderId", Arrays.asList(userIds));
@@ -151,9 +156,9 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
                                 new WritableMessage(messageList.get(i).get("recipientId")
                                         .toString(), messageList.get(i).get("messageText").toString());
                         if (messageList.get(i).get("senderId").toString().equals(currentUser.getObjectId())) {
-                            mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_OUTGOING, messageList.get(i).getDate("msgTimeStamp"), messageList.get(i).getString("senderId"), messageList.get(i).getString("messageId"));
+                            mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_OUTGOING, messageList.get(i).getDate("msgTimeStamp"), messageList.get(i).getString("senderId"), messageList.get(i).getString("messageId"), false, trivialBitmap);
                         } else {
-                            mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_INCOMING, messageList.get(i).getDate("msgTimeStamp"), messageList.get(i).getString("senderId"), messageList.get(i).getString("messageId"));
+                            mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_INCOMING, messageList.get(i).getDate("msgTimeStamp"), messageList.get(i).getString("senderId"), messageList.get(i).getString("messageId"), false, trivialBitmap);
                         }
                     }
                     afterLoadHistory = true;
@@ -239,23 +244,19 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
 
         if(postWithPicture) {
             bitmap = ((BitmapDrawable) imgViewUpload.getDrawable()).getBitmap();
-//            +mImageUri.toURL();
-            try{
-                URI mImageURI =new URI(mImageUri.toString());
-//                TODO: send image by IM
-            }
-            catch (URISyntaxException e){
-                Log.d("URI", "URISyntaxException");
-            }
-
             textBody = "T";
         }
         else {
             textBody = "F" + mTxtTextBody.getText().toString();
         }
 
-        if (textBody.isEmpty()) {
-            Toast.makeText(this, "No text message or picture uri string", Toast.LENGTH_SHORT).show();
+        if ( (!postWithPicture) && textBody.substring(1).isEmpty() ) {
+            Toast.makeText(this, "No text message", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if ((!postWithPicture) && (textBody.substring(1).trim().length() == 0)) {
+            Toast.makeText(this, "All texts are whitespaces", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -263,7 +264,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
 
         WritableMessage writableMessage = new WritableMessage(recipientObjectId, textBody);
 
-        mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_OUTGOING, temporaryDate, currentUser.getObjectId(), Common.TEMP_MESSAGE_ID);
+        mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_OUTGOING, temporaryDate, currentUser.getObjectId(), Common.TEMP_MESSAGE_ID, true, bitmap);
 
         getSinchServiceInterface().sendMessage(recipientObjectId, textBody);
         mTxtTextBody.setText("");
@@ -276,12 +277,12 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
     }
 
     @Override
-    public void onIncomingMessage(MessageClient client, Message message) {
+    public void onIncomingMessage(MessageClient client, final Message message) {
         if (message.getSenderId().equals(recipientObjectId) && afterLoadHistory) {
+            final Bitmap trivialBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_add_black_24dp);
 
             WritableMessage writableMessage = new WritableMessage(message.getRecipientIds().get(0), message.getTextBody());
-//            Log.d("ON_INCOMING_MSG", writableMessage.getTextBody());
-            mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_INCOMING, message.getTimestamp(), message.getSenderId(), message.getMessageId());
+            mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_INCOMING, message.getTimestamp(), message.getSenderId(), message.getMessageId(), false, trivialBitmap);
         }
     }
 
