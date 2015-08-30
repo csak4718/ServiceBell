@@ -214,8 +214,18 @@ public class MessageAdapter extends BaseAdapter {
 
         if (isPicture){
             txtMessage.setVisibility(View.GONE);
-            imgMessage.setImageBitmap(bitMapList.get(i));
 
+            if (bitMapList.get(i).getHeight() > bitMapList.get(i).getWidth() + 20) {
+                imgMessage.requestLayout();
+                imgMessage.getLayoutParams().height = 450;
+                imgMessage.getLayoutParams().width = 350;
+            }
+            else if (bitMapList.get(i).getWidth() > bitMapList.get(i).getHeight() + 20){
+                imgMessage.requestLayout();
+                imgMessage.getLayoutParams().height = 350;
+                imgMessage.getLayoutParams().width = 450;
+            }
+            imgMessage.setImageBitmap(bitMapList.get(i));
             imgMessage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
