@@ -171,10 +171,12 @@ public class ParseUtils {
 
     }
 
-    static public void instantMessageNotification(ParseUser sender, ParseUser recipient){
+    static public void instantMessageNotification(ParseUser sender, ParseUser recipient, boolean isPicture, String textMessage){
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("senderId", sender.getObjectId());
         params.put("recipientId", recipient.getObjectId());
+        params.put("isPicture", isPicture);
+        params.put("textMessage", textMessage);
         ParseCloud.callFunctionInBackground("instantMessageNotification", params);
     }
 

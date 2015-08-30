@@ -289,6 +289,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
 
     @Override
     public void onMessageSent(MessageClient client, final Message message, String recipientId) {
+
         final WritableMessage writableMessage = new WritableMessage(message.getRecipientIds().get(0), message.getTextBody());
 
         // only add message to parse database if it doesn't already exist there
@@ -299,6 +300,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
             public void done(List<ParseObject> messageList, com.parse.ParseException e) {
                 if (e == null) {
                     if (messageList.size() == 0) {
+                        boolean isPicture;
                         ParseObject msg = new ParseObject("Message");
                         msg.put("senderId", currentUser.getObjectId());
                         msg.put("recipientId", writableMessage.getRecipientIds().get(0));
@@ -306,6 +308,8 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
                         msg.put("messageId", message.getMessageId());
                         msg.put("msgTimeStamp", message.getTimestamp());
                         if (bitmap != null) {
+                            isPicture = true;
+
                             ByteArrayOutputStream stream = new ByteArrayOutputStream();
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
                             byte[] bytearray = stream.toByteArray();
@@ -319,6 +323,8 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
                                 err.printStackTrace();
                             }
                         } else {
+                            isPicture = false;
+
                             Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_add_black_24dp);
                             ByteArrayOutputStream stream = new ByteArrayOutputStream();
                             bmp.compress(Bitmap.CompressFormat.JPEG, 100, stream);
@@ -333,7 +339,7 @@ public class MessagingActivity extends BaseActivity implements MessageClientList
                             }
                         }
 
-                        ParseUtils.instantMessageNotification(currentUser, recipient);
+                        ParseUtils.instantMessageNotification(currentUser, recipient, isPicture, writableMessage.getTextBody().substring(1));
 //                        Log.d("ON_MESSAGE_SENT", writableMessage.getTextBody());
 //                        mMessageAdapter.addMessage(writableMessage, MessageAdapter.DIRECTION_OUTGOING, message.getTimestamp(), currentUser.getObjectId(), message.getMessageId());
                     }
