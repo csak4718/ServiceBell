@@ -131,7 +131,7 @@
                 <Button
                     android:id="@+id/btn_confirm"
                     android:text="確認"
-                    android:textColor="@android:color/black"
+                    android:textColor="@android:color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="20dp"
